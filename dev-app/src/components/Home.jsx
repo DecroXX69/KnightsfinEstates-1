@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AboutUs from './AboutUs';
 import { 
   ChevronDown, 
   Home as HomeIcon,
@@ -101,7 +102,7 @@ const Home = () => {
           <div className="d-flex gap-4 align-items-center">
             <a href="#" className="nav-link">Buy</a>
             <a href="#" className="nav-link">Off Plan</a>
-            <a href="#" className="nav-link">About Us</a>
+            <a href="/aboutus" className="nav-link">About Us</a>
             <div className="dropdown">
               <button className="btn nav-link" onClick={() => setIsExploreOpen(!isExploreOpen)}>
                 Explore More <ChevronDown className="icon" />
