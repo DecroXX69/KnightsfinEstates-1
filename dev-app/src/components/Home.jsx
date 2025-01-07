@@ -22,6 +22,7 @@ import dubai4 from '../assets/dubai4.jpg';
 import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
+import ContactUs from './ContactUs';
 
 const locationData = {
   Dubai: {
@@ -307,6 +308,7 @@ const Home = () => {
       <About />
       <PartnersSlider />
       <Testimonials />
+      <ContactUs/>
       <Footer />
     </div>
   );
