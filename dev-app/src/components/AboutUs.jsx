@@ -3,7 +3,7 @@ import Info from "./Info.jsx"; // Import the Info component
 import hero from "../assets/About-us-hero.jpg"; // Import the hero image
 import "./Aboutus.css"; // Import the AboutUs component styles
 import Services from './Services.jsx';
-
+import WhyChooseUs from '../minicomponents/WhyChooseUs.jsx';
 const AboutUs = () => {
   return (
     <div className="AboutUs">
@@ -16,7 +16,9 @@ const AboutUs = () => {
         />
         {/* You can add other content inside the hero container if needed */}
       </div>
+
       <Info />
+      <WhyChooseUs/>
         <Services />
     </div>
   );

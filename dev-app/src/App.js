@@ -10,8 +10,8 @@ function App() {
   return (
     <BrowserRouter>
     <div className="App">
-     {/* <Home /> */}
-     <AboutUs/>
+     <Home />
+     {/* <AboutUs/> */}
     </div>
     </BrowserRouter>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import AboutUs from './AboutUs';
+import FloatingChat from '../services/FloatingChat';
 import { 
   ChevronDown, 
   Home as HomeIcon,
@@ -20,6 +21,7 @@ import dubai3 from '../assets/dubai3.jpg';
 import dubai4 from '../assets/dubai4.jpg';
 import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
+import Footer from './Footer';
 
 const locationData = {
   Dubai: {
@@ -301,10 +303,11 @@ const Home = () => {
 <section>
         <LuxuryProperty {...luxuryPropertyData} />
       </section>
-
+      <FloatingChat phoneNumber='+918177083523'/>
       <About />
       <PartnersSlider />
       <Testimonials />
+      <Footer />
     </div>
   );
 };

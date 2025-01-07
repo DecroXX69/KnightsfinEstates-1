@@ -1,0 +1,182 @@
+/* General Section Styling */
+.why-choose-us {
+    padding: 100px 5%;
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Header Styling */
+.why-choose-us h2 {
+    font-size: 3.2rem;
+    color: #1e3a8a;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.why-choose-us .dot {
+    color: #f59e0b;
+}
+
+/* Subtitle Styling */
+.subtitle1 {
+    font-size: 1.3rem;
+    margin: 15px 0 50px;
+    color: #475569;
+    line-height: 1.8;
+    max-width: 650px;
+}
+
+/* Content Layout */
+.content {
+    display: flex;
+    flex-direction: row; /* Display text on the right and images on the left */
+    gap: 60px;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Text Section */
+.text-section {
+    width: 50%;
+    text-align: left; /* Align text to the left */
+}
+
+.text-section p {
+    margin-bottom: 25px;
+    color: #475569;
+    font-size: 1.1rem;
+    line-height: 1.9;
+}
+
+.features {
+    margin-top: 40px;
+}
+
+.feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.feature .icon {
+    font-size: 2.5rem;
+    color: #f59e0b;
+    flex-shrink: 0;
+}
+
+.feature h4 {
+    color: #1e3a8a;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.feature p {
+    color: #475569;
+    font-size: 1rem;
+}
+
+/* Image Section */
+.image-section {
+    width: 45%;
+    position: relative; /* Allowing the images to overlap slightly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle {
+    width: 260px; /* Size of the images */
+    height: 260px; /* Size of the images */
+    border-radius: 50%;
+    overflow: hidden;
+    position: absolute; /* Allowing the images to overlap slightly */
+    border: 5px solid #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out; /* Added smooth transition effect */
+}
+
+.circle img {   
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image1 {
+    top: 0;
+    left: 50%;
+    z-index: 3;
+    transform: translateX(-50%);
+}
+
+.image2 {
+    top: 240px; /* Adjusted position to reduce overlap */
+    left: 30%;
+    z-index: 2;
+    transform: translateX(-50%);
+}
+
+.image3 {
+    top: 240px; /* Adjusted position to reduce overlap */
+    left: 70%;
+    z-index: 2;
+    transform: translateX(-50%);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .text-section, .image-section {
+        width: 100%;
+    }
+
+    .text-section {
+        text-align: center;
+    }
+
+    .why-choose-us h2 {
+        font-size: 2.8rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .why-choose-us h2 {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .feature {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .circle {
+        width: 140px; /* Slightly larger than before */
+        height: 140px; /* Slightly larger than before */
+    }
+}
+
