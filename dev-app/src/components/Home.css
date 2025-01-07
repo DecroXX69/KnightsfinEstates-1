@@ -345,6 +345,9 @@ body {
   font-weight: 300;
 }
 
+#loadbtn{
+  margin-bottom: 40px;
+}
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .search-bar {

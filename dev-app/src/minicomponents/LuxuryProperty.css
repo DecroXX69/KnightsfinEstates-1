@@ -1,0 +1,133 @@
+.luxury-container {
+    width: 100%;
+    background-color: #1a1f3d;
+    color: white;
+  }
+  
+  .luxury-content {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 600px;
+  }
+  
+  .luxury-image-section {
+    flex: 0 0 50%;
+    position: relative;
+  }
+  
+  .main-property-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  .luxury-details-section {
+    flex: 0 0 50%;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  .luxury-header {
+    margin-bottom: 2rem;
+  }
+  
+  .luxury-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin: 0;
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+  
+  .company-name {
+    font-size: 1rem;
+    margin: 0.5rem 0 0 0;
+    color: #ffffff;
+  }
+  
+  .property-info {
+    margin-bottom: 1.5rem;
+  }
+  
+  .property-name {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 400;
+  }
+  
+  .developer-name {
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0 0;
+    color: #cccccc;
+  }
+  
+  .price-section {
+    margin-bottom: 2rem;
+  }
+  
+  .property-price {
+    color: #ffa726;
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .gallery-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .gallery-image-container {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  
+  .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .learn-more-section {
+    margin-top: auto;
+    text-align: right;
+  }
+  
+  .learn-more-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .learn-more-btn:hover {
+    opacity: 0.8;
+  }
+  
+  @media (max-width: 992px) {
+    .luxury-content {
+      flex-direction: column;
+    }
+  
+    .luxury-image-section,
+    .luxury-details-section {
+      flex: 0 0 100%;
+    }
+  
+    .luxury-details-section {
+      padding: 2rem;
+    }
+  }

@@ -11,6 +11,14 @@ import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
 import logo from '../assets/logo.png';
 import PropertyShowcase from './PropertyShowcase';
+import LuxuryProperty from '../minicomponents/LuxuryProperty';
+import PartnersSlider from '../minicomponents/PartnerSlider';
+import dubai1 from '../assets/dubai1.jpg';
+import dubai2 from '../assets/dubai2.jpg';
+import dubai3 from '../assets/dubai3.jpg';
+import dubai4 from '../assets/dubai4.jpg';
+import About from '../minicomponents/About';
+import Testimonials from './Testimonials';
 
 const locationData = {
   Dubai: {
@@ -56,6 +64,7 @@ const locationData = {
 };
 
 
+
 const propertyTypes = [
   { name: "Villa", icon: CastleIcon },
   { name: "Townhouse", icon: HomeIcon },
@@ -81,6 +90,23 @@ const Home = () => {
     if (except !== 'location') setIsLocationOpen(false);
     if (except !== 'bedroom') setIsBedroomOpen(false);
   };
+
+  const luxuryPropertyData = {
+    mainImage: dubai1,
+    propertyName: "The Alba Residences",
+    developer: "Omniyat",
+    price: "AED 43 M",
+    galleryImages: [
+      dubai2,
+      dubai3,
+      dubai4
+    ],
+    onLearnMore: () => {
+      // Add your navigation logic here
+      window.location.href = "/alba-residences";  // Or use your router's navigation method
+    }
+  };
+ 
   return (
     <div className="hero-section">
       {/* Video Background */}
@@ -268,6 +294,16 @@ const Home = () => {
   activeLocation={activeLocation}
   selectedLocation={selectedLocation}
 />
+
+<button className="btn btn-primary btn-lg" id='loadbtn'> Load More</button>
+
+<section>
+        <LuxuryProperty {...luxuryPropertyData} />
+      </section>
+
+      <About />
+      <PartnersSlider />
+      <Testimonials />
     </div>
   );
 };
