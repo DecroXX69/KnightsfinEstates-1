@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaFacebookF, FaInstagram, FaTwitter, FaPinterest, FaLinkedinIn, 
          FaHome, FaInfoCircle, FaPhone, FaAngleRight, FaMapMarkerAlt, 
          FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
-import './Footer.css';
+// import './Footer.css';
 
 const ModernFooter = () => {
   return (

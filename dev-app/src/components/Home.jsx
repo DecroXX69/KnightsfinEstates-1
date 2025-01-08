@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import AboutUs from './AboutUs';
+import ContactUs from './ContactUs';
 import FloatingChat from '../services/FloatingChat';
 import { 
   ChevronDown, 
   Home as HomeIcon,
   Landmark as CastleIcon,
   Building as BuildingIcon,
-  Hotel as PenthouseIcon 
+  Hotel as PenthouseIcon, 
+  Contact
 } from 'lucide-react';
-import './Home.css';
+// import './Home.css';
 import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
 import logo from '../assets/logo.png';
 import PropertyShowcase from './PropertyShowcase';
 import LuxuryProperty from '../minicomponents/LuxuryProperty';
 import PartnersSlider from '../minicomponents/PartnerSlider';
+import PropertyListingPage from './PropertyListingPage';
 import dubai1 from '../assets/dubai1.jpg';
 import dubai2 from '../assets/dubai2.jpg';
 import dubai3 from '../assets/dubai3.jpg';
@@ -128,7 +131,7 @@ const Home = () => {
 
           {/* Navigation Links */}
           <div className="d-flex gap-4 align-items-center">
-            <a href="#" className="nav-link">Buy</a>
+            <a href="/propertylistingpage" className="nav-link">Buy</a>
             <a href="#" className="nav-link">Off Plan</a>
             <a href="/aboutus" className="nav-link">About Us</a>
             <div className="dropdown">
@@ -307,6 +310,7 @@ const Home = () => {
       <About />
       <PartnersSlider />
       <Testimonials />
+      <ContactUs />
       <Footer />
     </div>
   );

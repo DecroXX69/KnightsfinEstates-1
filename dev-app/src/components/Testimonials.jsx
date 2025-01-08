@@ -31,7 +31,7 @@ const Testimonials = () => {
   return (
     <section className="testimonials-section py-5">
       <div className="container">
-        <h2 className="text-center main-title">
+        <h2 className="text-center main-title-testimonials">
           Hear From Our <span className="highlight">Happy Clients</span>
         </h2>
         <p className="text-center subtitle">
