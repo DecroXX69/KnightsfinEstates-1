@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ContactUs.css';
+// import './ContactUs.css';
 import indiaIcon from '../assets/india.png';
 import axios from 'axios'; // Import Axios
 
@@ -50,7 +50,7 @@ const ContactUs = () => {
       <div className="row h-100">
         <div className="col-md-6 contact-info">
           <div className="contact-content">
-            <h1 className="main-title">Looking to buy, sell, or just say hello? Let's talk!</h1>
+            <h1 className="main-title" style={{color: (`obj.#febe60`)}}>Looking to buy, sell, or just say hello? Let's talk!</h1>
             <p className="subtitle">
               You're Just a Call or Message Away from Finding a Perfect Home in Dubai.  
               Fill the form to help us know you and your requirements better!
@@ -63,7 +63,10 @@ const ContactUs = () => {
                 </div>
                 <div className="info-text">
                   <p>Request a call back</p>
+                  <a href="tel:+918177083523" style={{ color:(`obj.#e0e0e0`), textDecoration: 'none' }}>
                   <h3>+91 81770 83523</h3>
+                  </a>
+                  
                 </div>
               </div>
               
@@ -73,7 +76,10 @@ const ContactUs = () => {
                 </div>
                 <div className="info-text">
                   <p>Email us</p>
-                  <h3>team@knightsfinestates.com</h3>
+                  <a href="mailto:team@knightsfinestates.com" style={{ color:(`obj.#e0e0e0`), textDecoration: 'none' }}>
+                    <h3>team@knightsfinestates.com</h3>
+                    </a>
+                  
                 </div>
               </div>
             </div>

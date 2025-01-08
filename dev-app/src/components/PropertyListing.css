@@ -1,0 +1,253 @@
+/* PropertyListing.css */
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .toggle-buttons {
+    display: flex;
+  }
+  
+  .card-body {
+    text-align: left;
+  }
+  .toggle-button-buy {
+    background-color: #1e40af;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .toggle-button-rent {
+    background-color: #f97316;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .search-container {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .search-input-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+  }
+  
+  .select-wrapper {
+    position: relative;
+    min-width: 150px;
+  }
+  
+  .select-input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    appearance: none;
+    background-color: white;
+  }
+  
+  .reset-button {
+    background-color: #f97316;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .main-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e40af;
+  }
+  
+  .property-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  /* PropertyListing.css */
+.search-icon {
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+}
+
+.heading-primary {
+  color: #febe60;
+  font-weight: bold;
+  font-size: 1.75rem;
+  text-align: left;
+}
+
+.property-title {
+  color: #0d6efd;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.property-location {
+  color: #6c757d;
+}
+
+.property-type {
+  color: #6c757d;
+  font-size: 0.875rem;
+}
+
+.property-price {
+  color: #fd7e14;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Custom gap utility */
+.gap-2 {
+  gap: 0.5rem;
+  color: #000000;
+  
+}
+
+.gap-3 {
+  gap: 1rem;
+}
+
+/* Custom flex utility */
+.flex-grow-1 {
+  flex-grow: 1;
+}
+  
+  @media (min-width: 768px) {
+    .property-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .property-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .property-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .property-image {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 22px 22px 0 0;
+  }
+  
+  .property-content {
+    padding: 1rem;
+  }
+  
+  .property-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1e40af;
+    margin-bottom: 0.5rem;
+  }
+  
+  .property-location {
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+  }
+  
+  .property-type {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+  }
+  
+  .property-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #f97316;
+  }
+  
+  .contact-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .contact-button {
+    flex: 1;
+    color: #4b5563;
+    padding: 0.5rem;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .pagination-button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    background-color: #e5e7eb;
+    cursor: pointer;
+  }
+  
+  .pagination-button.active {
+    background-color: #f97316;
+    color: white;
+  }
