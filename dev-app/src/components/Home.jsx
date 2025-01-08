@@ -23,6 +23,7 @@ import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
+import { Link } from 'react-router-dom';
 
 const locationData = {
   Dubai: {
@@ -123,31 +124,29 @@ const Home = () => {
 
       {/* Navbar */}
       <nav className="navbar">
-        <div className="container d-flex justify-content-between align-items-center">
-          {/* Logo */}
-          <img src={logo} alt="Logo" className="logo" />
+  <div className="container d-flex justify-content-between align-items-center">
+    <img src={logo} alt="Logo" className="logo" />
 
-          {/* Navigation Links */}
-          <div className="d-flex gap-4 align-items-center">
-            <a href="#" className="nav-link">Buy</a>
-            <a href="#" className="nav-link">Off Plan</a>
-            <a href="/aboutus" className="nav-link">About Us</a>
-            <div className="dropdown">
-              <button className="btn nav-link" onClick={() => setIsExploreOpen(!isExploreOpen)}>
-                Explore More <ChevronDown className="icon" />
-              </button>
-              {isExploreOpen && (
-                <div className="dropdown-menu">
-                  {['Area Guide', 'Services', 'Events', 'Blogs', 'News'].map(item => (
-                    <a key={item} href="#" className="dropdown-item">{item}</a>
-                  ))}
-                </div>
-              )}
-            </div>
-            <a href="#" className="btn btn-primary">Contact Us</a>
+    <div className="d-flex gap-4 align-items-center">
+      <Link to="/" className="nav-link">Buy</Link>
+      <Link to="/" className="nav-link">Off Plan</Link>
+      <Link to="/aboutus" className="nav-link">About Us</Link>
+      <div className="dropdown">
+        <button className="btn nav-link" onClick={() => setIsExploreOpen(!isExploreOpen)}>
+          Explore More <ChevronDown className="icon" />
+        </button>
+        {isExploreOpen && (
+          <div className="dropdown-menu">
+            {['Area Guide', 'Services', 'Events', 'Blogs', 'News'].map(item => (
+              <a key={item} href="#" className="dropdown-item">{item}</a>
+            ))}
           </div>
-        </div>
-      </nav>
+        )}
+      </div>
+      <Link to="/contactus" className="btn btn-primary">Contact Us</Link>
+    </div>
+  </div>
+</nav>
 
       {/* Hero Content */}
       <div className="hero-content">
@@ -304,7 +303,8 @@ const Home = () => {
 <section>
         <LuxuryProperty {...luxuryPropertyData} />
       </section>
-      <FloatingChat phoneNumber='+918177083523'/>
+      <FloatingChat phoneNumber='+917558273523
+      '/>
       <About />
       <PartnersSlider />
       <Testimonials />

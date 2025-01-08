@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaComments, FaWhatsapp, FaPhone, FaTimes } from 'react-icons/fa';
 import './FloatingChat.css';
 
-const FloatingChat = ({ phoneNumber = "+918177083523" }) => {
+const FloatingChat = ({ phoneNumber = "+917558273523" }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleWhatsAppClick = () => {

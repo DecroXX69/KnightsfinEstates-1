@@ -1,0 +1,66 @@
+/* Hero Section Styles */
+.hero-section {
+    height: 80vh;
+    background-image: var(--property-image);
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .hero-overlay {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Property Images */
+  .property-main-image {
+    height: 400px;
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  .property-thumb-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  /* Navigation Buttons */
+  .btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Payment Plan */
+  .payment-plan {
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .hero-section {
+      height: 60vh;
+    }
+    
+    .property-main-image,
+    .property-thumb-image {
+      height: 300px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .hero-section {
+      height: 50vh;
+    }
+    
+    .property-main-image,
+    .property-thumb-image {
+      height: 250px;
+    }
+  }

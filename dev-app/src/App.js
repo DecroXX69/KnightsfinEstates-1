@@ -3,17 +3,21 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './components/Home.jsx';
 import AboutUs from './components/AboutUs.jsx';
+import PropertyPage from './components/PropertyPage.jsx';
 import './App.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <BrowserRouter>
-    <div className="App">
-     <Home />
-     
-    </div>
-    </BrowserRouter>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/property/:id" element={<PropertyPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
