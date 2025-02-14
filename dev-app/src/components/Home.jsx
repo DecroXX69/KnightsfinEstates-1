@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import AboutUs from './AboutUs';
-import ContactUs from './ContactUs';
 import FloatingChat from '../services/FloatingChat';
 import { 
   ChevronDown, 
@@ -10,7 +9,7 @@ import {
   Hotel as PenthouseIcon, 
   Contact
 } from 'lucide-react';
-// import './Home.css';
+import './Home.css';
 import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
 import logo from '../assets/logo.png';

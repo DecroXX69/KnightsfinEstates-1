@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+// import './PropertyPage.css';
+
+const Card = ({ children, className }) => {
+  return (
+    <div className={`card shadow ${className}`}>
+      {children}
+    </div>
+  );
+};
 
 const PropertyPage = () => {
   const { id } = useParams();
@@ -25,7 +35,11 @@ const PropertyPage = () => {
   }, [id]);
 
   if (loading || !property) {
-    return <div className="d-flex justify-content-center align-items-center vh-100">Loading...</div>;
+    return (
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        Loading...
+      </div>
+    );
   }
 
   const handleRegisterInterest = () => {
@@ -34,11 +48,11 @@ const PropertyPage = () => {
 
   const handleImageNavigation = (direction) => {
     if (direction === 'next') {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         prev === property.images?.length - 1 ? 0 : prev + 1
       );
     } else {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         prev === 0 ? property.images?.length - 1 : prev - 1
       );
     }
@@ -47,14 +61,14 @@ const PropertyPage = () => {
   return (
     <div className="min-vh-100 bg-white">
       {/* Hero Section */}
-      <div className="hero-section position-relative">
-        <div className="hero-overlay position-absolute">
+      <div className="hero-section position-relative" style={{ backgroundImage: `url(${property.image})` }}>
+        <div className="overlay position-absolute">
           <div className="container h-100 d-flex flex-column justify-content-end pb-5">
             <h1 className="display-4 text-white mb-3">{property.buildingName}</h1>
             <p className="h3 text-white mb-4">by {property.developer}</p>
             <button
               onClick={handleRegisterInterest}
-              className="btn btn-light btn-lg text-primary rounded-pill px-4 py-2"
+              className="btn btn-light text-primary px-4 py-2 rounded-pill fw-semibold"
             >
               Register your interest
             </button>
@@ -73,18 +87,18 @@ const PropertyPage = () => {
             
             <div className="d-flex gap-4 mb-4">
               <div className="d-flex align-items-center gap-2">
-                <img src="/api/placeholder/24/24" alt="Bedrooms" width="24" height="24" />
+                <img src="/api/placeholder/24/24" alt="Bedrooms" className="icon" />
                 <span>{property.bedrooms}</span>
               </div>
               <div className="d-flex align-items-center gap-2">
-                <img src="/api/placeholder/24/24" alt="Area" width="24" height="24" />
+                <img src="/api/placeholder/24/24" alt="Area" className="icon" />
                 <span>{property.area} Sq. Ft.</span>
               </div>
             </div>
 
             {/* Property Images */}
-            <div className="row mb-5">
-              <div className="col-md-8 mb-3 mb-md-0">
+            <div className="row g-4 mb-5">
+              <div className="col-md-8">
                 <img 
                   src={property.images?.[currentImageIndex] || property.image} 
                   alt="Property"
@@ -95,20 +109,20 @@ const PropertyPage = () => {
                 <img 
                   src={property.images?.[currentImageIndex] || property.image}
                   alt="Current view"
-                  className="img-fluid rounded mb-3 property-thumb-image"
+                  className="img-fluid rounded mb-3 property-thumb"
                 />
                 <div className="d-flex justify-content-between">
                   <button 
                     onClick={() => handleImageNavigation('prev')}
                     className="btn btn-primary rounded-circle"
                   >
-                    <i className="bi bi-chevron-left"></i>
+                    <ChevronLeft />
                   </button>
                   <button 
                     onClick={() => handleImageNavigation('next')}
                     className="btn btn-primary rounded-circle"
                   >
-                    <i className="bi bi-chevron-right"></i>
+                    <ChevronRight />
                   </button>
                 </div>
               </div>
@@ -117,28 +131,26 @@ const PropertyPage = () => {
 
           {/* Right Column */}
           <div className="col-lg-4">
-            <div className="card shadow-lg">
-              <div className="card-body">
-                <div className="mb-4">
-                  <p className="text-muted mb-1">STARTING PRICE</p>
-                  <p className="h3 text-warning">
-                    AED {property.price?.toLocaleString()}
-                  </p>
-                </div>
-                <div className="mb-4">
-                  <p className="text-muted mb-1">BOOKING AMOUNT</p>
-                  <p className="h3">10%</p>
-                </div>
-                <div className="mb-4">
-                  <p className="text-muted mb-1">HANDOVER</p>
-                  <p className="h3">2028</p>
-                </div>
-                <div className="bg-primary text-white p-3 rounded">
-                  <p className="h5">Direct Sale</p>
-                  <p className="h2">0% COMMISSION</p>
-                </div>
+            <Card className="p-4">
+              <div className="mb-4">
+                <p className="text-muted mb-1">STARTING PRICE</p>
+                <p className="h3 text-warning fw-bold">
+                  AED {property.price?.toLocaleString()}
+                </p>
               </div>
-            </div>
+              <div className="mb-4">
+                <p className="text-muted mb-1">BOOKING AMOUNT</p>
+                <p className="h3 fw-bold">10%</p>
+              </div>
+              <div className="mb-4">
+                <p className="text-muted mb-1">HANDOVER</p>
+                <p className="h3 fw-bold">2028</p>
+              </div>
+              <div className="bg-primary text-white p-3 rounded">
+                <p className="h5">Direct Sale</p>
+                <p className="h2 fw-bold">0% COMMISSION</p>
+              </div>
+            </Card>
           </div>
         </div>
 
@@ -153,7 +165,7 @@ const PropertyPage = () => {
                 </p>
                 <button 
                   onClick={() => setShowAllOverview(!showAllOverview)}
-                  className="btn btn-link text-warning p-0"
+                  className="btn btn-link text-warning px-0"
                 >
                   {showAllOverview ? 'Show Less' : 'Show More'}
                 </button>
@@ -162,43 +174,39 @@ const PropertyPage = () => {
             
             {/* Payment Plan */}
             <div className="col-lg-4">
-              <div className="card bg-primary text-white">
-                <div className="card-body">
-                  <h3 className="h4 mb-4">PAYMENT PLAN</h3>
-                  <div className="payment-plan">
-                    <div className="d-flex justify-content-between mb-3">
-                      <span>ON BOOKING</span>
-                      <span className="fw-bold">10%</span>
-                    </div>
-                    <div className="d-flex justify-content-between mb-3">
-                      <span>DURING CONSTRUCTION</span>
-                      <span className="fw-bold">59%</span>
-                    </div>
-                    <div className="d-flex justify-content-between mb-3">
-                      <span>ON HANDOVER</span>
-                      <span className="fw-bold">1%</span>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <span>POST HANDOVER</span>
-                      <span className="fw-bold">30%</span>
-                    </div>
+              <Card className="bg-primary text-white p-4">
+                <h3 className="h4 mb-4">PAYMENT PLAN</h3>
+                <div className="d-flex flex-column gap-3">
+                  <div className="d-flex justify-content-between">
+                    <span>ON BOOKING</span>
+                    <span className="fw-bold">10%</span>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span>DURING CONSTRUCTION</span>
+                    <span className="fw-bold">59%</span>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span>ON HANDOVER</span>
+                    <span className="fw-bold">1%</span>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <span>POST HANDOVER</span>
+                    <span className="fw-bold">30%</span>
                   </div>
                 </div>
-              </div>
+              </Card>
             </div>
           </div>
         </div>
 
         {/* Amenities Section */}
-        <div className="mt-5 bg-primary text-white p-4 rounded">
+        <div className="mt-5 bg-primary text-white p-5 rounded">
           <h2 className="h2 mb-4">AMENITIES & SERVICES</h2>
-          <div className="row g-4">
+          <div className="row row-cols-2 row-cols-md-4 g-4">
             {property.amenities?.map((amenity, index) => (
-              <div key={index} className="col-6 col-md-3">
-                <div className="d-flex align-items-center gap-2">
-                  <img src="/api/placeholder/24/24" alt={amenity} width="24" height="24" />
-                  <span>{amenity}</span>
-                </div>
+              <div key={index} className="d-flex align-items-center gap-2">
+                <img src="/api/placeholder/24/24" alt={amenity} className="icon" />
+                <span>{amenity}</span>
               </div>
             ))}
           </div>
@@ -214,7 +222,7 @@ const PropertyPage = () => {
             {['Studios', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom'].map((plan) => (
               <button
                 key={plan}
-                className="btn btn-outline-primary text-start w-100"
+                className="btn btn-outline-primary text-start p-3"
               >
                 {plan}
               </button>
