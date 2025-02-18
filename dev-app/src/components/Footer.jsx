@@ -3,38 +3,38 @@ import { Link } from 'react-router-dom';
 import { FaFacebookF, FaInstagram, FaTwitter, FaPinterest, FaLinkedinIn, 
          FaHome, FaInfoCircle, FaPhone, FaAngleRight, FaMapMarkerAlt, 
          FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
-import './Footer.css';
+import styles from './Footer.module.css';
 
 const ModernFooter = () => {
   return (
-    <footer className="modern-footer">
+    <footer className={styles.modernFooter}>
       {/* Top Wave SVG */}
-      <div className="footer-wave">
+      <div className={styles.footerWave}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
           <path fill="#0d6efd" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
 
-      <div className="footer-content">
-        <div className="container">
+      <div className={styles.footerContent}>
+        <div className={styles.container}>
           {/* Main Card Section */}
-          <div className="main-card-container">
-            <div className="main-card">
-              <h2 className="card-title">You need a house</h2>
-              <p className="card-description">
+          <div className={styles.mainCardContainer}>
+            <div className={styles.mainCard}>
+              <h2 className={styles.cardTitle}>You need a house</h2>
+              <p className={styles.cardDescription}>
                 Looking for a place to call home? Our expert team is dedicated to finding 
                 the perfect home that matches your needs and budget
               </p>
-              <Link to="/contact" className="contact-btn">
+              <Link to="/contact" className={styles.contactBtn}>
                 Contact Us
               </Link>
             </div>
           </div>
 
           {/* Contact Information Cards */}
-          <div className="contact-info-container">
-            <div className="contact-card">
-              <div className="contact-icon">
+          <div className={styles.contactInfoContainer}>
+            <div className={styles.contactCard}>
+              <div className={styles.contactIcon}>
                 <FaPhoneAlt />
               </div>
               <h4>Call Us</h4>
@@ -42,8 +42,8 @@ const ModernFooter = () => {
               <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
             </div>
 
-            <div className="contact-card">
-              <div className="contact-icon">
+            <div className={styles.contactCard}>
+              <div className={styles.contactIcon}>
                 <FaMapMarkerAlt />
               </div>
               <h4>Find Us</h4>
@@ -52,8 +52,8 @@ const ModernFooter = () => {
               <p>Baner, Pune, Maharashtra, India, 411045</p>
             </div>
 
-            <div className="contact-card">
-              <div className="contact-icon">
+            <div className={styles.contactCard}>
+              <div className={styles.contactIcon}>
                 <FaEnvelope />
               </div>
               <h4>Email Us</h4>
@@ -63,47 +63,47 @@ const ModernFooter = () => {
           </div>
 
           {/* Links Grid */}
-          <div className="footer-links-grid">
+          <div className={styles.footerLinksGrid}>
             {/* Our Company */}
-            <div className="footer-section">
-              <h3 className="section-title">Our Company</h3>
-              <ul className="link-list">
+            <div className={styles.footerSection}>
+              <h3 className={styles.sectionTitle}>Our Company</h3>
+              <ul className={styles.linkList}>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/properties">Properties</Link>
                 </li>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/about">About Us</Link>
                 </li>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/contact">Contact Us</Link>
                 </li>
               </ul>
             </div>
 
             {/* Properties */}
-            <div className="footer-section">
-              <h3 className="section-title">Properties</h3>
-              <ul className="link-list">
+            <div className={styles.footerSection}>
+              <h3 className={styles.sectionTitle}>Properties</h3>
+              <ul className={styles.linkList}>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/properties/sale">Property for Sale</Link>
                 </li>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/properties/off-plan">Off Plan Properties</Link>
                 </li>
               </ul>
             </div>
 
             {/* Legal */}
-            <div className="footer-section">
-              <h3 className="section-title">Legal</h3>
-              <ul className="link-list">
+            <div className={styles.footerSection}>
+              <h3 className={styles.sectionTitle}>Legal</h3>
+              <ul className={styles.linkList}>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/privacy-policy">Privacy Policy</Link>
                 </li>
               </ul>
@@ -111,21 +111,21 @@ const ModernFooter = () => {
           </div>
 
           {/* Social Links */}
-          <div className="social-container">
-            <div className="social-links">
-              <a href="https://www.facebook.com/profile.php?id=61559868392921" className="social-icon"><FaFacebookF /></a>
-              <a href="https://www.instagram.com/knightsfinestates/" className="social-icon"><FaInstagram /></a>
-              <a href="https://x.com/EstatesFin16778" className="social-icon"><FaTwitter /></a>
-              <a href="https://in.pinterest.com/knightsfinestates/" className="social-icon"><FaPinterest /></a>
-              <a href="https://www.linkedin.com/company/knights-fin%C2%A0estates/" className="social-icon"><FaLinkedinIn /></a>
+          <div className={styles.socialContainer}>
+            <div className={styles.socialLinks}>
+              <a href="https://www.facebook.com/profile.php?id=61559868392921" className={styles.socialIcon}><FaFacebookF /></a>
+              <a href="https://www.instagram.com/knightsfinestates/" className={styles.socialIcon}><FaInstagram /></a>
+              <a href="https://x.com/EstatesFin16778" className={styles.socialIcon}><FaTwitter /></a>
+              <a href="https://in.pinterest.com/knightsfinestates/" className={styles.socialIcon}><FaPinterest /></a>
+              <a href="https://www.linkedin.com/company/knights-fin%C2%A0estates/" className={styles.socialIcon}><FaLinkedinIn /></a>
             </div>
           </div>
         </div>
       </div>
 
       {/* Copyright */}
-      <div className="copyright-section">
-        <p>©2025 Knightsfin Estates. All Rights Reserved.Knightsfin Estates is a company registered in Dubai, United Arab Emirates</p>
+      <div className={styles.copyrightSection}>
+        <p>©2025 Knightsfin Estates. All Rights Reserved. Knightsfin Estates is a company registered in Dubai, United Arab Emirates</p>
       </div>
     </footer>
   );

@@ -7,7 +7,7 @@ import PropertyPage from './components/PropertyPage.jsx';
 import PropertyListingPage from './components/PropertyListingPage.jsx';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
+import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 function App() {
   return (
     <Router>
@@ -17,9 +17,10 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/property/:id" element={<PropertyPage />} />
         </Routes>
-        {/* <PropertyListingPage /> */}
+       
       </div>
     </Router>
+    // <LuxuryProperty />
   );
 }
 
