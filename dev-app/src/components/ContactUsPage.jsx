@@ -7,9 +7,12 @@ import hero from "../assets/About-us-hero.jpg";
 import styles from './ContactUsPage.module.css';
 import Footer from '../components/Footer';
 import PartnersSlider from '../minicomponents/PartnerSlider';
+import Navbar from './Navbar';
+import MapComponent from './MapComponent';
 
 
 const ContactUsPage = () => {
+  
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -22,9 +25,14 @@ const ContactUsPage = () => {
         // Handle form submission
 
   };
+  
 
   return (
+    
+   
     <div className={styles.contactUsPage}>
+      
+      
       {/* Hero Section */}
       <div className={styles.aboutUsHero}>
         <img
@@ -32,10 +40,15 @@ const ContactUsPage = () => {
           alt="About Us Hero"
           className={styles.heroImage}
         />
+        <div className={styles.navbarOverlay}>
+          <Navbar />
+        </div>
         <div className={styles.heroOverlay}>
           <h1>Contact Us</h1>
         </div>
       </div>
+      
+      
 
       {/* Contact Info and Map Section */}
       <div className={styles.contactSection}>
@@ -71,7 +84,7 @@ const ContactUsPage = () => {
 
           {/* Map Side */}
           <div className={styles.mapContainer}>
-                      <iframe
+                      {/* <iframe
                           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.8020104941874!2d73.77111131744384!3d18.564256599999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bfffda1390d5%3A0xe9942f5eb5f7a78d!2sTecMetaverse!5e0!3m2!1sen!2sin!4v1697654321000!5m2!1sen!2sin"
                           width="100%"
                           height="100%"
@@ -80,7 +93,10 @@ const ContactUsPage = () => {
                           loading="lazy"
                           referrerPolicy="no-referrer-when-downgrade"
                           title="Office Location"
-                      />
+                      /> */}
+
+<MapComponent />
+
                       
                       
                   </div>

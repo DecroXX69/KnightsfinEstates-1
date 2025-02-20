@@ -7,6 +7,7 @@ import PropertyPage from './components/PropertyPage.jsx';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
+import ContactUsPage from './components/ContactUsPage.jsx';
 function App() {
   return (
     <Router>
