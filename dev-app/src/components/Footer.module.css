@@ -1,15 +1,11 @@
-/* Footer Container */
-.modern-footer {
+.modernFooter {
     position: relative;
-    /*background-color: #000; */
-    /*background: linear-gradient(135deg, #000000, #ffffff);*/
     background: linear-gradient(to bottom, #000000, #535252);
     color: #000000;
     margin-top: 6rem;
 }
 
-/* Decorative Wave */
-.footer-wave {
+.footerWave {
     position: absolute;
     top: -100px;
     left: 0;
@@ -18,46 +14,47 @@
     line-height: 0;
 }
 
-.footer-wave svg path {
-    fill: #d4af37; /* Gold color for the wave */
+.footerWave svg path {
+    fill: #d4af37;
 }
 
-/* Main Card */
-.main-card-container {
+.mainCardContainer {
     display: flex;
     justify-content: center;
     margin-bottom: 4rem;
 }
 
-.main-card {
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+.mainCard {
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 3rem;
     text-align: center;
     max-width: 600px;
-    border: 1px solid #c0c0c0; /* Silver border */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    border: 1px solid #c0c0c0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.card-title {
-    color: #d4af37; /* Gold color for titles */
+.cardTitle {
+    color: #d4af37;
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
 }
 
-.card-description {
-    color: #fff; /* White text */
+.cardDescription {
+    color: #fff;
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 2rem;
 }
 
-/* Contact Button */
-.contact-btn {
-    background: #d4af37; /* Gold background */
-    color: #000; /* Black text */
+
+/* Contact Button styles moved to global CSS since it's using className="contact-btn" */
+
+:global(.contact-btn) {
+    background: #d4af37;
+    color: #000;
     padding: 1rem 2.5rem;
     border-radius: 50px;
     text-decoration: none;
@@ -66,15 +63,14 @@
     display: inline-block;
 }
 
-.contact-btn:hover {
-    background: #000; /* Silver on hover */
-    color: #d4af37; /* Black text */
+:global(.contact-btn:hover) {
+    background: #000;
+    color: #d4af37;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
 }
 
-/* Contact Cards */
-.contact-info-container {
+.contactInfoContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
@@ -82,23 +78,23 @@
     margin-bottom: 4rem;
 }
 
-.contact-card {
+.contactCard {
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     padding: 2rem;
     text-align: center;
     transition: transform 0.3s ease;
-    border: 1px solid #c0c0c0; /* Silver border */
+    border: 1px solid #c0c0c0;
 }
 
-.contact-card:hover {
+.contactCard:hover {
     transform: translateY(-5px);
 }
 
-.contact-icon {
-    background: #d4af37; /* Gold background */
-    color: #000; /* Black icon color */
+.contactIcon {
+    background: #d4af37;
+    color: #000;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -109,28 +105,27 @@
     font-size: 1.5rem;
 }
 
-.contact-card h4 {
-    color: #d4af37; /* Gold color for headings */
+.contactCard h4 {
+    color: #d4af37;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
-.contact-card p,
-.contact-card a {
-    color: #fff; /* White text */
+.contactCard p,
+.contactCard a {
+    color: #fff;
     margin: 0.5rem 0;
     font-size: 0.9rem;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.contact-card a:hover {
-    color: #d4af37; /* Gold on hover */
+.contactCard a:hover {
+    color: #d4af37;
 }
 
-/* Footer Links */
-.footer-links-grid {
+.footerLinksGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
@@ -138,8 +133,8 @@
     margin-bottom: 3rem;
 }
 
-.section-title {
-    color: #d4af37; /* Gold color for section titles */
+.sectionTitle {
+    color: #d4af37;
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
     font-weight: 600;
@@ -147,60 +142,59 @@
     padding-bottom: 0.5rem;
 }
 
-.section-title::after {
+.sectionTitle::after {
     content: '';
     position: absolute;
     left: 0;
     bottom: 0;
     width: 50px;
     height: 2px;
-    background: #d4af37; /* Gold underline */
+    background: #d4af37;
 }
 
-.link-list {
+.linkList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.link-list li {
+.linkList li {
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
 }
 
-.bullet-icon {
-    color: #d4af37; /* Gold bullet points */
+.bulletIcon {
+    color: #d4af37;
     margin-right: 0.5rem;
     font-size: 0.8rem;
 }
 
-.link-list a {
-    color: #fff; /* White text */
+.linkList a {
+    color: #fff;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
-.link-list a:hover {
-    color: #d4af37; /* Gold on hover */
+.linkList a:hover {
+    color: #d4af37;
     transform: translateX(5px);
 }
 
-/* Social Icons */
-.social-container {
+.socialContainer {
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
 }
 
-.social-links {
+.socialLinks {
     display: flex;
     gap: 1.5rem;
 }
 
-.social-icon {
-    background: #d4af37; /* Gold background */
-    color: #000; /* Black icon color */
+.socialIcon {
+    background: #d4af37;
+    color: #000;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -211,31 +205,27 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.social-icon:hover {
-    background: #000; /* Silver on hover */
-    color: #d4af37; /* Black icon color */
+.socialIcon:hover {
+    background: #000;
+    color: #d4af37;
     transform: translateY(-3px);
 }
 
-/* Copyright Section */
-.copyright-section {
+.copyrightSection {
     text-align: center;
     padding: 1.5rem;
-    background: #000; /* Black background */
+    background: #000;
     font-size: 0.9rem;
-    color: #fff; /* White text */
+    color: #fff;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
-    .main-card {
+    .mainCard {
         margin: 0 1rem;
         padding: 2rem;
         transform: translateY(-30px);
     }
-
-    .card-title {
+    .cardTitle {
         font-size: 2rem;
     }
-
 }
