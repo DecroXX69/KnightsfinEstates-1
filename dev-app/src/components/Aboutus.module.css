@@ -1,0 +1,147 @@
+.aboutUs {
+  font-family: Poppins, sans-serif;
+  font-size: 1rem;
+}
+
+.aboutUsHero {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  opacity: 0.8;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0; /* Ensures image is behind overlay */
+}
+
+.navbarOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Navbar stays on top */
+  background: rgba(0, 0, 0, 0.5); /* Optional semi-transparent background */
+}
+
+/* Existing styles... */
+.descBlack {
+  color: #000000;
+  font-weight: bold;
+}
+
+.rightBtn {
+  margin-left: 10px;
+  border-radius: 8px;
+}
+
+.leftBtn {
+  margin-right: 10px;
+  border-radius: 8px;
+}
+
+.rightBtn:hover,
+.leftBtn:hover {
+  color: #febe60;
+}
+
+.headingInfo {
+  text-align: left;
+}
+
+.textXl {
+  font-size: 2.625rem;
+  text-align: center;
+  padding-right: 80px;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: #4b5563;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fontBold {
+  font-weight: 700;
+}
+
+.textBlue900 {
+  color: #000000;
+}
+
+.textGold500 {
+  color: #febe60;
+}
+
+/* Mobile responsive styles */
+@media (max-width: 767px) {
+  .textXl {
+    font-size: 1.875rem;
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .aboutUsHero {
+    height: 250px;
+  }
+
+  .heroImage {
+    object-fit: cover;
+    height: 100%;
+  }
+
+  .textGray600 {
+    font-size: 0.875rem;
+  }
+
+  .text2xl {
+    font-size: 1.5rem;
+  }
+
+  .textGray500 {
+    font-size: 1rem;
+  }
+
+  .placeholderImage {
+    height: 250px;
+  }
+
+  .mt4 {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .h1 {
+    width: 30px;
+  }
+
+  .w12 {
+    width: 30px;
+  }
+}
+
+/* Medium screen devices (Tablets) */
+@media (max-width: 1024px) {
+  .textXl {
+    font-size: 2.25rem;
+  }
+
+  .textGray600 {
+    font-size: 1rem;
+  }
+}
+
+/* Large Screens */
+@media (min-width: 1025px) {
+  .textXl {
+    font-size: 2.625rem;
+  }
+}

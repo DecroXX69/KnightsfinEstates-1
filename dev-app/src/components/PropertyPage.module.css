@@ -1,4 +1,4 @@
-.hero-section {
+.heroSection {
   height: 80vh;
   background-size: cover;
   background-position: center;
@@ -12,13 +12,13 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.property-main-image {
+.propertyMainImage {
   height: 400px;
   object-fit: cover;
   width: 100%;
 }
 
-.property-thumb {
+.propertyThumb {
   height: 200px;
   object-fit: cover;
   width: 100%;
@@ -29,58 +29,62 @@
   height: 24px;
 }
 
-/* Override Bootstrap defaults */
-.btn-primary {
+.btnPrimary {
   background-color: #1e3a8a;
   border-color: #1e3a8a;
 }
 
-.btn-primary:hover {
+.btnPrimary:hover {
   background-color: #1e40af;
   border-color: #1e40af;
 }
 
-.text-primary {
+.textPrimary {
   color: #1e3a8a !important;
 }
 
-.bg-primary {
+.bgPrimary {
   background-color: #1e3a8a !important;
 }
 
-.text-warning {
+.textWarning {
   color: #f97316 !important;
 }
 
-.btn-outline-primary {
+.btnOutlinePrimary {
   color: #1e3a8a;
   border-color: #1e3a8a;
 }
 
-.btn-outline-primary:hover {
+.btnOutlinePrimary:hover {
   background-color: #1e3a8a;
   border-color: #1e3a8a;
 }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .hero-section {
-      height: 60vh;
-    }
-    
-    .property-main-image,
-    .property-thumb-image {
-      height: 300px;
-    }
+
+.card {
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .heroSection {
+    height: 60vh;
   }
   
-  @media (max-width: 576px) {
-    .hero-section {
-      height: 50vh;
-    }
-    
-    .property-main-image,
-    .property-thumb-image {
-      height: 250px;
-    }
+  .propertyMainImage,
+  .propertyThumb {
+    height: 300px;
   }
+}
+
+@media (max-width: 576px) {
+  .heroSection {
+    height: 50vh;
+  }
+  
+  .propertyMainImage,
+  .propertyThumb {
+    height: 250px;
+  }
+}

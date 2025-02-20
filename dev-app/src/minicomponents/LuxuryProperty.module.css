@@ -1,0 +1,133 @@
+.luxuryContainer {
+  width: 100%;
+  background-color: #1a1f3d;
+  color: white;
+}
+
+.luxuryContent {
+  display: flex;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 600px;
+}
+
+.luxuryImageSection {
+  flex: 0 0 50%;
+  position: relative;
+}
+
+.mainPropertyImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.luxuryDetailsSection {
+  flex: 0 0 50%;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.luxuryHeader {
+  margin-bottom: 2rem;
+}
+
+.luxuryTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  margin: 0;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.companyName {
+  font-size: 1rem;
+  margin: 0.5rem 0 0 0;
+  color: #ffffff;
+}
+
+.propertyInfo {
+  margin-bottom: 1.5rem;
+}
+
+.propertyName {
+  font-size: 2rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.developerName {
+  font-size: 0.9rem;
+  margin: 0.25rem 0 0 0;
+  color: #cccccc;
+}
+
+.priceSection {
+  margin-bottom: 2rem;
+}
+
+.propertyPrice {
+  color: #ffa726;
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+.gallerySection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.galleryImageContainer {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+}
+
+.galleryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.learnMoreSection {
+  margin-top: auto;
+  text-align: right;
+}
+
+.learnMoreBtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.learnMoreBtn:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 992px) {
+  .luxuryContent {
+    flex-direction: column;
+  }
+
+  .luxuryImageSection,
+  .luxuryDetailsSection {
+    flex: 0 0 100%;
+  }
+
+  .luxuryDetailsSection {
+    padding: 2rem;
+  }
+}
