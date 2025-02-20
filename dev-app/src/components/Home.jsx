@@ -124,20 +124,13 @@ const Home = () => {
         <video className="video-content" autoPlay muted loop key={locationData[activeLocation].videoUrl}>
           <source src={locationData[activeLocation].videoUrl} type="video/mp4" />
         </video>
-        <div className="video-overlay">
-
-        </div>
-        
-        
+        <div className="video-overlay"></div>
       </div>
-      <div className='navbar-overlay'>
-          <Navbar />
-        </div>
-      
 
 
+{/* Navbar */}
 
-
+<Navbar/>
 
       {/* Hero Content */}
       <div className="hero-content">
