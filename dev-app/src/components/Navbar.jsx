@@ -1,34 +1,30 @@
 import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { Menu } from 'lucide-react'; // Only import Menu icon since "Explore More" is removed
 import { Link } from 'react-router-dom';
-import './Home.css';
+import styles from './Navbar.module.css'; // Importing the CSS module
 import logo1 from '../assets/logo.png';
 
 const Navbar = ({}) => {
-  const [isExploreOpen, setIsExploreOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="navbar">
-      <div className="container d-flex justify-content-between align-items-center">
-        <img src={logo1} alt="Logo" className="logo" />
+    <nav className={styles.navbar}>
+      <div className={`${styles.container} d-flex justify-content-between align-items-center`}>
+        <img src={logo1} alt="Logo" className={styles.logo} />
 
-        <div className="d-flex gap-4 align-items-center">
-          <Link to="/" className="nav-link">Buy</Link>
-          <Link to="/" className="nav-link">Off Plan</Link>
-          <Link to="/aboutus" className="nav-link">About Us</Link>
-          <div className="dropdown">
-            <button className="btn nav-link" onClick={() => setIsExploreOpen(!isExploreOpen)}>
-              Explore More <ChevronDown className="icon" />
-            </button>
-            {isExploreOpen && (
-              <div className="dropdown-menu">
-                {['Area Guide', 'Services', 'Events', 'Blogs', 'News'].map(item => (
-                  <a key={item} href="#" className="dropdown-item">{item}</a>
-                ))}
-              </div>
-            )}
-          </div>
-          <Link to="/contactus" className="btn btn-primary">Contact Us</Link>
+        {/* Hamburger Icon for small screens */}
+        <button className={styles.hamburger} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <Menu className={styles.icon} />
+        </button>
+
+        {/* Navbar links */}
+        <div className={`${styles.navLinks} ${isMenuOpen ? styles.show : ''}`}>
+          <Link to="/" className={styles.navLink}>Buy</Link>
+          <Link to="/" className={styles.navLink}>Off Plan</Link>
+          <Link to="/aboutus" className={styles.navLink}>About Us</Link>
+          <Link to="/contactus" className={`${styles.btnPrimary} ${styles.navLink}`}>
+            Contact Us
+          </Link>
         </div>
       </div>
     </nav>
