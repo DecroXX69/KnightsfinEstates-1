@@ -7,6 +7,7 @@ import PropertyPage from './components/PropertyPage.jsx';
 import PropertyListingPage from './components/PropertyListingPage.jsx';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ContactUsPage from './components/ContactUsPage.jsx';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/contactuspage" element={<ContactUsPage />} />
           <Route path="/property/:id" element={<PropertyPage />} />
         </Routes>
         {/* <PropertyListingPage /> */}

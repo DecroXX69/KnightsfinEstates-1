@@ -5,6 +5,7 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaPinterest, FaLinkedinIn,
          FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 import './Footer.css';
 
+
 const ModernFooter = () => {
   return (
     <footer className="modern-footer">
@@ -25,7 +26,7 @@ const ModernFooter = () => {
                 Looking for a place to call home? Our expert team is dedicated to finding 
                 the perfect home that matches your needs and budget
               </p>
-              <Link to="/contact" className="contact-btn">
+              <Link to="/contactuspage" className="contact-btn">
                 Contact Us
               </Link>
             </div>
@@ -78,7 +79,7 @@ const ModernFooter = () => {
                 </li>
                 <li>
                   <FaAngleRight className="bullet-icon" />
-                  <Link to="/contact">Contact Us</Link>
+                  <Link to="/contactuspage">Contact Us</Link>
                 </li>
               </ul>
             </div>

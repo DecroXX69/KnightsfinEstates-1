@@ -20,6 +20,7 @@ const AboutUs = () => {
       </div>
 
       <Info />
+      
       <WhyChooseUs/>
         <Services />
         <ContactUs />

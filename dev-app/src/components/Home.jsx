@@ -25,6 +25,7 @@ import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
+import ContactUsPage from './ContactUsPage';
 import { Link } from 'react-router-dom';
 
 const locationData = {
@@ -145,7 +146,7 @@ const Home = () => {
           </div>
         )}
       </div>
-      <Link to="/contactus" className="btn btn-primary">Contact Us</Link>
+      <Link to="/contactuspage" className="btn btn-primary">Contact Us</Link>
     </div>
   </div>
 </nav>
@@ -304,7 +305,7 @@ const Home = () => {
 
 <section>
         <LuxuryProperty {...luxuryPropertyData} />
-      </section>
+</section>
       <FloatingChat phoneNumber='+917558273523
       '/>
       <About />
