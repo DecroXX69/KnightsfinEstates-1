@@ -152,9 +152,6 @@ const Home = () => {
   </div>
 </nav>
 
-{/* Navbar */}
-
-<Navbar/>
 
       {/* Hero Content */}
       <div className="hero-content">
