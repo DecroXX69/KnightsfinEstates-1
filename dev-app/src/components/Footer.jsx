@@ -25,7 +25,7 @@ const ModernFooter = () => {
                 Looking for a place to call home? Our expert team is dedicated to finding 
                 the perfect home that matches your needs and budget
               </p>
-              <Link to="/contact" className={styles.contactBtn}>
+              <Link to="/contactuspage" className="contact-btn">
                 Contact Us
               </Link>
             </div>
@@ -77,8 +77,8 @@ const ModernFooter = () => {
                   <Link to="/about">About Us</Link>
                 </li>
                 <li>
-                  <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/contact">Contact Us</Link>
+                  <FaAngleRight className="bullet-icon" />
+                  <Link to="/contactuspage">Contact Us</Link>
                 </li>
               </ul>
             </div>

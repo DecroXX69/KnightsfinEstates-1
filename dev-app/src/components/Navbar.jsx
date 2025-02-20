@@ -22,7 +22,7 @@ const Navbar = ({}) => {
           <Link to="/" className={styles.navLink}>Buy</Link>
           <Link to="/" className={styles.navLink}>Off Plan</Link>
           <Link to="/aboutus" className={styles.navLink}>About Us</Link>
-          <Link to="/contactus" className={`${styles.btnPrimary} ${styles.navLink}`}>
+          <Link to="/contactuspage" className={`${styles.btnPrimary} ${styles.navLink}`}>
             Contact Us
           </Link>
         </div>
