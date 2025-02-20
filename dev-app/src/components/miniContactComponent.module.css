@@ -1,6 +1,5 @@
-/* MiniContactComponent.css */
-
-.container {
+   .container {
+    background-color: rgb(241, 241, 241);
     max-width: 1280px;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -8,75 +7,73 @@
     padding-bottom: 4rem;
   }
   
-  .flex-wrap {
+  .flexWrap {
     display: flex;
     flex-wrap: wrap;
+    gap: 2rem;
   }
   
-  .md\:flex-nowrap {
+  .mdFlexNoWrap {
     display: flex;
     flex-wrap: nowrap;
   }
   
-  .items-center {
+  .itemsCenter {
     align-items: center;
   }
   
-  .justify-between {
+  .justifyBetween {
     justify-content: space-between;
   }
   
-  .gap-8 {
-    gap: 2rem;
-  }
-  
-  .flex-1 {
+  .flex1 {
     flex: 1;
+    border-radius: 20px;
   }
   
-  .text-3xl {
+  .text3xl {
     font-size: 1.875rem;
   }
   
-  .font-bold {
+  .fontBold {
     font-weight: 700;
   }
   
-  .text-blue-800 {
-    color: #2c5282;
+  .textBlue800 {
+    color: #333333;
   }
   
-  .mb-4 {
+  .mb4 {
     margin-bottom: 1rem;
   }
   
-  .text-gray-600 {
+  .textGray600 {
     color: #718096;
   }
   
-  .mb-6 {
+  .mb6 {
     margin-bottom: 1.5rem;
   }
   
-  .bg-orange-500 {
+  .bgOrange500 {
     background-color: #f97316;
   }
   
-  .text-white {
+  .textWhite {
     color: #ffffff;
   }
   
-  .px-6 {
+  .px6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
   
-  .py-3 {
+  .py3 {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
   }
   
-  .rounded-lg {
+  .roundedLg {
     border-radius: 0.5rem;
   }
   
@@ -84,23 +81,45 @@
     display: flex;
   }
   
-  .items-center {
-    align-items: center;
-  }
-  
-  .gap-2 {
+  .gap2 {
     gap: 0.5rem;
   }
   
-  .w-full {
-    width: 100%;
+  .wFull {
+    width: 50%; /* Image should take full width in mobile view */
+    margin-left: 20px;
   }
   
-  .rounded-lg {
-    border-radius: 0.5rem;
+  .md\:w-1\/2 {
+    width: 50%; /* Image takes 50% width on medium and larger screens */
   }
   
-  .shadow-lg {
+  .shadowLg {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (min-width: 768px) {
+    .flexWrap {
+      flex-wrap: nowrap; /* Prevent wrapping for larger screens */
+    }
+  
+    .md\:flexRowReverse {
+      flex-direction: row-reverse; /* Image on the left, content on the right for larger screens */
+    }
+
+    /* Hide the image on smaller screens (phone view) */
+  .md\:hidden {
+    display: none; /* Image will be visible in medium and above */
+  }
+
+  /* Hide the image on phone screens */
+  .hidden {
+    display: none; /* Image is hidden in mobile view */
+  }
+
+  .wFull {
+    width: 50%; /* Image should take full width in mobile view */
+    margin-left: 20px;
+  }
   }
   
