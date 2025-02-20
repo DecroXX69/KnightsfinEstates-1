@@ -1,0 +1,90 @@
+.heroSection {
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.propertyMainImage {
+  height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.propertyThumb {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.btnPrimary {
+  background-color: #1e3a8a;
+  border-color: #1e3a8a;
+}
+
+.btnPrimary:hover {
+  background-color: #1e40af;
+  border-color: #1e40af;
+}
+
+.textPrimary {
+  color: #1e3a8a !important;
+}
+
+.bgPrimary {
+  background-color: #1e3a8a !important;
+}
+
+.textWarning {
+  color: #f97316 !important;
+}
+
+.btnOutlinePrimary {
+  color: #1e3a8a;
+  border-color: #1e3a8a;
+}
+
+.btnOutlinePrimary:hover {
+  background-color: #1e3a8a;
+  border-color: #1e3a8a;
+}
+
+.card {
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .heroSection {
+    height: 60vh;
+  }
+  
+  .propertyMainImage,
+  .propertyThumb {
+    height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .heroSection {
+    height: 50vh;
+  }
+  
+  .propertyMainImage,
+  .propertyThumb {
+    height: 250px;
+  }
+}

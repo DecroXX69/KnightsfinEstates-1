@@ -25,7 +25,9 @@ import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
+import ContactUsPage from './ContactUsPage';
 import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const locationData = {
   Dubai: {
@@ -130,7 +132,7 @@ const Home = () => {
     <img src={logo} alt="Logo" className="logo" />
 
     <div className="d-flex gap-4 align-items-center">
-      <Link to="/" className="nav-link">Buy</Link>
+      <Link to="/propertylisting" className="nav-link">Buy</Link>
       <Link to="/" className="nav-link">Off Plan</Link>
       <Link to="/aboutus" className="nav-link">About Us</Link>
       <div className="dropdown">
@@ -149,6 +151,7 @@ const Home = () => {
     </div>
   </div>
 </nav>
+
 
       {/* Hero Content */}
       <div className="hero-content">
@@ -304,7 +307,7 @@ const Home = () => {
 
 <section>
         <LuxuryProperty {...luxuryPropertyData} />
-      </section>
+</section>
       <FloatingChat phoneNumber='+917558273523
       '/>
       <About />
