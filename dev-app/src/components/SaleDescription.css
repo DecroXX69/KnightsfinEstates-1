@@ -1,0 +1,304 @@
+/* PropertyDetailsPage.css */
+
+/* Global styles */
+.property-details-container {
+  text-align: left;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  /* Back button */
+  .btn-back {
+    background: none;
+    border: none;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .btn-back:hover {
+    color: #f97316;
+  }
+  
+  /* Property Title Section */
+  .property-title {
+    text-align: left;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  .location-badge {
+    text-align: left;
+    display: inline-flex;
+    align-items: center;
+    color: #666;
+    margin-bottom: 0.8rem;
+  }
+  
+  .location-badge svg {
+    margin-right: 6px;
+  }
+  
+  .property-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .spec-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .property-status {
+    display: inline-block;
+    padding: 5px 12px;
+    background-color: #f97316;
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .property-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f97316;
+  }
+  
+  /* Property Images Gallery */
+  .property-gallery {
+    margin-bottom: 2rem;
+  }
+  
+  .main-property-image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .additional-property-image {
+    width: 100%;
+    height: 165px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Details Cards */
+  .details-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .details-card h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: #333;
+  }
+  
+  /* Overview Grid */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .overview-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .overview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    color: #f97316;
+  }
+  
+  .overview-label {
+    font-size: 0.8rem;
+    color: #777;
+  }
+  
+  .overview-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Property Description */
+  .property-description p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .hidden-description {
+    display: none;
+  }
+  
+  .show-more-btn {
+    background: none;
+    border: none;
+    color: #f97316;
+    font-weight: 600;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  /* Property Features */
+  .property-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .feature-icon {
+    color: #f97316;
+    font-size: 1.1rem;
+  }
+  
+  .feature-name {
+    font-size: 0.95rem;
+  }
+  
+  /* Map Container */
+  .map-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Contact Card */
+  .contact-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    position: sticky;
+    top: 1.5rem;
+  }
+  
+  .contact-card h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    color: #333;
+  }
+  
+  .form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .required {
+    color: #f97316;
+  }
+  
+  .btn-send-message {
+    background-color: #f97316;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-send-message:hover {
+    background-color: #ea580c;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .contact-card {
+      position: static;
+      margin-bottom: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .property-title {
+      font-size: 1.5rem;
+    }
+    
+    .property-specs {
+      gap: 1rem;
+    }
+    
+    .main-property-image,
+    .additional-property-image {
+      height: 250px;
+      margin-bottom: 1rem;
+    }
+    
+    .overview-grid,
+    .property-features {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .property-title {
+      font-size: 1.3rem;
+    }
+    
+    .property-specs {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .property-price {
+      font-size: 1.3rem;
+    }
+    
+    .main-property-image,
+    .additional-property-image {
+      height: 200px;
+    }
+    
+    .overview-grid,
+    .property-features {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+  }

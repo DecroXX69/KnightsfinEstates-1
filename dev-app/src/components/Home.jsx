@@ -130,7 +130,7 @@ const Home = () => {
     <img src={logo} alt="Logo" className="logo" />
 
     <div className="d-flex gap-4 align-items-center">
-      <Link to="/" className="nav-link">Buy</Link>
+      <Link to="/propertylisting" className="nav-link">Buy</Link>
       <Link to="/" className="nav-link">Off Plan</Link>
       <Link to="/aboutus" className="nav-link">About Us</Link>
       <div className="dropdown">

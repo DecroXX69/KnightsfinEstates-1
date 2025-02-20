@@ -94,7 +94,7 @@ const ContactUs = () => {
                 <label className="form-label">Full Name</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control1"
                   placeholder="Your Name"
                   value={formData.fullname}
                   onChange={(e) => setFormData({...formData, fullname: e.target.value})}
@@ -106,7 +106,7 @@ const ContactUs = () => {
                   <label className="form-label">Email Address *</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className="form-control1"
                     placeholder="Your email address"
                     required
                     value={formData.email}
@@ -125,7 +125,7 @@ const ContactUs = () => {
                     </span>
                     <input
                       type="tel"
-                      className="form-control"
+                      className="form-control1"
                       placeholder='Your phone number'
                       required
                       value={formData.phone}
@@ -138,7 +138,7 @@ const ContactUs = () => {
               <div className="mb-3">
                 <label className="form-label">Kindly choose your property type *</label>
                 <select 
-                  className="form-select"
+                  className="form-select1"
                   required
                   value={formData.chooseProperty}
                   onChange={(e) => setFormData({...formData, chooseProperty: e.target.value})}
@@ -153,7 +153,7 @@ const ContactUs = () => {
               <div className="mb-3">
   <label className="form-label">Your Profession</label>
   <select
-    className="form-select"
+    className="form-select1"
     value={formData.profession}
     onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
   >
@@ -168,7 +168,7 @@ const ContactUs = () => {
               <div className="mb-4">
                 <label className="form-label">Message</label>
                 <textarea
-                  className="form-control"
+                  className="form-control1"
                   rows="4"
                   placeholder="Your message"
                   value={formData.message}

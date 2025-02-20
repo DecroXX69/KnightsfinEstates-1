@@ -103,13 +103,13 @@
     display: block;
   }
   
-  .form-control, .form-select {
+  .form-control1, .form-select1 {
     padding: 0.8rem;
     border: 1px solid #e0e0e0;
     border-radius: 5px;
   }
   
-  .form-control:focus, .form-select:focus {
+  .form-control1:focus, .form-select1:focus {
     border-color: #ff9800;
     box-shadow: 0 0 0 0.2rem rgba(255, 152, 0, 0.25);
   }

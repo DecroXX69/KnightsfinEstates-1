@@ -40,7 +40,7 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
 
   return (
     <Container className="py-5">
-      <h1 className="display-4 mb-3">
+      <h1 className="display-4 mb-3" style={{color: 'black'}}>
         Latest Properties for Sale in{' '}
         <span className="text-primary">
           {selectedLocation ? `${selectedLocation}, ${activeLocation}` : activeLocation}
