@@ -1,5 +1,5 @@
 import React from 'react';
-import './LuxuryProperty.css';
+import styles from './LuxuryProperty.module.css';
 
 const LuxuryProperty = ({ 
   mainImage, 
@@ -10,49 +10,49 @@ const LuxuryProperty = ({
   onLearnMore
 }) => {
   return (
-    <div className="luxury-container">
-      <div className="luxury-content">
-        <div className="luxury-image-section">
+    <div className={styles.luxuryContainer}>
+      <div className={styles.luxuryContent}>
+        <div className={styles.luxuryImageSection}>
           <img 
             src={mainImage} 
             alt={propertyName}
-            className="main-property-image"
+            className={styles.mainPropertyImage}
           />
         </div>
         
-        <div className="luxury-details-section">
-          <div className="luxury-header">
-            <h1 className="luxury-title">Luxury</h1>
-            <p className="company-name">
+        <div className={styles.luxuryDetailsSection}>
+          <div className={styles.luxuryHeader}>
+            <h1 className={styles.luxuryTitle}>Luxury</h1>
+            <p className={styles.companyName}>
               Projects by <strong>KnightsFineEstates</strong>
             </p>
           </div>
 
-          <div className="property-info">
-            <h2 className="property-name">{propertyName}</h2>
-            <p className="developer-name">by {developer}</p>
+          <div className={styles.propertyInfo}>
+            <h2 className={styles.propertyName}>{propertyName}</h2>
+            <p className={styles.developerName}>by {developer}</p>
           </div>
 
-          <div className="price-section">
-            <h3 className="property-price">{price}</h3>
+          <div className={styles.priceSection}>
+            <h3 className={styles.propertyPrice}>{price}</h3>
           </div>
 
-          <div className="gallery-section">
+          <div className={styles.gallerySection}>
             {galleryImages.map((image, index) => (
-              <div key={index} className="gallery-image-container">
+              <div key={index} className={styles.galleryImageContainer}>
                 <img 
                   src={image} 
                   alt={`Gallery ${index + 1}`}
-                  className="gallery-image"
+                  className={styles.galleryImage}
                 />
               </div>
             ))}
           </div>
 
-          <div className="learn-more-section">
+          <div className={styles.learnMoreSection}>
             <button 
               onClick={onLearnMore}
-              className="learn-more-btn"
+              className={styles.learnMoreBtn}
             >
               Learn More →
             </button>

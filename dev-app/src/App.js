@@ -4,11 +4,9 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import Home from './components/Home.jsx';
 import AboutUs from './components/AboutUs.jsx';
 import PropertyPage from './components/PropertyPage.jsx';
-import PropertyListingPage from './components/PropertyListingPage.jsx';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import ContactUsPage from './components/ContactUsPage.jsx';
-
+import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 function App() {
   return (
     <Router>
@@ -19,9 +17,10 @@ function App() {
           <Route path="/contactuspage" element={<ContactUsPage />} />
           <Route path="/property/:id" element={<PropertyPage />} />
         </Routes>
-        {/* <PropertyListingPage /> */}
+       
       </div>
     </Router>
+    // <LuxuryProperty />
   );
 }
 

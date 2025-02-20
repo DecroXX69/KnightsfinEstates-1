@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './PartnersSlider.css';
-import abc from '../assets/abc.png'
-import emaar from '../assets/emaar.png'
-import damac from '../assets/damac.jpeg'
-import meraas from '../assets/meraas.png'
-import danube from '../assets/danube.jpeg'
-import binghatti from '../assets/binghatti.jpeg'
+import styles from './PartnersSlider.module.css';
+import abc from '../assets/abc.png';
+import emaar from '../assets/emaar.png';
+import damac from '../assets/damac.jpeg';
+import meraas from '../assets/meraas.png';
+import danube from '../assets/danube.jpeg';
+import binghatti from '../assets/binghatti.jpeg';
 
 const PartnersSlider = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -27,7 +27,7 @@ const PartnersSlider = () => {
       { threshold: 0.1 }
     );
 
-    const section = document.querySelector('.partners-section');
+    const section = document.querySelector(`.${styles.partnersSection}`);
     if (section) {
       observer.observe(section);
     }
@@ -40,34 +40,32 @@ const PartnersSlider = () => {
   }, []);
 
   return (
-    <section className="partners-section py-5">
+    <section className={styles.partnersSection}>
       <div className="container">
-        <h2 className="text-center partners-title mb-5">
+        <h2 className={`${styles.partnersTitle} text-center mb-5`}>
           Partners With Leading Developers
         </h2>
 
-        <div className="partners-container">
-          <div className={`partners-slider ${isVisible ? 'sliding' : ''}`}>
-            {/* First set of logos */}
+        <div className={styles.partnersContainer}>
+          <div className={`${styles.partnersSlider} ${isVisible ? styles.sliding : ''}`}>
             {partners.map((partner, index) => (
-              <div key={index} className="partner-logo-container">
-                <div className="partner-logo-circle">
+              <div key={index} className={styles.partnerLogoContainer}>
+                <div className={styles.partnerLogoCircle}>
                   <img 
                     src={partner.image} 
                     alt={partner.name} 
-                    className="partner-logo"
+                    className={styles.partnerLogo}
                   />
                 </div>
               </div>
             ))}
-            {/* Duplicate set for infinite scroll effect */}
             {partners.map((partner, index) => (
-              <div key={`duplicate-${index}`} className="partner-logo-container">
-                <div className="partner-logo-circle">
+              <div key={`duplicate-${index}`} className={styles.partnerLogoContainer}>
+                <div className={styles.partnerLogoCircle}>
                   <img 
                     src={partner.image} 
                     alt={partner.name} 
-                    className="partner-logo"
+                    className={styles.partnerLogo}
                   />
                 </div>
               </div>

@@ -1,14 +1,11 @@
-.modern-footer {
+.modernFooter {
     position: relative;
-    background: linear-gradient(135deg, #0d6efd 0%, #0043a9 100%);    /* Alternative gradients you might like:
     background: linear-gradient(135deg, #0d6efd 0%, #0043a9 100%);
-    background: linear-gradient(135deg, #0d6efd 0%, #00264d 100%);
-    */
     color: white;
     margin-top: 6rem;
 }
 
-.footer-wave {
+.footerWave {
     position: absolute;
     top: -100px;
     left: 0;
@@ -17,18 +14,25 @@
     line-height: 0;
 }
 
-.footer-content {
+.footerContent {
     position: relative;
     padding: 2rem 0;
 }
 
-.main-card-container {
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.mainCardContainer {
     display: flex;
     justify-content: center;
     margin-bottom: 4rem;
 }
 
-.main-card {
+.mainCard {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -40,25 +44,21 @@
     transform: translateY(-50px);
 }
 
-.footer-wave svg path {
-    fill: #0d6efd; /* Updated to match new base color */
-}
-
-.card-title {
+.cardTitle {
     color: #ffc107;
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
 }
 
-.card-description {
+.cardDescription {
     color: white;
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 2rem;
 }
 
-.contact-btn {
+.contactBtn {
     background: #ffc107;
     color: #000;
     padding: 1rem 2.5rem;
@@ -69,15 +69,14 @@
     display: inline-block;
 }
 
-.contact-btn:hover {
+.contactBtn:hover {
     background: #ffca28;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
     color: #000;
 }
 
-/* Add these new styles for contact cards */
-.contact-info-container {
+.contactInfoContainer {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
@@ -85,7 +84,7 @@
     margin-bottom: 4rem;
 }
 
-.contact-card {
+.contactCard {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-radius: 15px;
@@ -94,11 +93,11 @@
     transition: transform 0.3s ease;
 }
 
-.contact-card:hover {
+.contactCard:hover {
     transform: translateY(-5px);
 }
 
-.contact-icon {
+.contactIcon {
     background: #ffc107;
     color: #0d6efd;
     width: 60px;
@@ -111,20 +110,20 @@
     font-size: 1.5rem;
 }
 
-.contact-card h4 {
+.contactCard h4 {
     color: #ffc107;
     font-size: 1.2rem;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
-.contact-card p {
+.contactCard p {
     color: white;
     margin: 0.5rem 0;
     font-size: 0.9rem;
 }
 
-.contact-card a {
+.contactCard a {
     color: white;
     text-decoration: none;
     font-size: 1.1rem;
@@ -133,11 +132,11 @@
     margin-bottom: 0.5rem;
 }
 
-.contact-card a:hover {
+.contactCard a:hover {
     color: #ffc107;
 }
 
-.footer-links-grid {
+.footerLinksGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
@@ -145,7 +144,7 @@
     margin-bottom: 3rem;
 }
 
-.section-title {
+.sectionTitle {
     color: #ffc107;
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
@@ -154,7 +153,7 @@
     padding-bottom: 0.5rem;
 }
 
-.section-title::after {
+.sectionTitle::after {
     content: '';
     position: absolute;
     left: 0;
@@ -164,47 +163,47 @@
     background: #ffc107;
 }
 
-.link-list {
+.linkList {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.link-list li {
+.linkList li {
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
 }
 
-.bullet-icon {
+.bulletIcon {
     color: #ffc107;
     margin-right: 0.5rem;
     font-size: 0.8rem;
 }
 
-.link-list a {
+.linkList a {
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
-.link-list a:hover {
+.linkList a:hover {
     color: #ffc107;
     transform: translateX(5px);
 }
 
-.social-container {
+.socialContainer {
     display: flex;
     justify-content: center;
     margin-bottom: 2rem;
 }
 
-.social-links {
+.socialLinks {
     display: flex;
     gap: 1.5rem;
 }
 
-.social-icon {
+.socialIcon {
     color: white;
     background: rgba(255, 255, 255, 0.1);
     width: 40px;
@@ -217,13 +216,13 @@
     font-size: 1.2rem;
 }
 
-.social-icon:hover {
+.socialIcon:hover {
     background: #ffc107;
-    color:#0d6efd;;
+    color: #0d6efd;
     transform: translateY(-3px);
 }
 
-.copyright-section {
+.copyrightSection {
     text-align: center;
     padding: 1.5rem;
     background: rgba(0, 0, 0, 0.2);
@@ -232,27 +231,27 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .main-card {
+    .mainCard {
         margin: 0 1rem;
         padding: 2rem;
         transform: translateY(-30px);
     }
 
-    .card-title {
+    .cardTitle {
         font-size: 2rem;
     }
 
-    .footer-links-grid {
+    .footerLinksGrid {
         grid-template-columns: 1fr;
         text-align: center;
     }
 
-    .section-title::after {
+    .sectionTitle::after {
         left: 50%;
         transform: translateX(-50%);
     }
 
-    .link-list li {
+    .linkList li {
         justify-content: center;
     }
 }
