@@ -1,8 +1,10 @@
 .modernFooter {
     position: relative;
-    background: linear-gradient(to bottom, #000000, #535252);
-    color: #000000;
-    margin-top: 6rem;
+    /* More sophisticated gradient with deep blue undertones */
+    background: linear-gradient(180deg, #051937 0%, #082046 100%);
+    color: #ffffff;
+    /* margin-top: 8rem; */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .footerWave {
@@ -12,134 +14,148 @@
     width: 100%;
     overflow: hidden;
     line-height: 0;
+    filter: drop-shadow(0 -4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .footerWave svg path {
-    fill: #d4af37;
+    fill: #2563eb; /* Professional blue */
 }
 
 .mainCardContainer {
     display: flex;
     justify-content: center;
-    margin-bottom: 4rem;
+    margin-bottom: 5rem;
+    padding: 0 1.5rem;
 }
 
 .mainCard {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 3rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 4rem;
     text-align: center;
-    max-width: 600px;
-    border: 1px solid #c0c0c0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .cardTitle {
-    color: #d4af37;
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
+    color: #60a5fa; /* Bright blue */
+    font-size: 3.2rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
 .cardDescription {
-    color: #fff;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 2rem;
+    color: #e2e8f0; /* Light gray with blue undertone */
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    font-weight: 400;
 }
 
-
-/* Contact Button styles moved to global CSS since it's using className="contact-btn" */
-
 :global(.contact-btn) {
-    background: #d4af37;
-    color: #000;
-    padding: 1rem 2.5rem;
+    background: #2563eb; /* Professional blue */
+    color: #ffffff;
+    padding: 1.25rem 3rem;
     border-radius: 50px;
     text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    display: inline-block;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 2px solid transparent;
 }
 
 :global(.contact-btn:hover) {
-    background: #000;
-    color: #d4af37;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(192, 192, 192, 0.3);
+    background: transparent;
+    color: #60a5fa;
+    border-color: #60a5fa;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }
 
 .contactInfoContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 0 2rem;
-    margin-bottom: 4rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    padding: 0 4rem;
+    margin-bottom: 5rem;
 }
 
 .contactCard {
-    border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    padding: 3rem 2rem;
     text-align: center;
-    transition: transform 0.3s ease;
-    border: 1px solid #c0c0c0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .contactCard:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 .contactIcon {
-    background: #d4af37;
-    color: #000;
-    width: 60px;
-    height: 60px;
+    background: #2563eb;
+    color: #ffffff;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
-    font-size: 1.5rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.contactCard:hover .contactIcon {
+    transform: scale(1.1);
+    background: #60a5fa;
 }
 
 .contactCard h4 {
-    color: #d4af37;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
+    color: #60a5fa;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    font-weight: 700;
 }
 
 .contactCard p,
 .contactCard a {
-    color: #fff;
-    margin: 0.5rem 0;
-    font-size: 0.9rem;
+    color: #e2e8f0;
+    margin: 0.75rem 0;
+    font-size: 1.1rem;
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    line-height: 1.6;
 }
 
 .contactCard a:hover {
-    color: #d4af37;
+    color: #60a5fa;
 }
 
 .footerLinksGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 0 2rem;
-    margin-bottom: 3rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 4rem;
+    padding: 0 4rem;
+    margin-bottom: 4rem;
 }
 
 .sectionTitle {
-    color: #d4af37;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+    color: #60a5fa;
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
     position: relative;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
 }
 
 .sectionTitle::after {
@@ -147,9 +163,10 @@
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 50px;
-    height: 2px;
-    background: #d4af37;
+    width: 60px;
+    height: 3px;
+    background: #2563eb;
+    border-radius: 2px;
 }
 
 .linkList {
@@ -159,73 +176,105 @@
 }
 
 .linkList li {
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
 }
 
 .bulletIcon {
-    color: #d4af37;
-    margin-right: 0.5rem;
-    font-size: 0.8rem;
+    color: #60a5fa;
+    margin-right: 0.75rem;
+    font-size: 0.9rem;
 }
 
 .linkList a {
-    color: #fff;
+    color: #e2e8f0;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-size: 1.1rem;
+    opacity: 0.9;
 }
 
 .linkList a:hover {
-    color: #d4af37;
-    transform: translateX(5px);
+    color: #60a5fa;
+    opacity: 1;
+    transform: translateX(8px);
 }
 
 .socialContainer {
     display: flex;
     justify-content: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .socialLinks {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .socialIcon {
-    background: #d4af37;
-    color: #000;
-    width: 40px;
-    height: 40px;
+    background: #2563eb;
+    color: #ffffff;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 1.4rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 2px solid transparent;
 }
 
 .socialIcon:hover {
-    background: #000;
-    color: #d4af37;
-    transform: translateY(-3px);
+    background: transparent;
+    color: #60a5fa;
+    border-color: #60a5fa;
+    transform: translateY(-4px) scale(1.1);
 }
 
 .copyrightSection {
     text-align: center;
-    padding: 1.5rem;
-    background: #000;
-    font-size: 0.9rem;
-    color: #fff;
+    padding: 2rem;
+    background: rgba(5, 25, 55, 0.8);
+    font-size: 1rem;
+    color: #e2e8f0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Media queries remain the same */
 @media (max-width: 768px) {
     .mainCard {
         margin: 0 1rem;
-        padding: 2rem;
-        transform: translateY(-30px);
+        padding: 2.5rem;
+        transform: translateY(-40px);
     }
+    
+    .cardTitle {
+        font-size: 2.5rem;
+    }
+    
+    .contactInfoContainer,
+    .footerLinksGrid {
+        padding: 0 2rem;
+    }
+    
+    .footerLinksGrid {
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
     .cardTitle {
         font-size: 2rem;
+    }
+    
+    .cardDescription {
+        font-size: 1.1rem;
+    }
+    
+    .contactInfoContainer,
+    .footerLinksGrid {
+        padding: 0 1.5rem;
     }
 }

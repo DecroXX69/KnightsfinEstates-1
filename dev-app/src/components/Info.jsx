@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ceoImage from "../assets/ceo.jpg";
 import mdImage from "../assets/md.jpg";
+import mgImage from "../assets/manager-img.png"
 import styles from "./Info.module.css";
 
 const Info = () => {
@@ -10,22 +11,44 @@ const Info = () => {
     {
       id: 1,
       name: "Rochak Sahu",
-      position: "CEO & Co-Founder",
-      description:
-        "Established in 2012, Knights Fin Estates builds lasting wealth legacies across 6 countries. Beyond strong financials, our focus is on exceptional customer service and innovative real estate solutions.",
+      position: "Founder",
+      description: (
+        <>
+          <span className={styles.establishedText}>Established in 2012</span>,{" "}
+          <span className={styles.companyName}>Knights Fin Estates</span> builds lasting wealth legacies across 6 countries. Beyond strong financials, our focus is on exceptional customer service and innovative real estate solutions.
+        </>
+      ),
       italicText:
         "12+ years in real estate. Leading with innovation and client trust, transforming property dreams into reality.",
       image: ceoImage,
     },
     {
       id: 2,
-      name: "Jasbier Singh Sachdev",
+      name: "Danish Khan",
       position: "Managing Director",
-      description:
-        "Since 2012, Knights Fin Estates creates generational wealth through global expansion. Our priority: customers first. Quality and innovation drive our vision of effortless, rewarding journeys.",
+      description: (
+        <>
+          <span className={styles.establishedText}>Since 2012</span>,{" "}
+          <span className={styles.companyName}>Knights Fin Estates</span> creates generational wealth through global expansion. Our priority: customers first. Quality and innovation drive our vision of effortless, rewarding journeys.
+        </>
+      ),
       italicText:
         "Committed to quality. Simplifying real estate to help you find a cherished home.",
       image: mdImage,
+    },
+    {
+      id: 3,
+      name: "Soumyajit Routray",
+      position: "General Manager",
+      description: (
+        <>
+          <span className={styles.establishedText}>Established in 2012</span>,{" "}
+          <span className={styles.companyName}>Knights Fin Estates</span> we ensure excellence through innovation, customer service, and strategic growth—building lasting wealth legacies and delivering innovative real estate solutions across six countries.
+        </>
+      ),
+      italicText:
+        "Dedicated to real estate excellence, delivering innovative solutions and building lasting client relationships with trust and strategy",
+      image: mgImage,
     },
   ];
 
@@ -48,6 +71,7 @@ const Info = () => {
 
       <div className={styles.carousel}>
         <div className={styles.imageContainer}>
+          
           <img
             src={teamMembers[currentSlide].image}
             alt={teamMembers[currentSlide].name}
@@ -58,7 +82,7 @@ const Info = () => {
         <div className={styles.content}>
           <div className={styles.textBlock}>
             <p className={styles.description}>
-              <strong>{teamMembers[currentSlide].description}</strong>
+              {teamMembers[currentSlide].description}
             </p>
             <p className={styles.quote}>
               {teamMembers[currentSlide].italicText}

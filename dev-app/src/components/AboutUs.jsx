@@ -2,7 +2,7 @@ import React from "react";  // Ensure this line is present
 import Navbar from "./Navbar.jsx"; // Import the Navbar component
 import Info from "./Info.jsx"; // Import the Info component
 import hero from "../assets/About-us-hero.jpg"; // Import the hero image
-import styles from "../components/Aboutus.module.css"
+import styles from "../components/Aboutus.module.css";
 import Services from './Services.jsx';
 import WhyChooseUs from '../minicomponents/WhyChooseUs.jsx';
 import ContactUs from "./ContactUs.jsx";
@@ -20,6 +20,11 @@ const AboutUs = () => {
         />
         <div className={styles.navbarOverlay}>
           <Navbar />
+        </div>
+
+        {/* Text Overlay */}
+        <div className={styles.textOverlay}>
+          <h4>About Us</h4>
         </div>
       </div>
 

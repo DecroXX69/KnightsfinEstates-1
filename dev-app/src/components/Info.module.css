@@ -1,12 +1,17 @@
 /* Container & Header */
 .container {
   width: 100vw;
-  /* background: #ffffff; */
   padding: 3rem 2rem;
   max-width: 100%;
   margin: 0 auto;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+.controls {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
 }
 
 .header {
@@ -15,24 +20,11 @@
 }
 
 .mainTitle {
-  font-size: 4rem;   
+  font-size: 3rem; /* Reduced from 4rem */   
   font-weight: bold;
-  color: #d4af37; /* Gold color */
-
+  color: #d4af37;
   padding-bottom: 1rem;
 }
-
-/* .mainTitle::after {
-  content: '';
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5rem;
-  height: 4px;
-  background: linear-gradient(135deg, #febe60 0%, #ff8e00 100%);
-  border-radius: 2px;
-} */
 
 /* Carousel Section */
 .carousel {
@@ -45,9 +37,9 @@
 }
 
 .imageContainer {
-  flex: 0 1 40%; /* Limits image width to 40% */
-  max-width: 300px; /* Ensures image doesn’t become too large */
-  max-height: 400px; /* Controls height */
+  flex: 0 1 45%; /* Increased from 40% */
+  max-width: 400px; /* Increased from 300px */
+  max-height: 500px; /* Increased from 400px */
   position: relative;
   overflow: hidden;
   border-radius: 20px;
@@ -55,20 +47,74 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.aboutUsOverlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  z-index: 1;
+  font-size: 1.2rem;
+}
+.prevButton,
+.nextButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #d4af37; /* Changed to golden color */
+  border: none;
+  border-radius: 8px;
+  color: #000000; /* Black text for contrast */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+  font-size: 1rem;
+}
+.prevButton:hover,
+.nextButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+  background: #c19b2e; /* Slightly darker gold on hover */
+}
 .imageContainer:hover {
   transform: translateY(-5px);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
 }
 
 .memberImage {
-  position: relative;
-  z-index: -1;
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
+  height: 100%;
   object-fit: cover;
   border-radius: 20px;
 }
 
+/* Added new styles for company name and established text */
+.establishedText {
+  font-weight: 700;
+  color: #d4af37;
+  position: relative;
+  display: inline-block;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.establishedText:hover {
+  transform: translateY(-3px);
+}
+
+.companyName {
+  font-family: 'Playfair Display', serif; /* Different font for company name */
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Rest of your existing styles */
 .content {
   display: flex;
   flex: 0 1 50%;
@@ -78,7 +124,6 @@
   max-width: 50%;
 }
 
-/* Content Styling */
 .textBlock {
   display: flex;
   flex-direction: column;
@@ -88,205 +133,41 @@
 .description {
   font-size: 1.2rem;
   line-height: 1.7;
-  color: #374151;
+  color: #6c757d;
   font-weight: 500;
 }
 
-.quote {
-  font-style: italic;
-  color: #6b7280;
-  padding-left: 2rem;
-  position: relative;
-  margin-top: 1rem;
-}
+/* Rest of your existing styles remain the same */
 
-.quote::before {
-  content: '“';
-  position: absolute;
-  left: 0;
-  top: -0.5rem;
-  color: #febe60;
-  font-size: 3rem;
-}
-
-.details {
-  /* display: grid;
-  grid-template-columns: auto 1fr; */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  align-items: center;
-  text-align: center;
-  
-}
-
-.name {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  grid-column: 1/-1;
-}
-
-.position {
-  font-size: 1.1rem;
-  color: #febe60;
-  font-weight: 600;
-  padding: 0.5rem 1.5rem;
-  background: rgba(254, 190, 96, 0.15);
-  border-radius: 12px;
-  white-space: nowrap;
- 
-  text-align: center;
-  display: block;
-
-}
-
-/* Controls & Indicators */
-.controls {
-  margin-top: 2.5rem;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.prevButton,
-.nextButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #febe60 0%, #ff8e00 100%);
-  border: none;
-  border-radius: 8px;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(254, 190, 96, 0.3);
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-}
-
-.prevButton:hover,
-.nextButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(254, 190, 96, 0.4);
-  background: linear-gradient(135deg, #ff8e00 0%, #febe60 100%);
-}
-
-.icon {
-  width: 2rem;
-  height: 2rem;
-  color: white;
-  transition: transform 0.3s ease;
-}
-
-.prevButton:hover .icon {
-  fill: #febe60;
-  transform: translateX(-3px);
-}
-
-.nextButton:hover .icon {
-  fill: #febe60;
-  transform: translateX(3px);
-}
-
-.indicators {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-top: 2.5rem;
-}
-
-.indicator {
-  width: 3rem;
-  height: 0.5rem;
-  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 100%);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.activeIndicator {
-  background: linear-gradient(90deg, #febe60 0%, #ff8e00 100%);
-  transform: scaleX(1.2);
-  box-shadow: 0 2px 5px rgba(254, 190, 96, 0.4);
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .carousel {
-    grid-template-columns: 1fr;
-    gap: 2rem;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    gap: 2rem;
   }
 
   .imageContainer {
-    max-width: 80%;
-    height: auto;
+    max-width: 100%;
+    height: 400px;
   }
 
   .mainTitle {
     font-size: 2rem;
   }
 
-  .position{
-    display: block;
-    text-align: center;
-    margin-top: 0.5rem;
+  .content {
+    max-width: 100%;
+    padding: 0;
   }
-
-  .controls {
-    flex-direction: row;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    width: 100%;
-  }
-
+}
+@media (max-width: 768px) {
   .prevButton,
   .nextButton {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 120px;
   }
-  .mainTitle{
-    font-size: 2.2rem;
-    line-height: 1.3;
-  }
-  .quote {
-    font-size: 1rem;
-    padding-left: 1rem;
-  }
-
-  .quote::before {
-    font-size: 2.5rem;
-    top: -0.3rem;
-  }
-
-  .name {
-    font-size: 1.8rem;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .imageContainer {
-    height: 350px;
-    align-items: center;
-  }
-}
-@media (max-width: 768px) {
-  .content {
-    text-align: center;
-    align-items: center;
-    max-width: 90%;
-    padding: 0 1rem;
+  
+  .icon {
+    width: 20px;
+    height: 20px;
   }
 }
