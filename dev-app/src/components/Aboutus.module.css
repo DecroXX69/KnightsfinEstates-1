@@ -1,133 +1,193 @@
-.aboutUs {
-    font-family: Poppins, sans-serif;
-    font-size: 1rem;
-  }
-  
-  .aboutUsHero {
-    position: relative;
+/* Reset default margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: Poppins, sans-serif;
+}
+
+/* General Navbar Styles */
+.navbar {
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  transition: background-color 0.3s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+}
+
+.navLinks {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #ffd700;
+}
+
+.btnPrimary {
+  background-color: #0d6efd;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.btnPrimary:hover {
+  transform: scale(1.02);
+}
+
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 2200;
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+  .navLinks {
+    position: fixed;
+    top: 0;
+    left: -100%;
     width: 100%;
-    height: 350px;
-    overflow: hidden;
-    opacity: 0.8;
+    height: 100vh;
+    background-color: #000; /* Solid black background */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 2100;
   }
-  
-  .heroImage {
+
+  .navLinks.show {
+    left: 0;
+  }
+
+  .navLink {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    padding: 15px 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .descBlack {
-    color: #000000;
-    font-weight: bold;
-  }
-  
-  .rightBtn {
-    margin-left: 10px;
-    border-radius: 8px;
-  }
-  
-  .leftBtn {
-    margin-right: 10px;
-    border-radius: 8px;
-  }
-  
-  .rightBtn:hover,
-  .leftBtn:hover {
-    color: #febe60;
-  }
-  
-  .headingInfo {
-    text-align: left;
-  }
-  
-  .textXl {
-    font-size: 2.625rem;
     text-align: center;
-    padding-right: 80px;
+    transition: color 0.3s ease;
   }
-  
-  .description {
-    font-size: 1.2rem;
-    color: #4b5563;
-    display: flex;
-    justify-content: space-between;
+
+  .navLink:hover {
+    color: #ffd700;
   }
-  
-  .fontBold {
-    font-weight: 700;
+
+  .btnPrimary {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 5px;
+    margin-top: 20px;
   }
-  
-  .textBlue900 {
-    color: #000000;
+
+  .hamburger {
+    display: block;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2200;
   }
-  
-  .textGold500 {
-    color: #febe60;
+
+  .container {
+    padding: 10px 15px;
   }
-  
-  /* Mobile responsive styles */
-  @media (max-width: 767px) {
-    .textXl {
-      font-size: 1.875rem;
-      text-align: center;
-      padding-right: 0;
-    }
-  
-    .aboutUsHero {
-      height: 250px;
-    }
-  
-    .heroImage {
-      object-fit: cover;
-      height: 100%;
-    }
-  
-    .textGray600 {
-      font-size: 0.875rem;
-    }
-  
-    .text2xl {
-      font-size: 1.5rem;
-    }
-  
-    .textGray500 {
-      font-size: 1rem;
-    }
-  
-    .placeholderImage {
-      height: 250px;
-    }
-  
-    .mt4 {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-  
-    .h1 {
-      width: 30px;
-    }
-  
-    .w12 {
-      width: 30px;
-    }
+
+  .logo {
+    width: 100px;
   }
-  
-  /* Medium screen devices (Tablets) */
-  @media (max-width: 1024px) {
-    .textXl {
-      font-size: 2.25rem;
-    }
-  
-    .textGray600 {
-      font-size: 1rem;
-    }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .navLink {
+    font-size: 18px;
   }
-  
-  /* Large Screens */
-  @media (min-width: 1025px) {
-    .textXl {
-      font-size: 2.625rem;
-    }
+
+  .btnPrimary {
+    padding: 10px 15px;
   }
+}
+
+/* About Us Styles */
+.aboutUsHero {
+  position: relative;
+  width: 100%;
+  height: 350px;
+}
+
+.heroImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.8; /* Adjusted opacity here */
+}
+
+.navbarOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.textXl {
+  font-size: 2.625rem;
+  text-align: center;
+  padding-right: 80px;
+}
+
+@media (max-width: 767px) {
+  .textXl {
+    font-size: 1.875rem;
+    padding-right: 0;
+  }
+
+  .aboutUsHero {
+    height: 250px;
+  }
+}

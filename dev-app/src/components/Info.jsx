@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import ceoImage from '../assets/ceo.jpg';
-import mdImage from '../assets/md.jpg';
+import React, { useState } from "react";
+import ceoImage from "../assets/ceo.jpg";
+import mdImage from "../assets/md.jpg";
+import styles from "./Info.module.css";
 
 const Info = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -10,18 +11,22 @@ const Info = () => {
       id: 1,
       name: "Rochak Sahu",
       position: "CEO & Co-Founder",
-      description: "Established in the year 2012, Knights Fin Estates believes in building a legacy of wealth that lasts for generations and beyond boundaries. This approach helped us expand our presence in more than 6 countries. But, for us, it is more important that besides our strong financial performance, global presence, much-loved real estate services, we remain a good company that always puts customers at the forefront. At the heart of all of this is our people.",
-      italicText: "With 12 years of experience in real estate, Rochak leads the company with a focus on innovation and client satisfaction. His expertise and dedication to excellence have driven the company's growth, helping clients turn their property dreams into reality with seamless service and lasting relationships.",
-      image: ceoImage  // Add the image path here
+      description:
+        "Established in 2012, Knights Fin Estates builds lasting wealth legacies across 6 countries. Beyond strong financials, our focus is on exceptional customer service and innovative real estate solutions.",
+      italicText:
+        "12+ years in real estate. Leading with innovation and client trust, transforming property dreams into reality.",
+      image: ceoImage,
     },
     {
       id: 2,
       name: "Jasbier Singh Sachdev",
       position: "Managing Director",
-      description: "Established in the year 2012, Knights Fin Estates believes in building a legacy of wealth that lasts for generations and beyond boundaries. This approach helped us expand our presence in more than 6 countries. But, for us, it is more important that besides our strong financial performance, global presence, much-loved real estate services, we remain a good company that always puts customers at the forefront. At the heart of all of this is our people.",
-      italicText: "With a strong commitment to quality and innovation, our goal is simple – helping you find a place you can truly call home, ensuring every step of your real estate journey is effortless and rewarding.",
-      image: mdImage  // Add the image path here
-    }
+      description:
+        "Since 2012, Knights Fin Estates creates generational wealth through global expansion. Our priority: customers first. Quality and innovation drive our vision of effortless, rewarding journeys.",
+      italicText:
+        "Committed to quality. Simplifying real estate to help you find a cherished home.",
+      image: mdImage,
+    },
   ];
 
   const nextSlide = () => {
@@ -33,69 +38,77 @@ const Info = () => {
   };
 
   return (
-    <div className="container-fluid bg-white py-5">
-      <div className="row align-items-center">
-        <div className="col-12 mb-4">
-          <h1 className="text-4xl font-bold text-blue-900">
-          <span className='text-gold-500'>Knights Fin Estates</span> : Turning Dreams into Homes
-            <span className="text-gold-500">.</span>
-          </h1>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.mainTitle}>
+          <span className={styles.accent}>Knights Fin Estates:</span>
+          Turning Dreams into Homes.
+        </h1>
+      </div>
+
+      <div className={styles.carousel}>
+        <div className={styles.imageContainer}>
+          <img
+            src={teamMembers[currentSlide].image}
+            alt={teamMembers[currentSlide].name}
+            className={styles.memberImage}
+          />
         </div>
-        
-        <div className="col-12">
-          <div className="description">
-            <div className="col-md-6">
-              <div className="placeholder-image bg-gray-100 rounded-lg" style={{ height: '500px' }}>
-                {/* Dynamically render the team member's image */}
-                <img
-                  src={teamMembers[currentSlide].image}
-                  alt={`${teamMembers[currentSlide].name} - Team Member`}
-                  className="w-full h-full object-cover rounded-lg"
-                  style={{ height: '530px', width: '480px', borderRadius: '20px' }}
-                />
-              </div>
-            </div>
-            
-            
-            
-              <div className="p-4" styles = "text-align: left;">
-                <p className="text-gray-600 mb-4">
-                  <span className='desc-black'>{teamMembers[currentSlide].description}</span>
-                </p>
-                
-                <p className="text-gray-600 italic mb-4">
-                  {teamMembers[currentSlide].italicText}
-                </p>
-                
-                <h2 className="text-2xl font-bold text-blue-900 mb-2">
-                  {teamMembers[currentSlide].name}
-                </h2>
-                
-                <p className="text-gray-500">
-                  <span className='text-gold-500'>{teamMembers[currentSlide].position}</span>
-                </p>
-                
-                <div className="mt-4 flex gap-2">
-                  <button 
-                    onClick={prevSlide}
-                    className="border border-gray-300 rounded-lg p-2 hover:bg-gray-100 left-btn"
-                  >
-                    ←
-                  </button>
-                  <button 
-                    onClick={nextSlide}
-                    className="border border-gray-300 rounded-lg p-2 hover:bg-gray-100 right-btn"
-                  >
-                    →
-                  </button>
-                </div>
-                
-                <div className="mt-4 flex gap-2">
-                  <span className={`h-1 w-12 rounded ${currentSlide === 0 ? 'bg-orange-500' : 'bg-gray-200'}`}></span>
-                  <span className={`h-1 w-12 rounded ${currentSlide === 1 ? 'bg-orange-500' : 'bg-gray-200'}`}></span>
-                </div>
-              </div>
-            
+
+        <div className={styles.content}>
+          <div className={styles.textBlock}>
+            <p className={styles.description}>
+              <strong>{teamMembers[currentSlide].description}</strong>
+            </p>
+            <p className={styles.quote}>
+              {teamMembers[currentSlide].italicText}
+            </p>
+          </div>
+
+          <div className={styles.details}>
+            <h2 className={styles.name}>
+              {teamMembers[currentSlide].name}
+            </h2>
+            <span className={styles.position}>
+              {teamMembers[currentSlide].position}
+            </span>
+          </div>
+
+          <div className={styles.controls}>
+            <button onClick={prevSlide} className={styles.prevButton}>
+              <svg
+                className={styles.icon}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+              </svg>
+              Previous
+            </button>
+
+            <button onClick={nextSlide} className={styles.nextButton}>
+              Next
+              <svg
+                className={styles.icon}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+              </svg>
+            </button>
+          </div>
+
+          <div className={styles.indicators}>
+            {teamMembers.map((_, index) => (
+              <div
+                key={index}
+                className={`${styles.indicator} ${
+                  currentSlide === index ? styles.activeIndicator : ""
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -11,7 +11,6 @@ const ModernFooter = () => {
       {/* Top Wave SVG */}
       <div className={styles.footerWave}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path fill="#0d6efd" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
 
@@ -25,7 +24,7 @@ const ModernFooter = () => {
                 Looking for a place to call home? Our expert team is dedicated to finding 
                 the perfect home that matches your needs and budget
               </p>
-              <Link to="/contact" className={styles.contactBtn}>
+              <Link to="/contactuspage" className="contact-btn">
                 Contact Us
               </Link>
             </div>
@@ -77,8 +76,8 @@ const ModernFooter = () => {
                   <Link to="/about">About Us</Link>
                 </li>
                 <li>
-                  <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/contact">Contact Us</Link>
+                  <FaAngleRight className="bullet-icon" />
+                  <Link to="/contactuspage">Contact Us</Link>
                 </li>
               </ul>
             </div>
