@@ -14,7 +14,7 @@
 
 .heading {
     font-size: 3.2rem;
-    color: #1e3a8a;
+    color: #d4af37;
     font-weight: 700;
     margin-bottom: 10px;
     text-transform: uppercase;
@@ -150,7 +150,20 @@
     .subtitle {
         font-size: 1.2rem;
     }
+
+    .imageSection {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .image1, .image2, .image3 {
+        position: static;
+        transform: none;
+    }
 }
+
 
 @media (max-width: 576px) {
     .heading {
@@ -170,5 +183,9 @@
     .circle {
         width: 140px;
         height: 140px;
+    }
+    .imageSection {
+        flex-direction: row;
+        gap: 10px;
     }
 }

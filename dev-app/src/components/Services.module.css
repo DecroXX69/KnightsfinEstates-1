@@ -1,58 +1,115 @@
+/* General Container Styling */
 .servicesContainer {
-  max-width: 1200px;
+  max-width: 1400px;
+  padding: 40px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px; /* More space between cards */ 
 }
 
+/* Heading and Description */
 .servicesHeading {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: bold;
-  color: #000000;
+  color: #d4af37;  /* Golden Heading */
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 .servicesDescription {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: #6c757d;
-}
-
-.card {
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card:hover {
-  transform: translateY(-10px);
-}
-
-.serviceIcon img {
-  width: 50px;
-  height: 50px;
-}
-
-.cardTitle {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #000000;
-}
-
-.cardText {
-  font-size: 1rem;
-  color: #000000;
-}
-
-.serviceIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #febe60;
-  width: 80px;
-  height: 80px;
+  max-width: 800px;
   margin: 0 auto;
+  text-align: center;
 }
 
+/* Service Cards */
+.serviceCard {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+  text-align: center;
+  width: 360px; /* Slightly wider */
+  min-height: 520px; /* Increased height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
+}
+
+/* Pop-out hover effect */
+.serviceCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(255, 204, 0, 0.3);
+}
+
+/* Card Inner Content */
+.cardBody {
+  padding: 25px;
+  flex-grow: 1;
+}
+
+/* Service Titles */
+.serviceTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #002147;  /* Dark Blue Title */
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Card Text */
+.cardText {
+  font-size: 1.1rem;
+  color: #333;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Image Styling */
+.imageWrapper {
+  width: 100%;
+  height: 250px;  /* Increased image size */
+  overflow: hidden;
+}
+
+/* Increased Image Size */
 .cardImage {
-  position: inherit;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
-  padding: auto;
+  border-radius: 10px 10px 0 0;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Image Zoom Effect */
+.serviceCard:hover .cardImage {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .servicesContainer {
+    gap: 40px; /* Maintain spacing between cards */
+  }
+  .serviceCard {
+    width: 320px;
+  }
+}
+
+@media (max-width: 768px) {
+  .servicesContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+  .serviceCard {
+    width: 90%;
+  }
 }

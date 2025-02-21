@@ -1,28 +1,58 @@
+// Navbar.jsx
 import React, { useState } from 'react';
-import { Menu } from 'lucide-react'; // Only import Menu icon since "Explore More" is removed
+import { Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import styles from './Navbar.module.css'; // Importing the CSS module
+import styles from './Navbar.module.css';
 import logo1 from '../assets/logo.png';
 
-const Navbar = ({}) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    document.body.style.overflow = !isMenuOpen ? 'hidden' : 'visible';
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    document.body.style.overflow = 'visible';
+  };
+
   return (
-    <nav className={styles.navbar}>
-      <div className={`${styles.container} d-flex justify-content-between align-items-center`}>
-        <img src={logo1} alt="Logo" className={styles.logo} />
+    <nav className={`${styles.navbar} ${isMenuOpen ? styles.menuOpen : ''}`}>
+      <div className={styles.container}>
+        <div className={styles.headerContent}>
+          <Link to="/">
+            <img src={logo1} alt="Logo" className={styles.logo} />
+          </Link>
+          
+          <button 
+            className={`${styles.hamburger} ${isMenuOpen ? styles.active : ''}`} 
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? (
+              <X size={24} color="white" />
+            ) : (
+              <Menu size={24} color="white" />
+            )}
+          </button>
+        </div>
 
-        {/* Hamburger Icon for small screens */}
-        <button className={styles.hamburger} onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <Menu className={styles.icon} />
-        </button>
-
-        {/* Navbar links */}
         <div className={`${styles.navLinks} ${isMenuOpen ? styles.show : ''}`}>
-          <Link to="/" className={styles.navLink}>Buy</Link>
-          <Link to="/" className={styles.navLink}>Off Plan</Link>
-          <Link to="/aboutus" className={styles.navLink}>About Us</Link>
-          <Link to="/contactus" className={`${styles.btnPrimary} ${styles.navLink}`}>
+          <Link to="/" className={styles.navLink} onClick={closeMenu}>
+            Buy
+          </Link>
+          <Link to="/" className={styles.navLink} onClick={closeMenu}>
+            Off Plan
+          </Link>
+          <Link to="/aboutus" className={styles.navLink} onClick={closeMenu}>
+            About Us
+          </Link>
+          <Link 
+            to="/contactus" 
+            className={`${styles.btnPrimary} ${styles.navLink}`} 
+            onClick={closeMenu}
+          >
             Contact Us
           </Link>
         </div>

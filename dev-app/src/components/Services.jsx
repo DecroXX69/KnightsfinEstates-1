@@ -1,34 +1,25 @@
-// Services.jsx
 import React from 'react';
-import styles from './Services.module.css';  // Import the modular CSS file
+import styles from './Services.module.css';  
 import propertyImg from '../assets/property management.jpg';
 import consultImg from '../assets/consulting.jpg';
-import { FaKey } from "react-icons/fa";
-import { FaHome } from "react-icons/fa";
-import { FaHandHoldingDollar } from "react-icons/fa6";
-
-const key = <FaKey size={50} color="#f0c929" />;
-const home = <FaHome size={50} color="#f0c929" />;
-const hand = <FaHandHoldingDollar size={50} color="#f0c929" />;
+import consultImg2 from '../assets/consulting2.jpg'
 
 const Services = () => {
   return (
     <div className={`${styles.servicesContainer} container text-center my-5`}>
       <h2 className={styles.servicesHeading}>Services we provide.</h2>
       <p className={`${styles.servicesDescription} mt-3`}>
-        Our wide range of services awaits you! No matter where you are in your real estate journey, our wide range of services help you easily navigate the real estate market.
+        Our wide range of services awaits you! No matter where you are in your real estate journey, our services help you navigate the market with ease.
       </p>
       <div className="row mt-5">
-        <div className="col-md-4">
-          <div className="card h-100">
-            <div className="card-body">
-              <div className={`${styles.serviceIcon} mb-3`}>
-                {key} 
-              </div>
-              <h5 className={styles.cardTitle}>Property Management</h5>
-              <div className='card'>
-                <img src={propertyImg} className={styles.cardImage} alt="Property Management" />
-              </div>
+        {/* Property Management */}
+        <div className="col-md-4 d-flex">
+          <div className={`${styles.serviceCard}`}>
+            <div className={styles.imageWrapper}>
+              <img src={propertyImg} className={styles.cardImage} alt="Property Management" />
+            </div>
+            <div className={styles.cardBody}>
+              <h5 className={styles.serviceTitle}>Property Management</h5>
               <p className={styles.cardText}>
                 We help you efficiently manage, maintain, and operate residential or commercial properties on your behalf.
               </p>
@@ -36,16 +27,14 @@ const Services = () => {
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card h-100">
-            <div className="card-body">
-              <div className={`${styles.serviceIcon} mb-3`}>
-                {home}
-              </div>
-              <h5 className={styles.cardTitle}>Consulting Services</h5>
-              <div className='card'>
-                <img src={consultImg} className={styles.cardImage} alt="Consulting Services" />
-              </div>
+        {/* Consulting Services */}
+        <div className="col-md-4 d-flex">
+          <div className={`${styles.serviceCard}`}>
+            <div className={styles.imageWrapper}>
+              <img src={consultImg} className={styles.cardImage} alt="Consulting Services" />
+            </div>
+            <div className={styles.cardBody}>
+              <h5 className={styles.serviceTitle}>Consulting <br></br> Services</h5>
               <p className={styles.cardText}>
                 We help clients make informed decisions about property investments, development, and management.
               </p>
@@ -53,18 +42,16 @@ const Services = () => {
           </div>
         </div>
 
-        <div className="col-md-4">
-          <div className="card h-100">
-            <div className="card-body">
-              <div className={`${styles.serviceIcon} mb-3`}>
-                {hand}
-              </div>
-              <h5 className={styles.cardTitle}>Buy and sell property</h5>
-              <div className='card'>
-                <img src={propertyImg} className={styles.cardImage} alt="Buy and sell property" />
-              </div>
+        {/* Buy and Sell Property */}
+        <div className="col-md-4 d-flex">
+          <div className={`${styles.serviceCard}`}>
+            <div className={styles.imageWrapper}>
+              <img src={consultImg2} className={styles.cardImage} alt="Buy and Sell Property" />
+            </div>
+            <div className={styles.cardBody}>
+              <h5 className={styles.serviceTitle}>Buy and Sell Property</h5>
               <p className={styles.cardText}>
-                We have a dedicated team working round the clock to help you easily buy or sell your property in Dubai.
+                Our dedicated team helps you easily buy or sell your property in Dubai.
               </p>
             </div>
           </div>
