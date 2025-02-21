@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AboutUs from './AboutUs';
 import FloatingChat from '../services/FloatingChat';
 import { 
@@ -16,7 +17,6 @@ import logo from '../assets/logo.png';
 import PropertyShowcase from './PropertyShowcase';
 import LuxuryProperty from '../minicomponents/LuxuryProperty';
 import PartnersSlider from '../minicomponents/PartnerSlider';
-import PropertyListingPage from './PropertyListingPage';
 import dubai1 from '../assets/dubai1.jpg';
 import dubai2 from '../assets/dubai2.jpg';
 import dubai3 from '../assets/dubai3.jpg';
@@ -25,9 +25,8 @@ import About from '../minicomponents/About';
 import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
-import ContactUsPage from './ContactUsPage';
-import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
+
 
 const locationData = {
   Dubai: {
@@ -72,26 +71,44 @@ const locationData = {
   },
 };
 
-
-
 const propertyTypes = [
   { name: "Villa", icon: CastleIcon },
   { name: "Townhouse", icon: HomeIcon },
   { name: "Penthouse", icon: PenthouseIcon },
   { name: "Apartment", icon: BuildingIcon }
 ];
+
 const bedroomOptions = ["Studio", "1", "1.5", "2", "3", "4", "5", "6"];
 
 const Home = () => {
+  const navigate = useNavigate();
   const [activeLocation, setActiveLocation] = useState('Dubai');
+  const [listingType, setListingType] = useState('sale');
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isBedroomOpen, setIsBedroomOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedBedroom, setSelectedBedroom] = useState('');
 
+  const handleListingTypeChange = (type) => {
+    setListingType(type);
+  };
+
+  // Home.jsx
+const handleSearch = () => {
+  navigate('/propertylisting', {
+    state: {
+      listingType: listingType,
+      location: activeLocation, // country
+      query: selectedLocation || searchQuery, // area or free-text search
+      propertyType: selectedPropertyType,
+      beds: selectedBedroom,
+    }
+  });
+};
 
   const closeAllDropdowns = (except) => {
     if (except !== 'explore') setIsExploreOpen(false);
@@ -105,20 +122,14 @@ const Home = () => {
     propertyName: "The Alba Residences",
     developer: "Omniyat",
     price: "AED 43 M",
-    galleryImages: [
-      dubai2,
-      dubai3,
-      dubai4
-    ],
+    galleryImages: [dubai2, dubai3, dubai4],
     onLearnMore: () => {
-      // Add your navigation logic here
-      window.location.href = "/alba-residences";  // Or use your router's navigation method
+      navigate('/alba-residences');
     }
   };
- 
+
   return (
     <div className="hero-section">
-      
       {/* Video Background */}
       <div className="video-bg">
         <video className="video-content" autoPlay muted loop key={locationData[activeLocation].videoUrl}>
@@ -127,12 +138,8 @@ const Home = () => {
         <div className="video-overlay"></div>
       </div>
 
+      <Navbar/>
 
-{/* Navbar */}
-
-<Navbar/>
-
-      {/* Hero Content */}
       <div className="hero-content">
         {/* Location Buttons */}
         <div className="location-buttons mb-4">
@@ -148,25 +155,34 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Main Title */}
         <h1 className="hero-title">{locationData[activeLocation].title}</h1>
-
-        {/* Subtitle */}
         <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
 
-         {/* Action Buttons */}
-         <div className="action-buttons">
-          <button className="btn btn-primary me-3">Buy</button>
-          <button className="btn btn-light">Off Plan</button>
+        {/* Action Buttons */}
+        <div className="action-buttons">
+          <button 
+            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
+            onClick={() => handleListingTypeChange('sale')}
+          >
+            Buy
+          </button>
+          <button 
+            className={`btn ${listingType === 'offplan' ? 'btn-primary' : 'btn-light'}`}
+            onClick={() => handleListingTypeChange('offplan')}
+          >
+            Off Plan
+          </button>
         </div>
 
-         {/* Search Bar */}
-         <div className="search-container">
+        {/* Search Bar */}
+        <div className="search-container">
           <div className="search-bar">
             <input
               type="text"
               placeholder="Search..."
               className="search-input"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               onClick={() => closeAllDropdowns()}
             />
             
@@ -199,8 +215,8 @@ const Home = () => {
               )}
             </div>
 
-             {/* Location Dropdown */}
-             <div className="dropdown search-dropdown">
+            {/* Location Dropdown */}
+            <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -228,8 +244,8 @@ const Home = () => {
               )}
             </div>
 
-             {/* Bedrooms Dropdown */}
-             <div className="dropdown search-dropdown">
+            {/* Bedrooms Dropdown */}
+            <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -257,7 +273,10 @@ const Home = () => {
               )}
             </div>
 
-            <button className="btn btn-primary search-submit">
+            <button 
+              className="btn btn-primary search-submit"
+              onClick={handleSearch}
+            >
               Search
             </button>
           </div>
@@ -274,21 +293,20 @@ const Home = () => {
             </div>
           ))}
         </div>
-
-      
       </div>
+
       <PropertyShowcase 
-  activeLocation={activeLocation}
-  selectedLocation={selectedLocation}
-/>
+        activeLocation={activeLocation}
+        selectedLocation={selectedLocation}
+      />
 
-<button className="btn btn-primary btn-lg" id='loadbtn'> Load More</button>
+      <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button>
 
-<section>
+      <section>
         <LuxuryProperty {...luxuryPropertyData} />
-</section>
-      <FloatingChat phoneNumber='+917558273523
-      '/>
+      </section>
+      
+      <FloatingChat phoneNumber='+917558273523'/>
       <About />
       <PartnersSlider />
       <Testimonials />

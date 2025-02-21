@@ -39,8 +39,20 @@ const Navbar = () => {
         </div>
 
         <div className={`${styles.navLinks} ${isMenuOpen ? styles.show : ''}`}>
-          <Link to="/" className={styles.navLink}>Buy</Link>
-          <Link to="/" className={styles.navLink}>Off Plan</Link>
+          <Link
+            to="/propertylisting"
+            className={styles.navLink}
+            state={{ listingType: 'sale' }}
+          >
+            Buy
+          </Link>
+          <Link
+            to="/propertylisting"
+            className={styles.navLink}
+            state={{ listingType: 'offplan' }}
+          >
+            Off Plan
+          </Link>
           <Link to="/aboutus" className={styles.navLink}>About Us</Link>
           <Link to="/contactuspage" className={`${styles.btnPrimary} ${styles.navLink}`}>
             Contact Us
