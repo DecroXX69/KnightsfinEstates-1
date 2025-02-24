@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PropertyListingPage from './components/PropertyListingPage.jsx';
 import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 import ContactUsPage from './components/ContactUsPage.jsx';
+import FloatingChat from './services/FloatingChat.jsx';
 function App() {
   return (
     <Router>
@@ -23,7 +24,7 @@ function App() {
           <Route path="/property/:id" element={<PropertyPage />} />
         <Route path="/sale/:id" element={<SaleDescription />} />
         </Routes>
-       
+       <FloatingChat />
       </div>
     </Router>
     // <LuxuryProperty />

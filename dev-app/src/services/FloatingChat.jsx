@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaComments, FaWhatsapp, FaPhone, FaTimes } from 'react-icons/fa';
-import './FloatingChat.css';
+import styles from './FloatingChat.module.css';
 
 const FloatingChat = ({ phoneNumber = "+917558273523" }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,19 +20,19 @@ const FloatingChat = ({ phoneNumber = "+917558273523" }) => {
   };
 
   return (
-    <div className="floating-chat-container">
+    <div className={styles.floatingChatContainer}>
       {isOpen && (
-        <div className="chat-options">
+        <div className={styles.chatOptions}>
           <button 
             onClick={handleWhatsAppClick} 
-            className="chat-option whatsapp"
+            className={`${styles.chatOption} ${styles.whatsapp}`}
             title="Chat on WhatsApp"
           >
             <FaWhatsapp />
           </button>
           <button 
             onClick={handlePhoneClick} 
-            className="chat-option phone"
+            className={`${styles.chatOption} ${styles.phone}`}
             title="Call us"
           >
             <FaPhone />
@@ -40,7 +40,7 @@ const FloatingChat = ({ phoneNumber = "+917558273523" }) => {
         </div>
       )}
       <button 
-        className={`chat-toggle ${isOpen ? 'active' : ''}`}
+        className={`${styles.chatToggle} ${isOpen ? styles.active : ''}`}
         onClick={() => setIsOpen(!isOpen)}
         title={isOpen ? "Close chat options" : "Open chat options"}
       >

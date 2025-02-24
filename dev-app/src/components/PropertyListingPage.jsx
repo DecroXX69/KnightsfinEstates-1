@@ -6,6 +6,7 @@ import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import { useNavigate } from 'react-router-dom';
 import  Navbar  from './Navbar.jsx';
+import Footer from './Footer.jsx';
 const PropertyListingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -268,6 +269,7 @@ const PropertyListingPage = () => {
           </ul>
         </nav>
         <MiniContact />
+        <Footer />
       </div>
     </>
   );

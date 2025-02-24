@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Phone } from 'lucide-react';
-import './SaleDescription.css';
+import styles from './SaleDescription.module.css';
 import MiniContact from './miniContactComponent';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
@@ -8,7 +8,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import locationIcon from '../assets/locationIcon.png';
 import axios from 'axios';
-
+import Footer from './Footer';
+import Navbar from './Navbar';
 const customIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: [32, 32],
@@ -32,6 +33,7 @@ const SaleDescription = () => {
     phone: '',
     message: ''
   });
+  
   useEffect(() => {
     const fetchProperty = async () => {
       try {
@@ -49,7 +51,7 @@ const SaleDescription = () => {
   }, [id]);
 
   if (loading || !property) {
-    return <div className="loading">Loading...</div>;
+    return <div className={styles.loading}>Loading...</div>;
   }
 
   const handleGoBack = () => {
@@ -95,47 +97,48 @@ const SaleDescription = () => {
   const formattedPrice = `AED ${property.price.toLocaleString()}`;
 
   return (
-    <div className="property-details-container">
+    <div className={styles.propertyDetailsContainer}>
+      <Navbar />
       {/* Property Title Section */}
       <div className="container mt-4">
-        <button className="btn-back" onClick={handleGoBack}>
+        <button className={styles.btnBack} onClick={handleGoBack}>
           <ArrowLeft size={20} />
           Back to properties
         </button>
         
         <div className="row mt-3">
           <div className="col-md-8">
-            <h1 className="property-title">
+            <h1 className={styles.propertyTitle}>
               {`${property.bedrooms} ${property.propertyType} for Sale in ${property.buildingName}, ${property.location}`}
             </h1>
-            <div className="location-badge">
+            <div className={styles.locationBadge}>
               <MapPin size={16} />
               <span>{property.location}</span>
             </div>
-            <div className="property-specs">
-              <span className="spec-item"><i className="bi bi-building"></i> Beds: {property.bedrooms}</span>
-              <span className="spec-item"><i className="bi bi-rulers"></i> {property.area}</span>
-              <span className="spec-item"><i className="bi bi-house-door"></i> {property.propertyType}</span>
+            <div className={styles.propertySpecs}>
+              <span className={styles.specItem}><i className="bi bi-building"></i> Beds: {property.bedrooms}</span>
+              <span className={styles.specItem}><i className="bi bi-rulers"></i> {property.area}</span>
+              <span className={styles.specItem}><i className="bi bi-house-door"></i> {property.propertyType}</span>
             </div>
           </div>
           <div className="col-md-4 text-md-end">
-            <div className="property-status">FOR SALE</div>
-            <div className="property-price">{formattedPrice}</div>
+            <div className={styles.propertyStatus}>FOR SALE</div>
+            <div className={styles.propertyPrice}>{formattedPrice}</div>
           </div>
         </div>
       </div>
 
       {/* Property Images Gallery */}
       <div className="container mt-4">
-        <div className="row property-gallery">
+        <div className={`row ${styles.propertyGallery}`}>
           <div className="col-md-7 main-image-container">
-            <img src={property.image} alt={property.buildingName} className="main-property-image" />
+            <img src={property.image} alt={property.buildingName} className={styles.mainPropertyImage} />
           </div>
           <div className="col-md-5">
             <div className="row">
               {property.images?.map((image, index) => (
                 <div className="col-md-6 mb-3" key={index}>
-                  <img src={image} alt={`${property.buildingName} - view ${index + 1}`} className="additional-property-image" />
+                  <img src={image} alt={`${property.buildingName} - view ${index + 1}`} className={styles.additionalPropertyImage} />
                 </div>
               ))}
             </div>
@@ -149,49 +152,49 @@ const SaleDescription = () => {
           {/* Left Column - Property Details */}
           <div className="col-lg-8">
             {/* Overview Section */}
-            <div className="details-card mb-4">
+            <div className={styles.detailsCard}>
               <h2>Overview</h2>
-              <div className="overview-grid">
-                <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-building"></i></div>
-                  <div className="overview-details">
-                    <div className="overview-label">Developer</div>
-                    <div className="overview-value">{property.developer}</div>
+              <div className={styles.overviewGrid}>
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-building"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Developer</div>
+                    <div className={styles.overviewValue}>{property.developer}</div>
                   </div>
                 </div>
-                <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-house-door"></i></div>
-                  <div className="overview-details">
-                    <div className="overview-label">Property Type</div>
-                    <div className="overview-value">{property.propertyType}</div>
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-house-door"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Property Type</div>
+                    <div className={styles.overviewValue}>{property.propertyType}</div>
                   </div>
                 </div>
-                <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-rulers"></i></div>
-                  <div className="overview-details">
-                    <div className="overview-label">Area/Size</div>
-                    <div className="overview-value">{property.area}</div>
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-rulers"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Area/Size</div>
+                    <div className={styles.overviewValue}>{property.area}</div>
                   </div>
                 </div>
-                <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-building"></i></div>
-                  <div className="overview-details">
-                    <div className="overview-label">Bedroom(s)</div>
-                    <div className="overview-value">{property.bedrooms}</div>
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-building"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Bedroom(s)</div>
+                    <div className={styles.overviewValue}>{property.bedrooms}</div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Property Description */}
-            <div className="details-card mb-4">
+            <div className={`${styles.detailsCard} mb-4`}>
               <h2>Property description</h2>
-              <div className="property-description">
-                <p className={!showFullDescription ? 'truncate' : ''}>
+              <div className={styles.propertyDescription}>
+                <p className={!showFullDescription ? styles.truncate : ''}>
                   {property.description}
                 </p>
                 {property.description && (
-                  <button className="show-more-btn" onClick={handleShowMore}>
+                  <button className={styles.showMoreBtn} onClick={handleShowMore}>
                     {showFullDescription ? 'Show Less' : 'Show More'}
                   </button>
                 )}
@@ -200,15 +203,15 @@ const SaleDescription = () => {
 
             {/* Property Features */}
             {property.amenities && property.amenities.length > 0 && (
-              <div className="details-card mb-4">
+              <div className={`${styles.detailsCard} mb-4`}>
                 <h2>Property features</h2>
-                <div className="property-features">
+                <div className={styles.propertyFeatures}>
                   {property.amenities.map((amenity, index) => (
-                    <div className="feature-item" key={index}>
-                      <div className="feature-icon">
+                    <div className={styles.featureItem} key={index}>
+                      <div className={styles.featureIcon}>
                         <i className="bi bi-check-circle-fill"></i>
                       </div>
-                      <div className="feature-name">{amenity}</div>
+                      <div className={styles.featureName}>{amenity}</div>
                     </div>
                   ))}
                 </div>
@@ -216,9 +219,9 @@ const SaleDescription = () => {
             )}
 
             {/* Map Location */}
-            <div className="details-card mb-4">
+            <div className={`${styles.detailsCard} mb-4`}>
               <h2>Map Location</h2>
-              <div className="map-container">
+              <div className={styles.mapContainer}>
                 <MapContainer
                   center={[25.276987, 55.296249]}
                   zoom={13}
@@ -240,7 +243,7 @@ const SaleDescription = () => {
 
           {/* Right Column - Contact Seller */}
           <div className="col-lg-4">
-            <div className="contact-card">
+            <div className={styles.contactCard}>
               <h2>Contact Seller</h2>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
@@ -256,7 +259,7 @@ const SaleDescription = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email Address <span className="required">*</span></label>
+                  <label htmlFor="email" className="form-label">Email Address <span className={styles.required}>*</span></label>
                   <input
                     type="email"
                     className="form-control"
@@ -268,7 +271,7 @@ const SaleDescription = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">Phone Number <span className="required">*</span></label>
+                  <label htmlFor="phone" className="form-label">Phone Number <span className={styles.required}>*</span></label>
                   <div className="input-group">
                     <span className="input-group-text">
                       <div className="d-flex align-items-center">
@@ -287,7 +290,7 @@ const SaleDescription = () => {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="message" className="form-label">Message <span className="required">*</span></label>
+                  <label htmlFor="message" className="form-label">Message <span className={styles.required}>*</span></label>
                   <textarea
                     className="form-control"
                     id="message"
@@ -298,7 +301,7 @@ const SaleDescription = () => {
                     required
                   ></textarea>
                 </div>
-                <button type="submit" className="btn btn-send-message w-100">
+                <button type="submit" className={`${styles.btnSendMessage} w-100`}>
                   Send Message
                 </button>
               </form>
@@ -311,6 +314,8 @@ const SaleDescription = () => {
       <div className="container mt-5 mb-5">
         <MiniContact />
       </div>
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

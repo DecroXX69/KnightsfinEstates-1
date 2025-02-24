@@ -24,11 +24,12 @@ body {
 }
 
 .container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 4rem 1rem 1rem;
-  position: relative;
-  z-index: 1;
+  max-width: 1700px;
+  /* margin: 0 auto; */
+  /* padding: 4rem 1rem 1rem; */
+  /* position: relative; */
+  /* z-index: 1; */
+  margin-top: 3rem;
 }
 
 /* Filter Container */
@@ -400,7 +401,7 @@ body {
 /* Mobile Styles */
 @media (max-width: 768px) {
   .container {
-    padding: 3rem 1rem 1rem;
+    width: 33.5em;
   }
 
   .filterContainer {
