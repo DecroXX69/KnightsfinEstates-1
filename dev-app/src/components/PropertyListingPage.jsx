@@ -198,7 +198,7 @@ const PropertyListingPage = () => {
         <div className="row mb-4 align-items-center">
           <div className="col">
             <h1 className={styles.headingPrimary}>
-              Properties in {filters.location || filters.area || 'KnightsFin'}
+            Properties in {filters.query || filters.location || filters.area || 'KnightsFin'}
             </h1>
           </div>
         </div>
