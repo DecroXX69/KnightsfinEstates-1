@@ -146,6 +146,7 @@ const ContactUs = () => {
                 <label className={styles.formLabel}>Your Profession</label>
                 <select
                   className={`form-select ${styles.formSelect}`}
+                  required
                   value={formData.profession}
                   onChange={(e) => setFormData({...formData, profession: e.target.value})}
                 >

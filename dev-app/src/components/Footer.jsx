@@ -34,7 +34,7 @@ const ModernFooter = () => {
           <div className={styles.contactInfoContainer}>
             <div className={styles.contactCard}>
               <div className={styles.contactIcon}>
-                <FaPhoneAlt />
+                <a href="tel:+918177083523"><FaPhoneAlt /></a>
               </div>
               <h4>Call Us</h4>
               <a href="tel:+918177083523">+918177083523</a>
@@ -43,17 +43,23 @@ const ModernFooter = () => {
 
             <div className={styles.contactCard}>
               <div className={styles.contactIcon}>
+                
+                <a href="https://www.google.com/maps/place/TecMetaverse/@18.5642566,73.7711113,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2bfffda1390d5:0xe9942f5eb5f7a78d!8m2!3d18.5642566!4d73.7711113!16s%2Fg%2F11w48jlpr2?entry=ttu&g_ep=EgoyMDI1MDIxOS4xIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target='_blank'>
                 <FaMapMarkerAlt />
+              </a>
               </div>
               <h4>Find Us</h4>
+              <a href="https://www.google.com/maps/place/TecMetaverse/@18.5642566,73.7711113,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2bfffda1390d5:0xe9942f5eb5f7a78d!8m2!3d18.5642566!4d73.7711113!16s%2Fg%2F11w48jlpr2?entry=ttu&g_ep=EgoyMDI1MDIxOS4xIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D" target='_blank'>
               <p>506,5th floor, Pyramid Axis, Behind Croma,
               </p>
               <p>Baner, Pune, Maharashtra, India, 411045</p>
+              </a>
             </div>
 
             <div className={styles.contactCard}>
               <div className={styles.contactIcon}>
-                <FaEnvelope />
+               
+                <a href="mailto:team@knightsfinestates.com"><FaEnvelope /></a>
               </div>
               <h4>Email Us</h4>
               <a href="mailto:team@knightsfinestates.com">team@knightsfinestates.com</a>
