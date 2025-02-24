@@ -18,7 +18,7 @@ const ModernFooter = () => {
         <div className={styles.container}>
           {/* Main Card Section */}
           <div className={styles.mainCardContainer}>
-            <div className={styles.mainCard}>
+            {/* <div className={styles.mainCard}>
               <h2 className={styles.cardTitle}>You need a house</h2>
               <p className={styles.cardDescription}>
                 Looking for a place to call home? Our expert team is dedicated to finding 
@@ -27,7 +27,7 @@ const ModernFooter = () => {
               <Link to="/contactuspage" className="contact-btn">
                 Contact Us
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Contact Information Cards */}
