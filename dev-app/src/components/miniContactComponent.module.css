@@ -11,6 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+    padding-left: 20px;
   }
   
   .mdFlexNoWrap {
@@ -118,8 +119,9 @@
   }
 
   .wFull {
-    width: 50%; /* Image should take full width in mobile view */
-    margin-left: 20px;
+    width: 45%; /* Image should take full width in mobile view */
+    margin-left: 210px;
+    border-radius: 20px;
   }
   }
   

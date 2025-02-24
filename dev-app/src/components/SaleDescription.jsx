@@ -4,9 +4,18 @@ import './SaleDescription.css';
 import MiniContact from './miniContactComponent';
 import { useParams, useNavigate } from 'react-router-dom';
 import image from '../assets/background1.jpg';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import { LatLng } from 'leaflet'; // You might need this depending on how your map coordinates are structured
 import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for proper styling
+import L from 'leaflet';
+import locationIcon from '../assets/locationIcon.png'; 
+
+const customIcon = new L.Icon({
+  iconUrl: locationIcon, // Custom icon image path
+  iconSize: [32, 32], // Size of the icon (width, height)
+  iconAnchor: [16, 32], // Position the anchor point of the icon
+  popupAnchor: [0, -32], // Position the popup
+});
 
 const SaleDescription = ({ properties }) => {
   const { id } = useParams();
@@ -200,7 +209,7 @@ const SaleDescription = ({ properties }) => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
                   />
-                  <Marker position={[25.276987, 55.296249]}>
+                  <Marker position={[25.276987, 55.296249]} icon={customIcon}>
                     <Popup>
                       {property.title}
                     </Popup>
