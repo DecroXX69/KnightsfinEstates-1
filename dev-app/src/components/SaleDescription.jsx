@@ -1,63 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Phone } from 'lucide-react';
 import './SaleDescription.css';
 import MiniContact from './miniContactComponent';
 import { useParams, useNavigate } from 'react-router-dom';
-import image from '../assets/background1.jpg';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
-import { LatLng } from 'leaflet'; // You might need this depending on how your map coordinates are structured
-import 'leaflet/dist/leaflet.css'; // Import Leaflet CSS for proper styling
+import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import locationIcon from '../assets/locationIcon.png'; 
+import locationIcon from '../assets/locationIcon.png';
 
 const customIcon = new L.Icon({
-  iconUrl: locationIcon, // Custom icon image path
-  iconSize: [32, 32], // Size of the icon (width, height)
-  iconAnchor: [16, 32], // Position the anchor point of the icon
-  popupAnchor: [0, -32], // Position the popup
+  iconUrl: locationIcon,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
 });
 
-const SaleDescription = ({ properties }) => {
+const SaleDescription = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [property, setProperty] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [messageText, setMessageText] = useState('');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const defaultLocation = { lat: 25.276987, lng: 55.296249 }; // Default to some known location if missing
-  // const mapLocation = property.mapLocation || defaultLocation;
+  
+  useEffect(() => {
+    const fetchProperty = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/sale/${id}`);
+        const data = await response.json();
+        setProperty(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching property:', error);
+        setLoading(false);
+      }
+    };
 
-  // For demo purposes, let's assume we have a property with the following details
-  const property = {
-    id: 1,
-    title: '2 BR Apartment for Sale in Binghatti Nova, JVC District 12, (JVC), Dubai',
-    location: 'Jumeirah Village Circle',
-    type: 'Apartment',
-    price: 'AED 1,600,000',
-    status: 'FOR SALE',
-    bedrooms: 2,
-    baths: 3,
-    area: '989 sqft',
-    mainImage: image,
-    additionalImages: [
-      image,
-      image,
-      image,
-    ],
-    description: [
-      "If you are looking for 2- BR apartment for sale in , Binghatti Nova, JVC District 12, Jumeirah Village Circle, Dubai, HJ Real Estates having a team of expert real estate agents in Dubai is happy to introduce you with a fully furnished apartment for sale in Binghatti Nova, JVC District 12, Jumeirah Village Circle, Dubai, featuring 2 bedrooms and 3 bathrooms.",
-      "If you ever wish to purchase this apartment by Binghatti Developers in JVC District 12, Jumeirah Village Circle , you can give it on rent and can earn average Rent of AED 93,885 annually. It is a Luxurious apartment with freehold ownership."
-    ],
-    features: [
-      'Swimming Pool',
-      'Fitness Center',
-      '24/7 Security',
-      'CCTV Surveillance',
-      'Spa and Wellness Center'
-    ],
-    mapLocation: { lat: 25.276987, lng: 55.296249 } 
-  };
+    fetchProperty();
+  }, [id]);
+
+  if (loading || !property) {
+    return <div className="loading">Loading...</div>;
+  }
 
   const handleGoBack = () => {
     navigate(-1);
@@ -77,6 +64,9 @@ const SaleDescription = ({ properties }) => {
     setPhoneNumber('');
   };
 
+  // Convert price to AED format
+  const formattedPrice = `AED ${property.price.toLocaleString()}`;
+
   return (
     <div className="property-details-container">
       {/* Property Title Section */}
@@ -88,20 +78,22 @@ const SaleDescription = ({ properties }) => {
         
         <div className="row mt-3">
           <div className="col-md-8">
-            <h1 className="property-title">{property.title}</h1>
+            <h1 className="property-title">
+              {`${property.bedrooms} ${property.propertyType} for Sale in ${property.buildingName}, ${property.location}`}
+            </h1>
             <div className="location-badge">
               <MapPin size={16} />
               <span>{property.location}</span>
             </div>
             <div className="property-specs">
               <span className="spec-item"><i className="bi bi-building"></i> Beds: {property.bedrooms}</span>
-              <span className="spec-item"><i className="bi bi-droplet"></i> Baths: {property.baths}</span>
               <span className="spec-item"><i className="bi bi-rulers"></i> {property.area}</span>
+              <span className="spec-item"><i className="bi bi-house-door"></i> {property.propertyType}</span>
             </div>
           </div>
           <div className="col-md-4 text-md-end">
-            <div className="property-status">{property.status}</div>
-            <div className="property-price">{property.price}</div>
+            <div className="property-status">FOR SALE</div>
+            <div className="property-price">{formattedPrice}</div>
           </div>
         </div>
       </div>
@@ -110,13 +102,13 @@ const SaleDescription = ({ properties }) => {
       <div className="container mt-4">
         <div className="row property-gallery">
           <div className="col-md-7 main-image-container">
-            <img src={property.mainImage} alt={property.title} className="main-property-image" />
+            <img src={property.image} alt={property.buildingName} className="main-property-image" />
           </div>
           <div className="col-md-5">
             <div className="row">
-              {property.additionalImages.map((image, index) => (
+              {property.images?.map((image, index) => (
                 <div className="col-md-6 mb-3" key={index}>
-                  <img src={image} alt={`${property.title} - view ${index + 1}`} className="additional-property-image" />
+                  <img src={image} alt={`${property.buildingName} - view ${index + 1}`} className="additional-property-image" />
                 </div>
               ))}
             </div>
@@ -136,15 +128,15 @@ const SaleDescription = ({ properties }) => {
                 <div className="overview-item">
                   <div className="overview-icon"><i className="bi bi-building"></i></div>
                   <div className="overview-details">
-                    <div className="overview-label">Bedroom(s)</div>
-                    <div className="overview-value">{property.bedrooms}</div>
+                    <div className="overview-label">Developer</div>
+                    <div className="overview-value">{property.developer}</div>
                   </div>
                 </div>
                 <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-droplet"></i></div>
+                  <div className="overview-icon"><i className="bi bi-house-door"></i></div>
                   <div className="overview-details">
-                    <div className="overview-label">Bathroom(s)</div>
-                    <div className="overview-value">{property.baths}</div>
+                    <div className="overview-label">Property Type</div>
+                    <div className="overview-value">{property.propertyType}</div>
                   </div>
                 </div>
                 <div className="overview-item">
@@ -155,10 +147,10 @@ const SaleDescription = ({ properties }) => {
                   </div>
                 </div>
                 <div className="overview-item">
-                  <div className="overview-icon"><i className="bi bi-house-door"></i></div>
+                  <div className="overview-icon"><i className="bi bi-building"></i></div>
                   <div className="overview-details">
-                    <div className="overview-label">Property Type</div>
-                    <div className="overview-value">{property.type}</div>
+                    <div className="overview-label">Bedroom(s)</div>
+                    <div className="overview-value">{property.bedrooms}</div>
                   </div>
                 </div>
               </div>
@@ -168,12 +160,10 @@ const SaleDescription = ({ properties }) => {
             <div className="details-card mb-4">
               <h2>Property description</h2>
               <div className="property-description">
-                {property.description.map((paragraph, index) => (
-                  <p key={index} className={index >= 1 && !showFullDescription ? 'hidden-description' : ''}>
-                    {paragraph}
-                  </p>
-                ))}
-                {property.description.length > 1 && (
+                <p className={!showFullDescription ? 'truncate' : ''}>
+                  {property.description}
+                </p>
+                {property.description && (
                   <button className="show-more-btn" onClick={handleShowMore}>
                     {showFullDescription ? 'Show Less' : 'Show More'}
                   </button>
@@ -182,19 +172,21 @@ const SaleDescription = ({ properties }) => {
             </div>
 
             {/* Property Features */}
-            <div className="details-card mb-4">
-              <h2>Property features</h2>
-              <div className="property-features">
-                {property.features.map((feature, index) => (
-                  <div className="feature-item" key={index}>
-                    <div className="feature-icon">
-                      <i className="bi bi-check-circle-fill"></i>
+            {property.amenities && property.amenities.length > 0 && (
+              <div className="details-card mb-4">
+                <h2>Property features</h2>
+                <div className="property-features">
+                  {property.amenities.map((amenity, index) => (
+                    <div className="feature-item" key={index}>
+                      <div className="feature-icon">
+                        <i className="bi bi-check-circle-fill"></i>
+                      </div>
+                      <div className="feature-name">{amenity}</div>
                     </div>
-                    <div className="feature-name">{feature}</div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Map Location */}
             <div className="details-card mb-4">
@@ -207,11 +199,11 @@ const SaleDescription = ({ properties }) => {
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
                   <Marker position={[25.276987, 55.296249]} icon={customIcon}>
                     <Popup>
-                      {property.title}
+                      {property.buildingName}
                     </Popup>
                   </Marker>
                 </MapContainer>
@@ -253,7 +245,6 @@ const SaleDescription = ({ properties }) => {
                   <div className="input-group">
                     <span className="input-group-text">
                       <div className="d-flex align-items-center">
-                        {/* <img src="/path/to/flag-icon.png" alt="UAE flag" width="20" height="15" /> */}
                         <span className="ms-1">+91</span>
                       </div>
                     </span>

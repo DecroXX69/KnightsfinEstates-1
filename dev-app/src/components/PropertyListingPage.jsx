@@ -33,7 +33,9 @@ const PropertyListingPage = () => {
         const data = await response.json();
         setProperties(data.map(p => ({
           ...p,
-          currencySymbol: currencySymbols[p.location]?.[0] || '?'
+          currencySymbol: currencySymbols[p.location]?.[0] || '?',
+          // Ensure _id is included
+          _id: p._id // Add this line if _id is not already included
         })));
         setLoading(false);
       } catch (error) {
@@ -41,7 +43,7 @@ const PropertyListingPage = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProperties();
   }, [filters, sort]);
 
@@ -52,7 +54,19 @@ const PropertyListingPage = () => {
       default: return 'createdAt=-1';
     }
   };
-
+  const handlePropertyClick = (property) => {
+    console.log('Clicked property:', property); // Debug log
+    
+    if (property.type === 'sale') {
+      // Route to SaleDescription component for sale properties
+      console.log('Navigating to sale property:', `/sale/${property._id}`);
+      navigate(`/sale/${property._id}`);
+    } else if (property.type === 'offplan') {
+      // Route to PropertyPage component for offplan properties
+      console.log('Navigating to offplan property:', `/offplan/${property._id}`);
+      navigate(`/offplan/${property._id}`);
+    }
+  };
   const handleFilterChange = (key, value) => {
     const newFilters = { ...filters, [key]: value };
     const activeCount = Object.entries(newFilters)
@@ -205,7 +219,12 @@ const PropertyListingPage = () => {
 
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
           {displayedProperties.map(property => (
-            <div key={property.id} className="col">
+            <div 
+              key={property.id} 
+              className="col" 
+              onClick={() => handlePropertyClick(property)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="card h-100" style={{ borderRadius: "15px", overflow: "hidden", padding: "15px" }}>
                 <img 
                   src={property.image} 
@@ -228,7 +247,6 @@ const PropertyListingPage = () => {
             </div>
           ))}
         </div>
-
         <nav className="d-flex justify-content-center">
           <ul className="pagination">
             {Array.from({ length: totalPages }).map((_, index) => (

@@ -73,7 +73,7 @@ const ModernFooter = () => {
                 </li>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/about">About Us</Link>
+                  <Link to="/aboutus">About Us</Link>
                 </li>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />

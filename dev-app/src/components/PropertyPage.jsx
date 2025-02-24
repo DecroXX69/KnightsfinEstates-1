@@ -21,8 +21,20 @@ const PropertyPage = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/properties/${id}`);
+        // Get the current path to determine if it's an offplan or sale property
+        const isOffplan = window.location.pathname.includes('/offplan/');
+        const endpoint = isOffplan ? 
+          `http://localhost:5000/api/offplan/${id}` : 
+          `http://localhost:5000/api/sale/${id}`;
+  
+        const response = await fetch(endpoint);
         const data = await response.json();
+        
+        if (!data) {
+          console.error('No property data received');
+          return;
+        }
+        
         setProperty(data);
         setLoading(false);
       } catch (error) {
@@ -30,8 +42,10 @@ const PropertyPage = () => {
         setLoading(false);
       }
     };
-
-    fetchProperty();
+  
+    if (id) {
+      fetchProperty();
+    }
   }, [id]);
 
   if (loading || !property) {
