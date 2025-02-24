@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { BsTelephone } from 'react-icons/bs';
 import { MdEmail } from 'react-icons/md';
 import hero from "../assets/About-us-hero.jpg"; 
-
+import axios from 'axios';
 import styles from './ContactUsPage.module.css';
 import Footer from '../components/Footer';
 import PartnersSlider from '../minicomponents/PartnerSlider';
@@ -14,16 +14,26 @@ import MapComponent from './MapComponent';
 const ContactUsPage = () => {
   
   const [formData, setFormData] = useState({
-    fullName: '',
+    fullname: '',
     email: '',
     phone: '',
     message: ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-        // Handle form submission
 
+    try {
+      const response = await axios.post('http://localhost:5000/api/contactus', formData);
+
+      if (response.status === 201) {
+        // Successfully created the contact message
+        alert('Message sent successfully!');
+      }
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+      alert('Error submitting the form. Please try again later.');
+    }
   };
   
 
@@ -116,8 +126,8 @@ const ContactUsPage = () => {
             <input
               type="text"
               placeholder="Your Name"
-              value={formData.fullName}
-              onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+              value={formData.fullname}
+              onChange={(e) => setFormData({...formData, fullname: e.target.value})}
             />
           </div>
           </div>
@@ -175,7 +185,6 @@ const ContactUsPage = () => {
           </button>
         </form>
       </div>
-
 
 <PartnersSlider/>
       <Footer />
