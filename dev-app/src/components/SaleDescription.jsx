@@ -7,6 +7,7 @@ import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import locationIcon from '../assets/locationIcon.png';
+import axios from 'axios';
 
 const customIcon = new L.Icon({
   iconUrl: locationIcon,
@@ -25,7 +26,12 @@ const SaleDescription = () => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showFullDescription, setShowFullDescription] = useState(false);
-  
+  const [formData, setFormData] = useState({
+    fullname: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
   useEffect(() => {
     const fetchProperty = async () => {
       try {
@@ -54,14 +60,35 @@ const SaleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
 
-  const handleSendMessage = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle send message logic here
-    alert('Message sent successfully!');
-    setMessageText('');
-    setFullName('');
-    setEmail('');
-    setPhoneNumber('');
+  
+    // Create a complete form data object with all required fields
+    const completeFormData = {
+      fullname: fullName,
+      email: email,
+      phone: phoneNumber,
+      message: messageText,
+      // Add default values for the required fields in your model
+      chooseProperty: 'Apartment', // Default value
+      profession: 'Other' // Default value
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:5000/api/contactus', completeFormData);
+  
+      if (response.status === 201) {
+        alert('Message sent successfully!');
+        // Clear form
+        setFullName('');
+        setEmail('');
+        setPhoneNumber('');
+        setMessageText('');
+      }
+    } catch (error) {
+      console.error('Error submitting the form:', error);
+      alert('Error submitting the form. Please try again later.');
+    }
   };
 
   // Convert price to AED format
@@ -215,7 +242,7 @@ const SaleDescription = () => {
           <div className="col-lg-4">
             <div className="contact-card">
               <h2>Contact Seller</h2>
-              <form onSubmit={handleSendMessage}>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="fullName" className="form-label">Full Name</label>
                   <input

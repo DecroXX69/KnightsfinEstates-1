@@ -22,13 +22,26 @@ const ContactUsPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    // Add the missing required fields
+    const completeFormData = {
+      ...formData,
+      chooseProperty: 'Apartment', // Default value
+      profession: 'Other' // Default value
+    };
+  
     try {
-      const response = await axios.post('http://localhost:5000/api/contactus', formData);
-
+      const response = await axios.post('http://localhost:5000/api/contactus', completeFormData);
+  
       if (response.status === 201) {
-        // Successfully created the contact message
         alert('Message sent successfully!');
+        // Clear form
+        setFormData({
+          fullname: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
       }
     } catch (error) {
       console.error('Error submitting the form:', error);
