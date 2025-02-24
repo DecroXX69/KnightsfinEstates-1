@@ -76,7 +76,7 @@ const ModernFooter = () => {
                   <Link to="/about">About Us</Link>
                 </li>
                 <li>
-                  <FaAngleRight className="bullet-icon" />
+                  <FaAngleRight className={styles.bulletIcon} />
                   <Link to="/contactuspage">Contact Us</Link>
                 </li>
               </ul>
