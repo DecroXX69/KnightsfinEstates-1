@@ -31,7 +31,8 @@ const AboutUs = () => {
       <Info />
       <WhyChooseUs />
       <Services />
-      <ContactUs />
+      <div><ContactUs /></div>
+      
       <Footer />
     </div>
   );
