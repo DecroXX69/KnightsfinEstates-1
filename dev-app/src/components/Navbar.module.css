@@ -13,13 +13,16 @@ body {
 
 /* General Navbar Styles */
 .navbar {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(25, 25, 25, 0.75);
+  backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   z-index: 2000;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .container {
@@ -33,10 +36,14 @@ body {
 }
 
 .logo {
-  width: 120px;
-  height: auto;
+  width: 150px;
+  height: 50px;
+  /* height: auto; */
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.15));
+  position: relative;
+  transition: all 0.3s ease;
 }
-
 .navLinks {
   display: flex;
   gap: 70px;

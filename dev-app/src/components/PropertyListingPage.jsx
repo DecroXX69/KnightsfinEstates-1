@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Search, RefreshCcw } from 'lucide-react';
-import MiniContact from './miniContactComponent.jsx'; // Fixed import name (Components should be PascalCase)
+import MiniContact from './miniContactComponent.jsx';
 import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import { useNavigate } from 'react-router-dom';
-import  Navbar  from './Navbar.jsx';
+import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
+import { ReactCountryFlag } from 'react-country-flag';
+
 const PropertyListingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ const PropertyListingPage = () => {
   });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sort, setSort] = useState('recent');
+  const [selectedCurrency, setSelectedCurrency] = useState('AED');
+  const EXCHANGE_RATE = 17.5;
 
   useEffect(() => {
     const fetchProperties = async () => {
@@ -34,9 +38,7 @@ const PropertyListingPage = () => {
         const data = await response.json();
         setProperties(data.map(p => ({
           ...p,
-          currencySymbol: currencySymbols[p.location]?.[0] || '?',
-          // Ensure _id is included
-          _id: p._id // Add this line if _id is not already included
+          currencySymbol: currencySymbols[p.location]?.[0] || '?'
         })));
         setLoading(false);
       } catch (error) {
@@ -44,7 +46,6 @@ const PropertyListingPage = () => {
         setLoading(false);
       }
     };
-  
     fetchProperties();
   }, [filters, sort]);
 
@@ -55,19 +56,15 @@ const PropertyListingPage = () => {
       default: return 'createdAt=-1';
     }
   };
+
   const handlePropertyClick = (property) => {
-    console.log('Clicked property:', property); // Debug log
-    
     if (property.type === 'sale') {
-      // Route to SaleDescription component for sale properties
-      console.log('Navigating to sale property:', `/sale/${property._id}`);
       navigate(`/sale/${property._id}`);
     } else if (property.type === 'offplan') {
-      // Route to PropertyPage component for offplan properties
-      console.log('Navigating to offplan property:', `/offplan/${property._id}`);
       navigate(`/offplan/${property._id}`);
     }
   };
+
   const handleFilterChange = (key, value) => {
     const newFilters = { ...filters, [key]: value };
     const activeCount = Object.entries(newFilters)
@@ -98,7 +95,7 @@ const PropertyListingPage = () => {
     const isLocationMatch = filters.location ? 
       property.location.toLowerCase().includes(filters.location.toLowerCase()) : true;
     const isQueryMatch = filters.query ? 
-      [property.area, property.location].some(text => 
+      [property.area, property.location, property.propertyType].some(text => 
         text.toLowerCase().includes(filters.query.toLowerCase())
       ) : true;
 
@@ -172,6 +169,22 @@ const PropertyListingPage = () => {
                 onClick={handleReset}>
                 Reset
               </button>
+
+              <button
+    className={styles.resetButton}
+    onClick={() => setSelectedCurrency(selectedCurrency === 'AED' ? 'INR' : 'AED')}
+  >
+    <ReactCountryFlag
+      countryCode={selectedCurrency === 'AED' ? 'AE' : 'IN'} // AE for UAE, IN for India
+      svg
+      style={{
+        width: '20px',
+        height: '20px',
+      }}
+      ariaLabel={selectedCurrency === 'AED' ? 'United Arab Emirates' : 'India'}
+    />
+    {selectedCurrency === 'AED' ? '  AED ' : '  INR '}
+  </button>
             </div>
           </div>
 
@@ -241,19 +254,25 @@ const PropertyListingPage = () => {
                     {property.type.charAt(0).toUpperCase() + property.type.slice(1)}
                   </p>
                   <p className={styles.propertyPrice}>
-                    {property.currencySymbol} {property.price}
+                    {selectedCurrency === 'AED' ? (
+                      `AED ${property.price.toLocaleString()}`
+                    ) : (
+                      `INR ${Math.round(property.price * EXCHANGE_RATE).toLocaleString()}`
+                    )}
                   </p>
                 </div>
               </div>
             </div>
           ))}
         </div>
+
         <nav className="d-flex justify-content-center">
           <ul className="pagination">
             {Array.from({ length: totalPages }).map((_, index) => (
               <li 
                 key={index + 1} 
-                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+              >
                 <button className="page-link" onClick={() => handlePageChange(index + 1)}>
                   {index + 1}
                 </button>
