@@ -94,7 +94,7 @@ const PropertyPage = () => {
       </div>
 
       {/* Property Details Section */}
-      <div className="container py-5">
+      <div className={`container py-5 ${styles.propertyDetails}`}>
         <div className="row g-4">
           {/* Left Column */}
           <div className="col-lg-8">
@@ -102,12 +102,12 @@ const PropertyPage = () => {
               {property.buildingName} at {property.location}
             </h2>
             
-            <div className="d-flex gap-4 mb-4">
-              <div className="d-flex align-items-center gap-2">
+            <div className={`${styles.propertyStats} mb-4`}>
+              <div className={styles.statItem}>
                 <img src="/api/placeholder/24/24" alt="Bedrooms" className={styles.icon} />
                 <span>{property.bedrooms}</span>
               </div>
-              <div className="d-flex align-items-center gap-2">
+              <div className={styles.statItem}>
                 <img src="/api/placeholder/24/24" alt="Area" className={styles.icon} />
                 <span>{property.area} Sq. Ft.</span>
               </div>
@@ -128,7 +128,7 @@ const PropertyPage = () => {
                   alt="Current view"
                   className={styles.propertyThumb}
                 />
-                <div className="d-flex justify-content-between">
+                <div className={styles.imageNav}>
                   <button 
                     onClick={() => handleImageNavigation('prev')}
                     className={`${styles.btnPrimary} rounded-circle`}
@@ -148,36 +148,38 @@ const PropertyPage = () => {
 
           {/* Right Column */}
           <div className="col-lg-4">
-            <Card className="p-4">
+            <div className={styles.priceCard}>
               <div className="mb-4">
                 <p className="text-muted mb-1">STARTING PRICE</p>
-                <p className={`h3 ${styles.textWarning} fw-bold`}>
+                <p className={`${styles.priceValue} fw-bold`}>
                   AED {property.price?.toLocaleString()}
                 </p>
               </div>
+              <div className={styles.priceSeparator}></div>
               <div className="mb-4">
                 <p className="text-muted mb-1">BOOKING AMOUNT</p>
                 <p className="h3 fw-bold">10%</p>
               </div>
+              <div className={styles.priceSeparator}></div>
               <div className="mb-4">
                 <p className="text-muted mb-1">HANDOVER</p>
                 <p className="h3 fw-bold">2028</p>
               </div>
-              <div className={`${styles.bgPrimary} text-white p-3 rounded`}>
-                <p className="h5">Direct Sale</p>
-                <p className="h2 fw-bold">0% COMMISSION</p>
+              <div className={styles.commissionBadge}>
+                <p className="h5 mb-1">Direct Sale</p>
+                <p className="h2 fw-bold mb-0">0% COMMISSION</p>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
 
         {/* Overview Section */}
-        <div className="mt-5">
+        <div className={styles.overviewSection}>
           <h2 className={`h2 ${styles.textPrimary} mb-4`}>OVERVIEW</h2>
           <div className="row g-4">
             <div className="col-lg-8">
-              <div>
-                <p className="text-muted">
+              <div className={styles.overviewText}>
+                <p>
                   {property.description}
                 </p>
                 <button 
@@ -191,37 +193,37 @@ const PropertyPage = () => {
             
             {/* Payment Plan */}
             <div className="col-lg-4">
-              <Card className={`${styles.bgPrimary} text-white p-4`}>
+              <div className={styles.paymentPlanCard}>
                 <h3 className="h4 mb-4">PAYMENT PLAN</h3>
-                <div className="d-flex flex-column gap-3">
-                  <div className="d-flex justify-content-between">
+                <div className="d-flex flex-column">
+                  <div className={styles.paymentPlanItem}>
                     <span>ON BOOKING</span>
                     <span className="fw-bold">10%</span>
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className={styles.paymentPlanItem}>
                     <span>DURING CONSTRUCTION</span>
                     <span className="fw-bold">59%</span>
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className={styles.paymentPlanItem}>
                     <span>ON HANDOVER</span>
                     <span className="fw-bold">1%</span>
                   </div>
-                  <div className="d-flex justify-content-between">
+                  <div className={styles.paymentPlanItem}>
                     <span>POST HANDOVER</span>
                     <span className="fw-bold">30%</span>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Amenities Section */}
-        <div className={`mt-5 ${styles.bgPrimary} text-white p-5 rounded`}>
+        <div className={styles.amenitiesSection}>
           <h2 className="h2 mb-4">AMENITIES & SERVICES</h2>
           <div className="row row-cols-2 row-cols-md-4 g-4">
             {property.amenities?.map((amenity, index) => (
-              <div key={index} className="d-flex align-items-center gap-2">
+              <div key={index} className={styles.amenityItem}>
                 <img src="/api/placeholder/24/24" alt={amenity} className={styles.icon} />
                 <span>{amenity}</span>
               </div>
@@ -230,7 +232,7 @@ const PropertyPage = () => {
         </div>
 
         {/* Floor Plans Section */}
-        <div className="mt-5">
+        <div className={styles.floorPlanSection}>
           <h2 className={`h2 ${styles.textPrimary} mb-4`}>FLOOR PLAN</h2>
           <p className="text-muted mb-4">
             {property.buildingName} brings to you a wide range of floor plans offering studios, 1, 2, 3 and 4-bedroom apartments and penthouses that are no less than a haven of luxury.
@@ -239,7 +241,7 @@ const PropertyPage = () => {
             {['Studios', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom'].map((plan) => (
               <button
                 key={plan}
-                className={`${styles.btnOutlinePrimary} text-start p-3`}
+                className={styles.floorPlanButton}
               >
                 {plan}
               </button>
