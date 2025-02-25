@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Maximize } from 'lucide-react';
 import styles from './PropertyPage.module.css';
 
 const Card = ({ children, className }) => {
@@ -17,6 +17,8 @@ const PropertyPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAllOverview, setShowAllOverview] = useState(false);
+  const [fullscreenActive, setFullscreenActive] = useState(false);
+  const [activeFloorPlan, setActiveFloorPlan] = useState(null);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -48,10 +50,46 @@ const PropertyPage = () => {
     }
   }, [id]);
 
+  // Handle keyboard events for fullscreen gallery
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!fullscreenActive) return;
+      
+      if (e.key === 'Escape') {
+        setFullscreenActive(false);
+      } else if (e.key === 'ArrowRight') {
+        handleImageNavigation('next');
+      } else if (e.key === 'ArrowLeft') {
+        handleImageNavigation('prev');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [fullscreenActive]);
+
+  // Prevent scrolling when fullscreen is active
+  useEffect(() => {
+    if (fullscreenActive) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [fullscreenActive]);
+
   if (loading || !property) {
     return (
       <div className="d-flex align-items-center justify-content-center vh-100">
-        Loading...
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
     );
   }
@@ -61,19 +99,34 @@ const PropertyPage = () => {
   };
 
   const handleImageNavigation = (direction) => {
+    if (!property.images || property.images.length === 0) return;
+    
     if (direction === 'next') {
       setCurrentImageIndex((prev) =>
-        prev === property.images?.length - 1 ? 0 : prev + 1
+        prev === property.images.length - 1 ? 0 : prev + 1
       );
     } else {
       setCurrentImageIndex((prev) =>
-        prev === 0 ? property.images?.length - 1 : prev - 1
+        prev === 0 ? property.images.length - 1 : prev - 1
       );
     }
   };
 
+  const handleThumbnailClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const toggleFullscreen = () => {
+    setFullscreenActive(!fullscreenActive);
+  };
+
+  // For demo purposes, simulate multiple images if none exist
+  const propertyImages = property.images && property.images.length > 0 
+    ? property.images 
+    : [property.image, property.image, property.image, property.image];
+
   return (
-    <div className="min-vh-100 bg-white">
+    <div className="min-vh-100 bg-light">
       {/* Hero Section */}
       <div 
         className={styles.heroSection} 
@@ -105,43 +158,79 @@ const PropertyPage = () => {
             <div className={`${styles.propertyStats} mb-4`}>
               <div className={styles.statItem}>
                 <img src="/api/placeholder/24/24" alt="Bedrooms" className={styles.icon} />
-                <span>{property.bedrooms}</span>
+                <span>{property.bedrooms} Bedrooms</span>
               </div>
               <div className={styles.statItem}>
                 <img src="/api/placeholder/24/24" alt="Area" className={styles.icon} />
                 <span>{property.area} Sq. Ft.</span>
               </div>
+              {property.bathrooms && (
+                <div className={styles.statItem}>
+                  <img src="/api/placeholder/24/24" alt="Bathrooms" className={styles.icon} />
+                  <span>{property.bathrooms} Bathrooms</span>
+                </div>
+              )}
             </div>
 
-            {/* Property Images */}
-            <div className="row g-4 mb-5">
-              <div className="col-md-8">
+            {/* Property Images Gallery */}
+            <div className={styles.galleryContainer}>
+              <div className={styles.mainImageContainer}>
                 <img 
-                  src={property.images?.[currentImageIndex] || property.image} 
-                  alt="Property"
-                  className={styles.propertyMainImage}
+                  src={propertyImages[currentImageIndex] || property.image} 
+                  alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
+                  className={styles.mainImage}
+                  onClick={toggleFullscreen}
                 />
-              </div>
-              <div className="col-md-4">
-                <img 
-                  src={property.images?.[currentImageIndex] || property.image}
-                  alt="Current view"
-                  className={styles.propertyThumb}
-                />
-                <div className={styles.imageNav}>
+                <div className={styles.imageCount}>
+                  {currentImageIndex + 1} / {propertyImages.length}
+                </div>
+                <div className={styles.galleryNavigation}>
                   <button 
-                    onClick={() => handleImageNavigation('prev')}
-                    className={`${styles.btnPrimary} rounded-circle`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleImageNavigation('prev');
+                    }}
+                    className={styles.navButton}
+                    aria-label="Previous image"
                   >
                     <ChevronLeft />
                   </button>
                   <button 
-                    onClick={() => handleImageNavigation('next')}
-                    className={`${styles.btnPrimary} rounded-circle`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleImageNavigation('next');
+                    }}
+                    className={styles.navButton}
+                    aria-label="Next image"
                   >
                     <ChevronRight />
                   </button>
                 </div>
+              </div>
+              
+              <div className={styles.thumbnailsContainer}>
+                {propertyImages.slice(0, 3).map((image, index) => (
+                  <div 
+                    key={index}
+                    className={`${styles.thumbnailItem} ${currentImageIndex === index ? styles.active : ''}`}
+                    onClick={() => handleThumbnailClick(index)}
+                  >
+                    <img 
+                      src={image} 
+                      alt={`${property.buildingName} - Thumbnail ${index + 1}`}
+                      className={styles.thumbnailImage}
+                    />
+                  </div>
+                ))}
+                {propertyImages.length > 3 && (
+                  <div 
+                    className={styles.moreImages}
+                    onClick={toggleFullscreen}
+                  >
+                    <Maximize size={20} className="me-2" />
+                    +{propertyImages.length - 3} more
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -169,6 +258,12 @@ const PropertyPage = () => {
                 <p className="h5 mb-1">Direct Sale</p>
                 <p className="h2 fw-bold mb-0">0% COMMISSION</p>
               </div>
+              <button
+                onClick={handleRegisterInterest}
+                className={`${styles.btnPrimary} w-100 mt-4 text-white`}
+              >
+                Register Interest
+              </button>
             </div>
           </div>
         </div>
@@ -182,12 +277,14 @@ const PropertyPage = () => {
                 <p>
                   {property.description}
                 </p>
-                <button 
-                  onClick={() => setShowAllOverview(!showAllOverview)}
-                  className={`btn ${styles.textWarning} px-0`}
-                >
-                  {showAllOverview ? 'Show Less' : 'Show More'}
-                </button>
+                {property.description && property.description.length > 300 && (
+                  <button 
+                    onClick={() => setShowAllOverview(!showAllOverview)}
+                    className={`btn ${styles.textWarning} px-0`}
+                  >
+                    {showAllOverview ? 'Show Less' : 'Show More'}
+                  </button>
+                )}
               </div>
             </div>
             
@@ -221,11 +318,13 @@ const PropertyPage = () => {
         {/* Amenities Section */}
         <div className={styles.amenitiesSection}>
           <h2 className="h2 mb-4">AMENITIES & SERVICES</h2>
-          <div className="row row-cols-2 row-cols-md-4 g-4">
+          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
             {property.amenities?.map((amenity, index) => (
-              <div key={index} className={styles.amenityItem}>
-                <img src="/api/placeholder/24/24" alt={amenity} className={styles.icon} />
-                <span>{amenity}</span>
+              <div key={index} className="col">
+                <div className={styles.amenityItem}>
+                  <img src="/api/placeholder/24/24" alt={amenity} className={styles.icon} />
+                  <span>{amenity}</span>
+                </div>
               </div>
             ))}
           </div>
@@ -241,12 +340,52 @@ const PropertyPage = () => {
             {['Studios', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom'].map((plan) => (
               <button
                 key={plan}
-                className={styles.floorPlanButton}
+                className={`${styles.floorPlanButton} ${activeFloorPlan === plan ? styles.active : ''}`}
+                onClick={() => setActiveFloorPlan(plan)}
               >
-                {plan}
+                <span>{plan}</span>
+                <ChevronRight size={20} />
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Fullscreen Image Gallery Modal */}
+      <div className={`${styles.fullscreenOverlay} ${fullscreenActive ? styles.active : ''}`}>
+        <button 
+          className={styles.closeButton}
+          onClick={toggleFullscreen}
+          aria-label="Close fullscreen"
+        >
+          <X />
+        </button>
+        <img 
+          src={propertyImages[currentImageIndex] || property.image} 
+          alt={`${property.buildingName} - Fullscreen View`}
+          className={styles.fullscreenImage}
+        />
+        <div className={styles.galleryNavigation}>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleImageNavigation('prev');
+            }}
+            className={styles.navButton}
+            aria-label="Previous image"
+          >
+            <ChevronLeft />
+          </button>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              handleImageNavigation('next');
+            }}
+            className={styles.navButton}
+            aria-label="Next image"
+          >
+            <ChevronRight />
+          </button>
         </div>
       </div>
     </div>
