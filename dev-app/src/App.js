@@ -10,7 +10,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PropertyListingPage from './components/PropertyListingPage.jsx';
 import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 import ContactUsPage from './components/ContactUsPage.jsx';
+<<<<<<< Updated upstream
 import FloatingChat from './services/FloatingChat.jsx';
+=======
+import Mortgage from './components/Mortgage.jsx';
+>>>>>>> Stashed changes
 function App() {
   return (
     <Router>
@@ -19,6 +23,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/propertylisting" element={<PropertyListingPage />} />
           <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/mortgage" element={<Mortgage />} />
           <Route path="/contactuspage" element={<ContactUsPage />} />
           <Route path="/offplan/:id" element={<PropertyPage />} />
           <Route path="/property/:id" element={<PropertyPage />} />

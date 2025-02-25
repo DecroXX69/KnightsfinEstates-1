@@ -54,6 +54,7 @@ const Navbar = () => {
             Off Plan
           </Link>
           <Link to="/aboutus" className={styles.navLink}>About Us</Link>
+          <Link to="/mortgage" className={styles.navLink}>Mortgage</Link>
           <Link to="/contactuspage" className={`${styles.btnPrimary} ${styles.navLink}`}>
             Contact Us
           </Link>
