@@ -1,90 +1,510 @@
+/* PropertyPage.module.css */
+:root {
+  --primary-color: #b8860b; /* Gold color */
+  --primary-light: #d6ad4b;
+  --primary-dark: #976e00;
+  --warning-color: #e6a700;
+  --text-dark: #333333;
+  --text-muted: #6c757d;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+}
+
+/* General Styles */
+body {
+  font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
+  color: var(--text-dark);
+  background-color: #f8f9fa;
+}
+
+.textPrimary {
+  color: var(--primary-color) !important;
+}
+
+.textWarning {
+  color: var(--warning-color) !important;
+}
+
+.bgPrimary {
+  background-color: var(--primary-color);
+}
+
+.bgLight {
+  background-color: #fff;
+}
+
+/* Hero Section */
 .heroSection {
-  height: 80vh;
+  height: 70vh;
   background-size: cover;
   background-position: center;
+  position: relative;
 }
 
 .overlay {
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+  z-index: 1;
 }
 
-.propertyMainImage {
-  height: 400px;
-  object-fit: cover;
-  width: 100%;
+/* Card Styles */
+.card {
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  overflow: hidden;
 }
 
-.propertyThumb {
-  height: 200px;
-  object-fit: cover;
-  width: 100%;
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-.icon {
-  width: 24px;
-  height: 24px;
-}
-
+/* Button Styles */
 .btnPrimary {
-  background-color: #1e3a8a;
-  border-color: #1e3a8a;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: var(--transition);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .btnPrimary:hover {
-  background-color: #1e40af;
-  border-color: #1e40af;
-}
-
-.textPrimary {
-  color: #1e3a8a !important;
-}
-
-.bgPrimary {
-  background-color: #1e3a8a !important;
-}
-
-.textWarning {
-  color: #f97316 !important;
+  background-color: var(--primary-dark);
 }
 
 .btnOutlinePrimary {
-  color: #1e3a8a;
-  border-color: #1e3a8a;
+  background-color: transparent;
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  font-weight: 500;
+  transition: var(--transition);
+  cursor: pointer;
+  width: 100%;
 }
 
 .btnOutlinePrimary:hover {
-  background-color: #1e3a8a;
-  border-color: #1e3a8a;
+  background-color: var(--primary-color);
+  color: white;
 }
 
-.card {
-  border-radius: 0.375rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+/* ========== Image Gallery Styles ========== */
+.galleryContainer {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  grid-gap: 16px;
+  margin-bottom: 32px;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .heroSection {
-    height: 60vh;
+.mainImageContainer {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  height: 400px;
+}
+
+.mainImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.mainImage:hover {
+  transform: scale(1.03);
+}
+
+.thumbnailsContainer {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 8px;
+  height: 400px;
+}
+
+.thumbnailItem {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.thumbnailItem:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(184, 134, 11, 0.2);
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.thumbnailItem:hover .thumbnailImage {
+  transform: scale(1.05);
+}
+
+.thumbnailItem.active {
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.moreImages {
+  position: relative;
+  background-color: var(--primary-dark);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.fullscreenOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.fullscreenOverlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.fullscreenImage {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: white;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.galleryNavigation {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.navButton:hover {
+  background-color: white;
+  transform: scale(1.1);
+}
+
+.navButton svg {
+  width: 18px;
+  height: 18px;
+  color: var(--text-dark);
+}
+
+.imageCount {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* ========== End of Image Gallery Styles ========== */
+
+/* Property Details Section */
+.propertyDetails {
+  padding: 40px 0;
+}
+
+/* Feature Icons */
+.featureIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Property Stats */
+.propertyStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 24px 0;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: var(--border-radius);
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+/* Overview Section */
+.overviewSection {
+  margin: 60px 0;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.overviewText {
+  line-height: 1.8;
+  color: var(--text-muted);
+}
+
+/* Amenities Section */
+.amenitiesSection {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 40px;
+  border-radius: var(--border-radius);
+  margin: 60px 0;
+  box-shadow: var(--box-shadow);
+}
+
+.amenityItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px 16px;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.amenityItem:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Floor Plans Section */
+.floorPlanSection {
+  margin: 60px 0;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.floorPlanButton {
+  padding: 16px;
+  text-align: left;
+  border: 1px solid #eee;
+  border-radius: var(--border-radius);
+  background-color: transparent;
+  color: var(--text-dark);
+  font-weight: 500;
+  margin-bottom: 12px;
+  transition: var(--transition);
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.floorPlanButton:hover {
+  border-color: var(--primary-color);
+  background-color: rgba(184, 134, 11, 0.05);
+}
+
+.floorPlanButton.active {
+  background-color: var(--primary-light);
+  color: white;
+  border-color: var(--primary-light);
+}
+
+/* Price and Details Card */
+.priceCard {
+  padding: 24px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: white;
+  position: sticky;
+  top: 20px;
+}
+
+.priceValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--warning-color);
+}
+
+.priceSeparator {
+  height: 1px;
+  background-color: #eee;
+  margin: 16px 0;
+}
+
+.commissionBadge {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 16px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  margin-top: 24px;
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
+}
+
+/* Payment Plan */
+.paymentPlanCard {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: white;
+  padding: 24px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.2);
+}
+
+.paymentPlanItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.paymentPlanItem:last-child {
+  border-bottom: none;
+}
+
+/* For Sale Badge */
+.forSaleBadge {
+  background-color: var(--warning-color);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 50px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+/* Developer Badge */
+.developerBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 8px 16px;
+  border-radius: 50px;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+}
+
+/* Media Queries */
+@media (max-width: 992px) {
+  .galleryContainer {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
   }
   
-  .propertyMainImage,
-  .propertyThumb {
+  .thumbnailsContainer {
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    height: 120px;
+  }
+  
+  .priceCard {
+    position: relative;
+    top: 0;
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    height: 50vh;
+  }
+  
+  .amenitiesSection {
+    padding: 24px;
+  }
+  
+  .mainImageContainer {
     height: 300px;
   }
 }
 
 @media (max-width: 576px) {
   .heroSection {
-    height: 50vh;
+    height: 40vh;
   }
   
-  .propertyMainImage,
-  .propertyThumb {
+  .thumbnailsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    height: 200px;
+  }
+  
+  .mainImageContainer {
     height: 250px;
+  }
+  
+  .amenityItem {
+    margin-bottom: 8px;
   }
 }
