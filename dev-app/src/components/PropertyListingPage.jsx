@@ -26,7 +26,7 @@ const PropertyListingPage = () => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sort, setSort] = useState('recent');
   const [selectedCurrency, setSelectedCurrency] = useState('AED');
-  const EXCHANGE_RATE = 17.5;
+  const EXCHANGE_RATE = 23.7;
 
   useEffect(() => {
     const fetchProperties = async () => {
