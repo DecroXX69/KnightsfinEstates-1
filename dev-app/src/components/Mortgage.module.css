@@ -1,124 +1,637 @@
-/* Global Styles */
-.mortgage-page-container {
-    font-family: 'Poppins', sans-serif;
+/* Mortgage Component Styles */
+.mortgageContainer {
+    font-family: 'Poppins', Arial, sans-serif;
     color: #333;
-    line-height: 1.6;
+    background-color: #f8f9fa;
+    margin-top: 7rem;
   }
   
-  .mortgage-title {
+  /* Loading State */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  /* Header Section */
+  .mortgageTitle {
     font-size: 2rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 0.5rem;
+  }
+  
+  .mortgageSubtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Back Button */
+  .btnBack {
+    background: none;
+  border: none;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.3s;
+  }
+  
+  .btnBack:hover {
+    color: #007bff;
+  }
+  
+  /* Banner Area */
+  .bannerContainer {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bannerImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .bannerOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  
+  .bannerOverlay h2 {
+    font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 1rem;
   }
   
-  .mortgage-intro {
+  .bannerOverlay p {
     font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 1.5rem;
+    max-width: 600px;
   }
   
-  .mortgage-description {
-    font-size: 1rem;
-    color: #777;
+  /* Cards Style */
+  .detailsCard {
+    text-align: left;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     margin-bottom: 2rem;
   }
   
-  /* Back Button */
-  .btn-back {
-    background: none;
-    border: none;
-    color: #666;
+  .detailsCard h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-weight: 500;
-    padding: 0;
-    cursor: pointer;
-    transition: color 0.3s;
+    gap: 0.75rem;
   }
   
-  .btn-back:hover {
+  .cardIcon {
     color: #f97316;
   }
   
-  /* Mortgage Calculator */
-  .calculator-card {
+  .contactCard {
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    height: fit-content;
   }
   
-  .calculator-card h2 {
+  .contactCard h2 {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 1.2rem;
+    color: #222;
+    margin-bottom: 1.5rem;
   }
   
-  .btn-calculate {
-    background-color: #f97316;
-    border: none;
+  /* Form Styles */
+  .form-label {
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  
+  .required {
+    color: #dc3545;
+  }
+  
+  .inputWithIcon {
+    position: relative;
+  }
+  
+  .inputWithIcon1 input {
+    padding-left: 40px;
+    height: 45px;
+  }
+  
+  .currencySymbol {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-weight: 500;
+  }
+  
+  input.form-control, select.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  input.form-control:focus, select.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+  }
+  
+  .btnCalculate {
+    background-color: #ff9800;
     color: white;
-    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
     font-weight: 600;
-    border-radius: 4px;
+    cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 1rem;
   }
   
-  .btn-calculate:hover {
+  .btnCalculate:hover {
     background-color: #ea580c;
   }
   
-  /* Result Card */
-  .result-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    padding: 1.5rem;
-    text-align: center;
+  /* Results Section */
+  .resultsContainer {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
   }
   
-  .result-card h2 {
-    font-size: 1.5rem;
+  .resultsContainer h3 {
+    font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 1.2rem;
+    color: #222;
+    margin-bottom: 1.5rem;
   }
   
-  .result h3 {
-    font-size: 2rem;
+  .resultItem {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 1.25rem;
+    text-align: center;
+    height: 100%;
+  }
+  
+  .resultLabel {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .resultValue {
+    font-size: 1.3rem;
     font-weight: 700;
-    color: #f97316;
+    color: #222;
   }
   
-  .result p {
-    font-size: 1rem;
+  /* Information Section */
+  .infoContent {
+    padding: 0.5rem 0;
+  }
+  
+  .infoContent h5 {
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.25rem;
+  }
+  
+  .infoList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .infoList li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+  }
+  
+  .infoIcon {
+    font-size: 1.2rem;
+    color: #f97316;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  .infoText {
+    text-align: left;
+    font-size: 0.95rem;
     color: #555;
   }
   
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .mortgage-title {
-      font-size: 1.6rem;
-    }
+  .infoText strong {
+    color: #333;
+    font-weight: 600;
+  }
   
-    .calculator-card,
-    .result-card {
-      padding: 1rem;
+  .disclaimer {
+    font-size: 0.85rem;
+    color: #777;
+    font-style: italic;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+
+  .contactForm {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.topFormRow {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.topFormRow .formGroup {
+    flex: 1;
+    min-width: 0;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formGroup label {
+    font-weight: bold;
+    color: #2f3acb;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.formRow .formGroup {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.formGroup label {
+    font-size: 0.95rem;
+}
+
+.required {
+    color: red;
+}
+
+
+.inputWithIcon1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 12px;
+    font-size: 1.1rem;
+}
+
+.phoneInput {
+    display: flex;
+    gap: 10px;
+}
+
+.countryCodeWrapper {
+    position: relative;
+    width: 70px;
+    flex-shrink: 0;
+}
+
+input,
+textarea,
+.countryCode {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333;
+    background-color: white;
+    transition: border-color 0.3s;
+}
+
+.countryCode {
+    width: 100%;
+    padding: 12px;
+    padding-left: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 14px;
+}
+
+input:focus,
+textarea:focus,
+.countryCode:focus {
+    outline: none;
+    border-color: #ff9800;
+}
+
+.countryCodeWrapper {
+    position: relative;
+    width: 70px;
+    flex-shrink: 0;
+}
+
+.submitButton {
+    background-color: #ff9800;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 25px;
+}
+
+.submitButton:hover {
+    background-color: #f57c00;
+}
+
+  
+  /* Responsive Styles */
+  @media (max-width: 992px) {
+    .contactCard {
+      margin-top: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .mortgageTitle {
+      font-size: 1.5rem;
+    }
+    
+    .bannerOverlay h2 {
+      font-size: 1.5rem;
+    }
+    
+    .bannerOverlay p {
+      font-size: 0.9rem;
+    }
+    
+    .detailsCard, .contactCard {
+      padding: 1.5rem;
+    }
+    
+    .resultItem {
+      margin-bottom: 1rem;
     }
   }
   
   @media (max-width: 576px) {
-    .mortgage-title {
-      font-size: 1.4rem;
+    .bannerContainer {
+      height: 200px;
     }
     
-    .calculator-card,
-    .result-card {
-      padding: 0.8rem;
+    .resultValue {
+      font-size: 1.1rem;
     }
     
-    .result h3 {
-      font-size: 1.6rem;
+    .detailsCard h2, .contactCard h2 {
+      font-size: 1.3rem;
     }
   }
+
   
+@media (max-width: 768px) {
+    .contactForm {
+        padding: 30px;
+    }
+    .contactSection {
+        padding: 40px 0;
+    }
+    .container {
+        flex-direction: column;
+        padding: 0 20px;
+    }
+    .heroOverlay h1 {
+        padding-right: 20%;
+    }
+    .contactInfo {
+        width: 100%;
+        padding: 20px 0;
+        align-items: center;
+        text-align: center;
+    }
+    .contactInfo h1 {
+        font-size: 2.2rem;
+        text-align: left;
+    }
+    .contactInfo p {
+        text-align: left;
+    }
+    .mapContainer {
+        width: 100%;
+        height: 500px;
+        margin-top: 10px;
+        margin-bottom: 50px;
+    }
+    .formContainer {
+        margin-top: 20px;
+        position: relative;
+        z-index: 1;
+    }
+    .contactDetails {
+        align-items: left;
+    }
+    .contactItem {
+        justify-content: left;
+    }
+    .formGroup label {
+        font-size: 0.95rem;
+    }
+    input,
+    textarea,
+    .countryCode {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+    .submitButton {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+    .contactInfo h1 span:last-child {
+        margin-left: 40px;
+    }
+    .contactInfo p {
+        font-size: 1rem;
+    }
+    .contactDetails {
+        gap: 15px;
+    }
+    .contactItem {
+        gap: 15px;
+    }
+    .iconWrapper {
+        width: 40px;
+        height: 40px;
+    }
+    .iconWrapper svg {
+        width: 24px;
+        height: 24px;
+    }
+    .textContent h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .contactSection {
+        padding: 30px 0;
+    }
+    .container {
+        padding: 0 15px;
+    }
+    .contactInfo h1 {
+        font-size: 1.8rem;
+        line-height: 1.3;
+        text-align: left;
+    }
+    .heroOverlay h1 {
+        padding-right: 20%;
+    }
+    .contactInfo p {
+        font-size: 1rem;
+        line-height: 1.4;
+        text-align: left;
+    }
+    .mapContainer {
+        height: 300px;
+        margin-bottom: 70px;
+    }
+    .contactDetails {
+        width: 100%;
+    }
+    .contactItem {
+        width: 100%;
+        flex-direction: row;
+        align-items: left;
+    }
+    .topFormRow {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .contactForm {
+        padding: 25px;
+    }
+    .formContainer {
+        margin-top: -70px;
+    }
+    .formGroup label {
+        font-size: 0.9rem;
+    }
+    input,
+    textarea,
+    .countryCode {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    .submitButton {
+        width: 100%;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 420px) {
+    .contactSection {
+        padding: 20px 0;
+    }
+    .container {
+        padding: 0 10px;
+    }
+    .contactInfo h1 {
+        font-size: 1.6rem;
+    }
+    .heroOverlay h1 {
+        font-size: 2rem;
+        padding-right: 0;
+        text-align: center;
+    }
+    .contactInfo p {
+        font-size: 0.9rem;
+    }
+    .mapContainer {
+        height: 200px;
+        margin-bottom: 50px;
+    }
+    .contactItem {
+        gap: 10px;
+    }
+    .iconWrapper {
+        width: 35px;
+        height: 35px;
+    }
+    .iconWrapper svg {
+        width: 20px;
+        height: 20px;
+    }
+    .formContainer {
+        margin-top: 20px;
+        padding: 0 10px;
+    }
+    .contactForm {
+        padding: 20px;
+    }
+    .submitButton {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}
