@@ -13,7 +13,7 @@ import {
 import './Home.css';
 import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo12.png';
 import PropertyShowcase from './PropertyShowcase';
 import LuxuryProperty from '../minicomponents/LuxuryProperty';
 import PartnersSlider from '../minicomponents/PartnerSlider';
