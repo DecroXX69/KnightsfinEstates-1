@@ -150,7 +150,7 @@ const handleSearch = () => {
 
       <div className="hero-content">
         {/* Location Buttons */}
-        <div className="location-buttons mb-4">
+        {/* <div className="location-buttons mb-4">
           {Object.keys(locationData).map(location => (
             <button
               key={location}
@@ -161,7 +161,7 @@ const handleSearch = () => {
               <span className="location-initials">{locationData[location].initials}</span>
             </button>
           ))}
-        </div>
+        </div> */}
 
         <h1 className="hero-title">{locationData[activeLocation].title}</h1>
         <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
