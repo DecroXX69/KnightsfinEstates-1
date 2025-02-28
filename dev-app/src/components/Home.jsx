@@ -33,6 +33,14 @@ const locationData = {
     title: "Find The Best Pune Real Estate Property",
     subtitle: "Explore Pune's finest real estate properties today",
     videoUrl: dubai,
+    locations: ["Wakad", "Baner", "Punawale", "Kiwale", "Ravet"],
+    flag: "PN",
+    initials: "PNQ"
+  },
+  Dubai: {
+    title: "Find The Best Dubai Real Estate Property",
+    subtitle: "Explore Dubai's finest real estate properties today",
+    videoUrl: dubai,
     locations: ["Wakad", "Baner", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
     flag: "🇦🇪",
     initials: "DXB"
@@ -142,7 +150,7 @@ const handleSearch = () => {
 
       <div className="hero-content">
         {/* Location Buttons */}
-        <div className="location-buttons mb-4">
+        {/* <div className="location-buttons mb-4">
           {Object.keys(locationData).map(location => (
             <button
               key={location}
@@ -153,7 +161,7 @@ const handleSearch = () => {
               <span className="location-initials">{locationData[location].initials}</span>
             </button>
           ))}
-        </div>
+        </div> */}
 
         <h1 className="hero-title">{locationData[activeLocation].title}</h1>
         <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
@@ -300,7 +308,7 @@ const handleSearch = () => {
         selectedLocation={selectedLocation}
       />
 
-      <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button>
+      {/* <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button> */}
 
       <section>
         <LuxuryProperty {...luxuryPropertyData} />
