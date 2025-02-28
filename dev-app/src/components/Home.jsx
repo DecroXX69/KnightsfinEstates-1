@@ -29,11 +29,11 @@ import Navbar from './Navbar';
 
 
 const locationData = {
-  Dubai: {
-    title: "Find The Best Dubai Real Estate Property",
-    subtitle: "Explore Dubai's finest real estate properties today",
+  Pune: {
+    title: "Find The Best Pune Real Estate Property",
+    subtitle: "Explore Pune's finest real estate properties today",
     videoUrl: dubai,
-    locations: ["Dubai Marina", "Palm Jumeirah", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
+    locations: ["Wakad", "Baner", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
     flag: "🇦🇪",
     initials: "DXB"
   },
@@ -82,7 +82,7 @@ const bedroomOptions = ["Studio", "1", "1.5", "2", "3", "4", "5", "6"];
 
 const Home = () => {
   const navigate = useNavigate();
-  const [activeLocation, setActiveLocation] = useState('Dubai');
+  const [activeLocation, setActiveLocation] = useState('Pune');
   const [listingType, setListingType] = useState('sale');
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
