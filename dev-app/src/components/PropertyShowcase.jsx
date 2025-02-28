@@ -60,15 +60,14 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
           className="me-3 rounded-pill px-4"
           onClick={() => setListingType('sale')}
         >
-          For Sale
-        </Button>
-        <Button
+          For Sale</Button>
+        {/* <Button
           variant={listingType === 'offplan' ? 'primary' : 'light'}
           className="rounded-pill px-4"
           onClick={() => setListingType('offplan')}
         >
           Off Plan
-        </Button>
+        </Button> */}
       </div>
 
       <Row className="g-4">

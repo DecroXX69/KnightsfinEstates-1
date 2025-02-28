@@ -29,6 +29,14 @@ import Navbar from './Navbar';
 
 
 const locationData = {
+  Pune: {
+    title: "Find The Best Pune Real Estate Property",
+    subtitle: "Explore Pune's finest real estate properties today",
+    videoUrl: dubai,
+    locations: ["Wakad", "Baner", "Punawale", "Kiwale", "Ravet"],
+    flag: "PN",
+    initials: "PNQ"
+  },
   Dubai: {
     title: "Find The Best Dubai Real Estate Property",
     subtitle: "Explore Dubai's finest real estate properties today",
@@ -82,7 +90,7 @@ const bedroomOptions = ["Studio", "1", "1.5", "2", "3", "4", "5", "6"];
 
 const Home = () => {
   const navigate = useNavigate();
-  const [activeLocation, setActiveLocation] = useState('Dubai');
+  const [activeLocation, setActiveLocation] = useState('Pune');
   const [listingType, setListingType] = useState('sale');
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const [isPropertyTypeOpen, setIsPropertyTypeOpen] = useState(false);
@@ -300,7 +308,7 @@ const handleSearch = () => {
         selectedLocation={selectedLocation}
       />
 
-      <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button>
+      {/* <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button> */}
 
       <section>
         <LuxuryProperty {...luxuryPropertyData} />
