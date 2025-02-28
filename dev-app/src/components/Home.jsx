@@ -166,21 +166,7 @@ const handleSearch = () => {
         <h1 className="hero-title">{locationData[activeLocation].title}</h1>
         <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <button 
-            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
-            onClick={() => handleListingTypeChange('sale')}
-          >
-            Buy
-          </button>
-          <button 
-            className={`btn ${listingType === 'offplan' ? 'btn-primary' : 'btn-light'}`}
-            onClick={() => handleListingTypeChange('offplan')}
-          >
-            Off Plan
-          </button>
-        </div>
+
 
         {/* Search Bar */}
         <div className="search-container">
@@ -195,7 +181,7 @@ const handleSearch = () => {
             />
             
             {/* Property Type Dropdown */}
-            <div className="dropdown search-dropdown">
+            {/* <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -221,7 +207,7 @@ const handleSearch = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Location Dropdown */}
             <div className="dropdown search-dropdown">
@@ -253,7 +239,7 @@ const handleSearch = () => {
             </div>
 
             {/* Bedrooms Dropdown */}
-            <div className="dropdown search-dropdown">
+            {/* <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -279,7 +265,7 @@ const handleSearch = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             <button 
               className="btn btn-primary search-submit"
@@ -289,9 +275,23 @@ const handleSearch = () => {
             </button>
           </div>
         </div>
-
+         {/* Action Buttons */}
+         <div className="action-buttons">
+          <button 
+            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
+            onClick={() => handleListingTypeChange('sale')}
+          >
+            Explore Properties
+          </button>
+          {/* <button 
+            className={`btn ${listingType === 'offplan' ? 'btn-primary' : 'btn-light'}`}
+            onClick={() => handleListingTypeChange('offplan')}
+          >
+            Off Plan
+          </button> */}
+        </div>
         {/* Property Type Icons */}
-        <div className="property-icons">
+        {/* <div className="property-icons">
           {propertyTypes.map(({ name, icon: Icon }) => (
             <div key={name} className="property-icon-item">
               <div className="icon-label-container">
@@ -300,7 +300,7 @@ const handleSearch = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
 
       <PropertyShowcase 
