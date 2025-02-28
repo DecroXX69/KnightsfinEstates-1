@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import  './form.css';
+import styles from './PropertyForm.module.css';
 
 const PropertyForm = () => {
   const [formData, setFormData] = useState({
@@ -159,151 +159,164 @@ const PropertyForm = () => {
   };
 
   return (
-    <div className="container">
-      <h2>Create New Property</h2>
-      <form className="property-form" onSubmit={handleFormSubmit}>
-        <div className="form-group">
-          <label htmlFor="developer">Developer:</label>
-          <input
-            type="text"
-            id="developer"
-            value={formData.developer}
-            onChange={(e) => setFormData({ ...formData, developer: e.target.value })}
-            required
-          />
-        </div>
+    <div className={styles.container}>
+    <h2 className={styles.heading}>Create New Property</h2>
+    <form className={styles.propertyForm} onSubmit={handleFormSubmit}>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="developer">Developer:</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="developer"
+          value={formData.developer}
+          onChange={(e) => setFormData({ ...formData, developer: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="buildingName">Building Name:</label>
-          <input
-            type="text"
-            id="buildingName"
-            value={formData.buildingName}
-            onChange={(e) => setFormData({ ...formData, buildingName: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="buildingName">Building Name:</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="buildingName"
+          value={formData.buildingName}
+          onChange={(e) => setFormData({ ...formData, buildingName: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="price">Price:</label>
-          <input
-            type="number"
-            id="price"
-            min="0"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="price">Price:</label>
+        <input
+          className={styles.input}
+          type="number"
+          id="price"
+          min="0"
+          value={formData.price}
+          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="location">Location:</label>
-          <input
-            type="text"
-            id="location"
-            value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="location">Location:</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="location"
+          value={formData.location}
+          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="area">Area:</label>
-          <input
-            type="text"
-            id="area"
-            value={formData.area}
-            onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="area">Area:</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="area"
+          value={formData.area}
+          onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="type">Type:</label>
-          <select
-            id="type"
-            value={formData.type}
-            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-            required
-          >
-            <option value="sale">Sale</option>
-            <option value="offplan">Offplan</option>
-          </select>
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="type">Type:</label>
+        <select
+          className={styles.select}
+          id="type"
+          value={formData.type}
+          onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+          required
+        >
+          <option value="sale">Sale</option>
+          <option value="offplan">Offplan</option>
+        </select>
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="image">Main Image:</label>
-          <input
-            type="file"
-            id="image"
-            onChange={handleMainImageUpload}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="image">Main Image:</label>
+        <input
+          className={styles.input}
+          type="file"
+          id="image"
+          onChange={handleMainImageUpload}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="bedrooms">Bedrooms:</label>
-          <input
-            type="number"
-            id="bedrooms"
-            min="0"
-            value={formData.bedrooms}
-            onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="bedrooms">Bedrooms:</label>
+        <input
+          className={styles.input}
+          type="number"
+          id="bedrooms"
+          min="0"
+          value={formData.bedrooms}
+          onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="propertyType">Property Type:</label>
-          <select
-            id="propertyType"
-            value={formData.propertyType}
-            onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-            required
-          >
-            <option value="">Select</option>
-            <option value="Villa">Villa</option>
-            <option value="Townhouse">Townhouse</option>
-            <option value="Penthouse">Penthouse</option>
-            <option value="Apartment">Apartment</option>
-          </select>
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="propertyType">Property Type:</label>
+        <select
+          className={styles.select}
+          id="propertyType"
+          value={formData.propertyType}
+          onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
+          required
+        >
+          <option value="">Select</option>
+          <option value="Villa">Villa</option>
+          <option value="Townhouse">Townhouse</option>
+          <option value="Penthouse">Penthouse</option>
+          <option value="Apartment">Apartment</option>
+        </select>
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Description:</label>
-          <textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            required
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="description">Description:</label>
+        <textarea
+          className={styles.textarea}
+          id="description"
+          value={formData.description}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          required
+        />
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="additionalImages">Additional Images:</label>
-          <input
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="additionalImages">Additional Images:</label>
+        <input
             type="file"
             id="additionalImages"
             multiple
             onChange={handleAdditionalImagesUpload}
           />
-        </div>
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="amenities">Amenities (comma-separated):</label>
-          <input
-            type="text"
-            id="amenities"
-            value={formData.amenities}
-            onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
-          />
-        </div>
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="amenities">Amenities (comma-separated):</label>
+        <input
+          className={styles.input}
+          type="text"
+          id="amenities"
+          value={formData.amenities}
+          onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
+        />
+      </div>
 
-        <div className="form-group">
-          <h4>Payment Plan</h4>
-          <div>
-            <label htmlFor="onBooking">On Booking:</label>
+      <div className={styles.formGroup}>
+        <h4 className={styles.paymentPlanHeading}>Payment Plan</h4>
+        <div className={styles.paymentPlanGroup}>
+          <div className={styles.paymentField}>
+            <label className={styles.label} htmlFor="onBooking">On Booking:</label>
             <input
+              className={styles.input}
               type="number"
               id="onBooking"
               min="0"
@@ -316,9 +329,10 @@ const PropertyForm = () => {
               }
             />
           </div>
-          <div>
-            <label htmlFor="duringConstruction">During Construction:</label>
+          <div className={styles.paymentField}>
+            <label className={styles.label} htmlFor="duringConstruction">During Construction:</label>
             <input
+              className={styles.input}
               type="number"
               id="duringConstruction"
               min="0"
@@ -331,9 +345,10 @@ const PropertyForm = () => {
               }
             />
           </div>
-          <div>
-            <label htmlFor="onHandover">On Handover:</label>
+          <div className={styles.paymentField}>
+            <label className={styles.label} htmlFor="onHandover">On Handover:</label>
             <input
+              className={styles.input}
               type="number"
               id="onHandover"
               min="0"
@@ -346,9 +361,10 @@ const PropertyForm = () => {
               }
             />
           </div>
-          <div>
-            <label htmlFor="postHandover">Post Handover:</label>
+          <div className={styles.paymentField}>
+            <label className={styles.label} htmlFor="postHandover">Post Handover:</label>
             <input
+              className={styles.input}
               type="number"
               id="postHandover"
               min="0"
@@ -362,12 +378,17 @@ const PropertyForm = () => {
             />
           </div>
         </div>
+      </div>
 
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Submitting...' : 'Create Property'}
-        </button>
-      </form>
-    </div>
+      <button 
+        className={isLoading ? `${styles.button} ${styles.buttonDisabled}` : styles.button} 
+        type="submit" 
+        disabled={isLoading}
+      >
+        {isLoading ? 'Submitting...' : 'Create Property'}
+      </button>
+    </form>
+  </div>
   );
 };
 
