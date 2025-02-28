@@ -12,6 +12,7 @@ import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 import ContactUsPage from './components/ContactUsPage.jsx';
 import FloatingChat from './services/FloatingChat.jsx';
 import Mortgage from './components/Mortgage.jsx';
+import PropertyForm from './components/Form.jsx';
 function App() {
   return (
     <Router>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/offplan/:id" element={<PropertyPage />} />
           <Route path="/property/:id" element={<PropertyPage />} />
         <Route path="/sale/:id" element={<SaleDescription />} />
+        <Route path="/form" element={<PropertyForm />} />
         </Routes>
        <FloatingChat />
       </div>
