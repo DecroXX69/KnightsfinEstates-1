@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import styles from './Navbar.module.css';
-import logo1 from '../assets/logo.png';
+import logo1 from '../assets/logo12.png';
 
 const locationData = {
   Dubai: { flag: "\ud83c\udde6\ud83c\uddea", initials: "DXB" },
