@@ -26,6 +26,8 @@ import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
 import Navbar from './Navbar';
+import Trusted from '../minicomponents/Trusted';
+import Timeless from '../minicomponents/Timeless';
 
 
 const locationData = {
@@ -300,12 +302,18 @@ const handleSearch = () => {
         </div> */}
       </div>
 
+
+      <Trusted />
+      <Timeless/>
+      <PartnersSlider />
       <PropertyShowcase 
         activeLocation={activeLocation}
         selectedLocation={selectedLocation}
       />
 
       {/* <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button> */}
+      
+      
 
       <section>
         <LuxuryProperty {...luxuryPropertyData} />
@@ -313,7 +321,7 @@ const handleSearch = () => {
       
       <FloatingChat phoneNumber='+917558273523'/>
       <About />
-      <PartnersSlider />
+      
       <Testimonials />
       <ContactUs />
       <Footer />
