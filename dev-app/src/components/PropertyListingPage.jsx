@@ -5,7 +5,7 @@ import MiniContact from './miniContactComponent.jsx';
 import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar.jsx';
+
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 
@@ -116,7 +116,7 @@ const PropertyListingPage = () => {
 
   return (
     <>
-    <Navbar />
+    {/* <Navbar /> */}
       <div className={styles.container}>
         <div className={styles.filterContainer}>
           <div className="d-flex align-items-center gap-3">

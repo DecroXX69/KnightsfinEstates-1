@@ -179,10 +179,12 @@ body {
 /* Title & Subtitle */
 
 .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+    font-family: 'Juana W05 Light', serif;
+    font-size: 3.5rem;
+    font-weight: 00;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    /* color: #2B2B2B; */
 }
 
 
@@ -194,26 +196,49 @@ body {
 
 
 /* Action Buttons */
-
 .action-buttons .btn {
-    padding: 0.75rem 2rem;
-    border-radius: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.8rem;
+    border-radius: 0.5rem;
     font-size: 1rem;
-    min-width: 120px;
+    min-width: 200px;
     background-color: #D4AF37; /* Gold */
-    color: #000000; /* White text */
-    font-family: 'Playfair Display', serif; /* Professional font */
-    font-weight: 600;
-    border: 2px solid #B8860B; /* Darker gold border for contrast */
-    transition: all 0.3s ease-in-out;
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    border: none;
     text-transform: uppercase;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    gap: 10px; /* Space between text & arrow */
 }
+
+/* Arrow immediately after text */
+.action-buttons .btn::after {
+    content: '➝';
+    font-size: 1.5rem;
+    color: #000; /* Black arrow for contrast */
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.action-buttons .btn:hover::after {
+    transform: translateX(5px); /* Moves arrow slightly right */
+}
+
+
+
 
 .action-buttons .btn:hover {
     background-color: #B8860B; /* Slightly darker gold on hover */
     border-color: #FFD700; /* Brighter gold border */
     color: #fff;
     transform: scale(1.05);
+    opacity: 1;
+    transform: translateX(5px);
 }
 
 
@@ -224,13 +249,13 @@ body {
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #ffffff;
     color: white;
     border: none;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #ffffff;
 }
 
 .btn-light {
@@ -248,7 +273,7 @@ body {
 /* Search Container */
 
 .search-container {
-    width: 50%;
+    width: 40%;
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;
@@ -270,6 +295,7 @@ body {
     display: flex;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid #D4AF37; /* Subtle golden border */
 }
 
 .search-input {
@@ -278,6 +304,11 @@ body {
     border: none;
     outline: none;
     font-size: 1rem;
+}
+
+.search-submit i {
+    font-size: 1.2rem;
+    color: #D4AF37; /* Gold color for the search icon */
 }
 
 .search-dropdown {
@@ -299,7 +330,12 @@ body {
 }
 
 .search-submit {
-    padding: 0.5rem 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
 }
 
 
@@ -392,8 +428,8 @@ body {
 }
 
 .btn-primary {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: white;
+    border-color: white;
 }
 
 .btn-light {
@@ -418,7 +454,17 @@ body {
 
 
 /* Responsive Adjustments */
-
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    .search-container {
+        width: 95%;
+    }
+}
 @media (max-width: 1200px) {
     .location-buttons {
         gap: 0.4rem;
@@ -431,13 +477,28 @@ body {
 }
 
 @media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    .search-container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .search-input {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    .search-btn {
+        width: 100%;
+    }
     .hero-content {
         padding-top: 100px;
         /* Add space for navbar */
     }
-    .search-bar {
-        flex-direction: column;
-    }
+   
     .search-btn {
         width: 100%;
     }
@@ -462,6 +523,18 @@ body {
 @media (min-width: 751px) and (max-width: 767px) {
     .hero-content {
         padding-top: 120px;
+    }
+}
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    .search-container {
+        width: 100%;
+        padding: 0.5rem;
     }
 }
 

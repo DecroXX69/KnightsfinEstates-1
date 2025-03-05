@@ -13,7 +13,8 @@ body {
 
 /* General Navbar Styles */
 .navbar {
-  background-color: transparent;
+ background-color: rgba(0, 0, 0, 0.5); /* Transparent from start */
+  backdrop-filter: blur(10px); /* Optional: Keeps a subtle blur effect */
   position: fixed;
   top: 0;
   left: 0;
@@ -26,12 +27,12 @@ body {
   justify-content: center;
 }
 
-.navbar.scrolled {
+/* .navbar.scrolled {
   background-color: rgba(25, 25, 25, 0.75);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .container {
   width: 100%;
@@ -41,6 +42,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 40px;
+
 }
 
 .logo {
@@ -58,38 +60,61 @@ body {
   align-items: center;
 }
 
+
 .navLink {
-  text-decoration: none;
+  position: relative;
   color: #fff;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: 300;
+  font-family: "Poppins", sans-serif; /* Sleek & modern font */
   transition: all 0.3s ease;
   white-space: nowrap;
-  padding: 10px 15px;
+  padding: 12px 18px;
+  text-decoration: none; /* Remove default underline */
+  letter-spacing: 0.5px; /* Slight spacing for elegance */
 }
-
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px; /* Adjusted for subtle effect */
+  width: 0%;
+  height: 2px;
+  background-color: #FFD700; /* Gold underline */
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+  
+ 
+  
 .navLink:hover {
   color: #ffd700;
 }
 
+
 .btnPrimary {
-  background-color: #0d6efd;
-  color: #fff;
-  border: 2px solid #0d6efd;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: 600;
-  transition: transform 0.3s ease;
+  background-color: #D4AF37; /* Gold */
+  color: #000; /* Black text for contrast */
+  border: 2px solid #B8860B; /* Darker gold border */
+  padding: 6px 15px;
+  border-radius: 8px; /* Slightly more rounded corners for a premium look */
+  font-size: 18px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
   text-align: center;
   display: inline-block;
+  text-decoration: none;
+  box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3); /* Soft golden glow */
+  position: relative;
+  overflow: hidden;
 }
 
 .btnPrimary:hover {
-  transform: scale(1.05);
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: #B8860B; /* Slightly darker gold on hover */
+  color: #000000;
+  transform: scale(1.05); /* Subtle scaling effect */
+  box-shadow: 0px 6px 15px rgba(212, 175, 55, 0.5);
 }
+
 
 .hamburger {
   display: none;
@@ -165,6 +190,7 @@ body {
   .container {
     padding: 15px 30px;
   }
+  
 }
 
 @media (max-width: 768px) {
@@ -172,7 +198,10 @@ body {
     padding: 10px 15px;
   }
   .container {
-    padding: 10px 15px;
+    padding: 10px 20px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
   }
   .hamburger {
     display: block;
@@ -181,6 +210,7 @@ body {
     right: 20px;
   }
   .navLinks {
+    font-family: 'Helvetica Now Display', Helvetica, Arial, sans-serif;
     position: fixed;
     top: 0;
     left: -100%;
@@ -195,6 +225,19 @@ body {
     transition: all 0.3s ease-in-out;
     z-index: 2100;
   }
+
+  .btnPrimary {
+    position: static;
+    right: 20px;  /* Keep it inside the screen */
+    top: 15px;
+    font-size: 14px; 
+    padding: 6px 10px;
+    font-size: 16px;
+    padding: 6px 12px;
+    margin-top: 20px; /* Space from other menu items */
+    box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.3);
+
+  }
   .navLinks.show {
     left: 0;
   }
@@ -205,6 +248,42 @@ body {
     text-align: center;
   }
 }
+@media (max-width: 768px) {
+  .dropdown-menu {
+    background: rgba(0, 0, 0, 0.95); /* Dark background with slight transparency */
+    border-radius: 10px;
+    padding: 10px 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    width: 90%; /* Adjust width for mobile */
+    max-width: 280px; /* Prevent it from being too wide */
+    margin: 10px auto; /* Center it properly */
+  }
+
+  .dropdown-item {
+    color: #fff;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s ease-in-out;
+  }
+
+  .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.15); /* Lighter hover effect */
+    border-radius: 5px;
+  }
+
+  /* Make sure the dropdown is positioned properly */
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
 
 @media (max-width: 480px) {
   .container {
@@ -215,5 +294,10 @@ body {
   }
   .navLink {
     font-size: 14px;
+  }
+  .btnPrimary {
+    font-size: 14px;
+    padding: 4px 10px;
+    margin-top: 15px;
   }
 }

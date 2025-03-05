@@ -4,7 +4,7 @@ import styles from './Mortgage.module.css';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
 import axios from 'axios';
-import Navbar from './Navbar';
+
 import MiniContact from './miniContactComponent';
 import mortgageImage from '../assets/About-us-hero.jpg';
 
@@ -85,7 +85,7 @@ const Mortgage = () => {
 
   return (
     <div className={styles.mortgageContainer}>
-      <Navbar />
+      {/* <Navbar /> */}
       
       {/* Mortgage Title Section */}
       <div className="container mt-4">
