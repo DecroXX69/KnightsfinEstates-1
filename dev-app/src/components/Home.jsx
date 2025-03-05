@@ -26,6 +26,8 @@ import Testimonials from './Testimonials';
 import Footer from './Footer';
 import ContactUs from './ContactUs';
 import Navbar from './Navbar';
+import Trusted from '../minicomponents/Trusted';
+import Timeless from '../minicomponents/Timeless';
 
 
 const locationData = {
@@ -127,9 +129,9 @@ const handleSearch = () => {
 
   const luxuryPropertyData = {
     mainImage: dubai1,
-    propertyName: "The Alba Residences",
-    developer: "Omniyat",
-    price: "AED 43 M",
+    propertyName: "The Sapphire Residences",
+    developer: "Knights Fin",
+    price: "₹37 crore",
     galleryImages: [dubai2, dubai3, dubai4],
     onLearnMore: () => {
       navigate('/alba-residences');
@@ -146,7 +148,7 @@ const handleSearch = () => {
         <div className="video-overlay"></div>
       </div>
 
-      <Navbar/>
+      {/* <Navbar/> */}
 
       <div className="hero-content">
         {/* Location Buttons */}
@@ -210,7 +212,7 @@ const handleSearch = () => {
             </div> */}
 
             {/* Location Dropdown */}
-            <div className="dropdown search-dropdown">
+            {/* <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -236,7 +238,7 @@ const handleSearch = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Bedrooms Dropdown */}
             {/* <div className="dropdown search-dropdown">
@@ -267,12 +269,9 @@ const handleSearch = () => {
               )}
             </div> */}
 
-            <button 
-              className="btn btn-primary search-submit"
-              onClick={handleSearch}
-            >
-              Search
-            </button>
+<button className="btn btn-primary search-submit" onClick={handleSearch}>
+  <i className="fas fa-search"></i> {/* FontAwesome Search Icon */}
+</button>
           </div>
         </div>
          {/* Action Buttons */}
@@ -303,12 +302,18 @@ const handleSearch = () => {
         </div> */}
       </div>
 
+
+      <Trusted />
+      <Timeless/>
+      <PartnersSlider />
       <PropertyShowcase 
         activeLocation={activeLocation}
         selectedLocation={selectedLocation}
       />
 
       {/* <button className="btn btn-primary btn-lg" id='loadbtn'>Load More</button> */}
+      
+      
 
       <section>
         <LuxuryProperty {...luxuryPropertyData} />
@@ -316,7 +321,7 @@ const handleSearch = () => {
       
       <FloatingChat phoneNumber='+917558273523'/>
       <About />
-      <PartnersSlider />
+      
       <Testimonials />
       <ContactUs />
       <Footer />

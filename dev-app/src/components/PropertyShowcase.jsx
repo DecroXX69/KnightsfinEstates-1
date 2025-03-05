@@ -40,9 +40,17 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
 
   return (
     <Container className="py-5">
-      <h1 className="display-4 mb-3" style={{color: 'black'}}>
+      <h1 className="display-4 mb-3"  style={{
+        color: "black",
+        fontFamily: "'Juana W05 Light', serif",
+        fontWeight: 600,
+      }}>
         Latest Properties for Sale in{' '}
-        <span className="text-primary">
+        <span className="text-primary"
+        style={{
+          fontFamily: "'Poppins', sans-serif",
+          fontWeight: 400,
+        }}>
           {selectedLocation ? `${selectedLocation}, ${activeLocation}` : activeLocation}
         </span>
       </h1>
@@ -61,13 +69,7 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
           onClick={() => setListingType('sale')}
         >
           For Sale</Button>
-        {/* <Button
-          variant={listingType === 'offplan' ? 'primary' : 'light'}
-          className="rounded-pill px-4"
-          onClick={() => setListingType('offplan')}
-        >
-          Off Plan
-        </Button> */}
+   
       </div>
 
       <Row className="g-4">
@@ -107,13 +109,24 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
 
       {visibleCount < properties.length && (
         <div className="text-center mt-4">
-          <Button
-            style={{ backgroundColor: '#FFD700', color: 'white', border: 'none' }}
-            className="rounded-pill px-4 py-2"
-            onClick={handleLoadMore}
-          >
-            Load More
-          </Button>
+        <Button
+  className="rounded-full px-6 py-2 text-sm font-medium tracking-wider uppercase 
+  transition-all duration-300 ease-in-out 
+  bg-[#FFD700] 
+  text-[#1a1f3d] 
+  hover:bg-[#FFC107] 
+  hover:shadow-lg 
+  focus:outline-none 
+  active:scale-105"
+  style={{ 
+    backgroundColor: '#ffa726', 
+    color: '#1a1f3d', 
+    border: '2px solid #ffa726'
+  }}
+  onClick={handleLoadMore}
+>
+  Load More
+</Button>
         </div>
       )}
 
