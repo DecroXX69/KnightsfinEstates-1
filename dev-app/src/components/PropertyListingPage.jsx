@@ -34,7 +34,7 @@ const PropertyListingPage = () => {
         const params = new URLSearchParams({
           sort: getSortParam()
         });
-        const response = await fetch(`http://localhost:5000/api/properties?${params}`);
+        const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/properties?${params}`);
         const data = await response.json();
         setProperties(data.map(p => ({
           ...p,

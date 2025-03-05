@@ -19,7 +19,7 @@ const ContactUs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/contactus', formData);
+      const response = await axios.post('https://knightsfinestates-backend-1.onrender.com/api/contactus', formData);
       console.log(response.data);
       setSubmissionStatus('success');
       setFormData({

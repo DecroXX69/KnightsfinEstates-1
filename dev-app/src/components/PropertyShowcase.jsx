@@ -16,7 +16,7 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
   const fetchProperties = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/properties?location=${activeLocation}&area=${selectedLocation}&type=${listingType}`
+        `https://knightsfinestates-backend-1.onrender.com/api/properties?location=${activeLocation}&area=${selectedLocation}&type=${listingType}`
       );
       const data = await response.json();
       setProperties(data);

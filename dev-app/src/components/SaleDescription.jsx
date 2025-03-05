@@ -37,7 +37,7 @@ const SaleDescription = () => {
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/sale/${id}`);
+        const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/sale/${id}`);
         const data = await response.json();
         setProperty(data);
         setLoading(false);
@@ -77,7 +77,7 @@ const SaleDescription = () => {
     };
   
     try {
-      const response = await axios.post('http://localhost:5000/api/contactus', completeFormData);
+      const response = await axios.post('https://knightsfinestates-backend-1.onrender.com/api/contactus', completeFormData);
   
       if (response.status === 201) {
         alert('Message sent successfully!');
