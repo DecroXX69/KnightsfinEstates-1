@@ -12,6 +12,8 @@ import LuxuryProperty from './minicomponents/LuxuryProperty.jsx';
 import ContactUsPage from './components/ContactUsPage.jsx';
 import FloatingChat from './services/FloatingChat.jsx';
 import Mortgage from './components/Mortgage.jsx';
+import Trusted from './minicomponents/Trusted.jsx';
+
 function App() {
   return (
     <Router>
