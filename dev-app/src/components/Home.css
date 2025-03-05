@@ -179,12 +179,15 @@ body {
 /* Title & Subtitle */
 
 .hero-title {
+    font-family: 'Playfair Display', serif;
     font-size: 3rem;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 1rem;
 }
 
+
 .hero-subtitle {
+    font-family: 'Poppins', sans-serif;
     font-size: 1.25rem;
     margin-bottom: 2rem;
 }
@@ -197,7 +200,22 @@ body {
     border-radius: 0.25rem;
     font-size: 1rem;
     min-width: 120px;
+    background-color: #D4AF37; /* Gold */
+    color: #000000; /* White text */
+    font-family: 'Playfair Display', serif; /* Professional font */
+    font-weight: 600;
+    border: 2px solid #B8860B; /* Darker gold border for contrast */
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
 }
+
+.action-buttons .btn:hover {
+    background-color: #B8860B; /* Slightly darker gold on hover */
+    border-color: #FFD700; /* Brighter gold border */
+    color: #fff;
+    transform: scale(1.05);
+}
+
 
 .action-buttons {
     display: flex;
@@ -230,7 +248,7 @@ body {
 /* Search Container */
 
 .search-container {
-    width: 100%;
+    width: 50%;
     max-width: 1200px;
     margin: 2rem auto;
     padding: 0 1rem;

@@ -13,7 +13,7 @@ import {
 import './Home.css';
 import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo12.png';
 import PropertyShowcase from './PropertyShowcase';
 import LuxuryProperty from '../minicomponents/LuxuryProperty';
 import PartnersSlider from '../minicomponents/PartnerSlider';
@@ -43,7 +43,7 @@ const locationData = {
     title: "Find The Best Dubai Real Estate Property",
     subtitle: "Explore Dubai's finest real estate properties today",
     videoUrl: dubai,
-    locations: ["Dubai Marina", "Palm Jumeirah", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
+    locations: ["Wakad", "Baner", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
     flag: "🇦🇪",
     initials: "DXB"
   },
@@ -168,21 +168,7 @@ const handleSearch = () => {
         <h1 className="hero-title">{locationData[activeLocation].title}</h1>
         <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
 
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <button 
-            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
-            onClick={() => handleListingTypeChange('sale')}
-          >
-            Buy
-          </button>
-          <button 
-            className={`btn ${listingType === 'offplan' ? 'btn-primary' : 'btn-light'}`}
-            onClick={() => handleListingTypeChange('offplan')}
-          >
-            Off Plan
-          </button>
-        </div>
+
 
         {/* Search Bar */}
         <div className="search-container">
@@ -197,7 +183,7 @@ const handleSearch = () => {
             />
             
             {/* Property Type Dropdown */}
-            <div className="dropdown search-dropdown">
+            {/* <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -223,7 +209,7 @@ const handleSearch = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             {/* Location Dropdown */}
             <div className="dropdown search-dropdown">
@@ -255,7 +241,7 @@ const handleSearch = () => {
             </div>
 
             {/* Bedrooms Dropdown */}
-            <div className="dropdown search-dropdown">
+            {/* <div className="dropdown search-dropdown">
               <button 
                 className="btn dropdown-toggle search-btn"
                 onClick={() => {
@@ -281,7 +267,7 @@ const handleSearch = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </div> */}
 
             <button 
               className="btn btn-primary search-submit"
@@ -291,9 +277,23 @@ const handleSearch = () => {
             </button>
           </div>
         </div>
-
+         {/* Action Buttons */}
+         <div className="action-buttons">
+          <button 
+            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
+            onClick={() => handleListingTypeChange('sale')}
+          >
+            Explore Properties
+          </button>
+          {/* <button 
+            className={`btn ${listingType === 'offplan' ? 'btn-primary' : 'btn-light'}`}
+            onClick={() => handleListingTypeChange('offplan')}
+          >
+            Off Plan
+          </button> */}
+        </div>
         {/* Property Type Icons */}
-        <div className="property-icons">
+        {/* <div className="property-icons">
           {propertyTypes.map(({ name, icon: Icon }) => (
             <div key={name} className="property-icon-item">
               <div className="icon-label-container">
@@ -302,7 +302,7 @@ const handleSearch = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
 
 
