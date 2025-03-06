@@ -1,6 +1,7 @@
 .aboutContainer {
   background-color: #ffffff;
-  padding: 4rem 0;
+  /* padding: 4rem 0; */
+  /* max-width: 100%; */
 }
 
 .aboutContent {
