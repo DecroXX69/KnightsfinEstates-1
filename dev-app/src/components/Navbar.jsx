@@ -53,15 +53,16 @@ const Navbar = () => {
 
         {/* Navbar Links */}
         <div className={`${styles.navLinks} ${isMenuOpen ? styles.show : ""}`} onClick={(e) => e.stopPropagation()}>
-          {/* Domestic Properties */}
-          <button
-  onClick={() => {
-    closeMenu();
-    navigate("/propertylisting?location=Pune"); // Use query parameter
-  }}
->
-  Domestic Properties
-</button>
+  {/* Domestic Properties */}
+  <button
+    className={styles.navLink} // Added this class
+    onClick={() => {
+      closeMenu();
+      navigate("/propertylisting?location=Pune"); // Use query parameter
+    }}
+  >
+    Domestic Properties
+  </button>
 
           {/* Overseas Properties Dropdown */}
           <div className={`${styles.dropdown} ${styles.navLink}`}>
