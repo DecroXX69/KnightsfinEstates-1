@@ -14,7 +14,7 @@ const Info = () => {
       position: "Founder",
       description: (
         <>
-          <span className={styles.establishedText}>Established in 2012</span>,{" "}
+          <span className={styles.establishedText}>Established in 2024</span>,{" "}
           <span className={styles.companyName}>Knights Fin Estates</span> builds lasting wealth legacies across 6 countries. Beyond strong financials, our focus is on exceptional customer service and innovative real estate solutions.
         </>
       ),
@@ -28,7 +28,7 @@ const Info = () => {
       position: "Managing Director",
       description: (
         <>
-          <span className={styles.establishedText}>Since 2012</span>,{" "}
+          <span className={styles.establishedText}>Since 2024</span>,{" "}
           <span className={styles.companyName}>Knights Fin Estates</span> creates generational wealth through global expansion. Our priority: customers first. Quality and innovation drive our vision of effortless, rewarding journeys.
         </>
       ),
@@ -38,11 +38,11 @@ const Info = () => {
     },
     {
       id: 3,
-      name: "Soumyajit Routray",
+      name: "Krishnakant Yadav",
       position: "General Manager",
       description: (
         <>
-          <span className={styles.establishedText}>Established in 2012</span>,{" "}
+          <span className={styles.establishedText}>Established in 2024</span>,{" "}
           <span className={styles.companyName}>Knights Fin Estates</span> we ensure excellence through innovation, customer service, and strategic growth—building lasting wealth legacies and delivering innovative real estate solutions across six countries.
         </>
       ),

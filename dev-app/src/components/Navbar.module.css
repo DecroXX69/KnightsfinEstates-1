@@ -62,7 +62,10 @@ body {
 
 
 .navLink {
+
+  background: none;
   position: relative;
+  border: none;
   color: #fff;
   font-size: 17px;
   font-weight: 300;
