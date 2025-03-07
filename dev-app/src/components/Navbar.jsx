@@ -55,14 +55,13 @@ const Navbar = () => {
         <div className={`${styles.navLinks} ${isMenuOpen ? styles.show : ""}`} onClick={(e) => e.stopPropagation()}>
           {/* Domestic Properties */}
           <button
-            className={styles.navLink}
-            onClick={() => {
-              closeMenu();
-              navigate("/propertylisting", { state: { location: "Pune" } });
-            }}
-          >
-            Domestic Properties
-          </button>
+  onClick={() => {
+    closeMenu();
+    navigate("/propertylisting?location=Pune"); // Use query parameter
+  }}
+>
+  Domestic Properties
+</button>
 
           {/* Overseas Properties Dropdown */}
           <div className={`${styles.dropdown} ${styles.navLink}`}>
@@ -71,20 +70,21 @@ const Navbar = () => {
             </button>
             {isDropdownOpen && (
               <div className={styles.dropdownMenu}>
-                {Object.keys(locationData).map((location) => (
-                  <button
-                    key={location}
-                    className={styles.dropdownItem}
-                    onClick={() => {
-                      closeMenu();
-                      navigate("/propertylisting", { state: { location } });
-                    }}
-                  >
-                    <span className={styles.flag}>{locationData[location].flag}</span>
-                    <span className={styles.initials}>{locationData[location].initials}</span>
-                    {location}
-                  </button>
-                ))}
+               
+{Object.keys(locationData).map((location) => (
+  <button
+    key={location}
+    className={styles.dropdownItem}
+    onClick={() => {
+      closeMenu();
+      navigate(`/propertylisting?location=${location}`); // Use query parameter
+    }}
+  >
+              <span className={styles.flag}>{locationData[location].flag}</span>
+    <span className={styles.initials}>{locationData[location].initials}</span>
+    {location}
+  </button>
+))}
               </div>
             )}
           </div>

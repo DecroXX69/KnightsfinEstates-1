@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, RefreshCcw } from 'lucide-react';
 import MiniContact from './miniContactComponent.jsx';
 import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
-import { useNavigate } from 'react-router-dom';
-
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 
 const PropertyListingPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
-    listingType: location.state?.listingType || '',
-    location: location.state?.location || '',
-    query: location.state?.query || '',
-    propertyType: location.state?.propertyType || '',
-    beds: location.state?.beds || '',
+    listingType: '',
+    query: '',
+    propertyType: '',
+    beds: '',
     activeFilters: 0
   });
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sort, setSort] = useState('recent');
   const [selectedCurrency, setSelectedCurrency] = useState('INR');
+  const [searchParams] = useSearchParams();
   const EXCHANGE_RATE = 23.7;
+
+  const selectedLocation = searchParams.get('location') || '';
 
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         const params = new URLSearchParams({
-          sort: getSortParam()
+          sort: getSortParam(),
+          ...(selectedLocation && { location: selectedLocation })
         });
         const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/properties?${params}`);
         const data = await response.json();
@@ -47,10 +47,10 @@ const PropertyListingPage = () => {
       }
     };
     fetchProperties();
-  }, [filters, sort]);
+  }, [filters, sort, selectedLocation]);
 
   const getSortParam = () => {
-    switch(sort) {
+    switch (sort) {
       case 'price_asc': return 'price=1';
       case 'price_desc': return 'price=-1';
       default: return 'createdAt=-1';
@@ -71,18 +71,23 @@ const PropertyListingPage = () => {
       .filter(([k, v]) => k !== 'listingType' && k !== 'activeFilters' && v !== '')
       .length;
     setFilters({ ...newFilters, activeFilters: activeCount });
+
+    if (key === 'location') {
+      const newParams = new URLSearchParams({ location: value });
+      navigate(`/propertylisting?${newParams}`);
+    }
   };
 
   const handleReset = () => {
     setFilters({
       listingType: '',
-      location: '',
       query: '',
       propertyType: '',
       beds: '',
       activeFilters: 0
     });
-    navigate('/propertylisting', { replace: true, state: {} });
+    const newParams = new URLSearchParams();
+    navigate(`/propertylisting?${newParams}`);
   };
 
   const filteredProperties = properties.filter(property => {
@@ -92,8 +97,8 @@ const PropertyListingPage = () => {
       property.propertyType === filters.propertyType : true;
     const isBedCountMatch = filters.beds ? 
       property.bedrooms === filters.beds : true;
-    const isLocationMatch = filters.location ? 
-      property.location.toLowerCase().includes(filters.location.toLowerCase()) : true;
+    const isLocationMatch = selectedLocation ? 
+      property.location.toLowerCase().includes(selectedLocation.toLowerCase()) : true;
     const isQueryMatch = filters.query ? 
       [property.area, property.location, property.propertyType].some(text => 
         text.toLowerCase().includes(filters.query.toLowerCase())
@@ -116,7 +121,6 @@ const PropertyListingPage = () => {
 
   return (
     <>
-    {/* <Navbar /> */}
       <div className={styles.container}>
         <div className={styles.filterContainer}>
           <div className="d-flex align-items-center gap-3">
@@ -171,20 +175,20 @@ const PropertyListingPage = () => {
               </button>
 
               <button
-    className={styles.resetButton}
-    onClick={() => setSelectedCurrency(selectedCurrency === 'AED' ? 'INR' : 'AED')}
-  >
-    <ReactCountryFlag
-      countryCode={selectedCurrency === 'AED' ? 'AE' : 'IN'} // AE for UAE, IN for India
-      svg
-      style={{
-        width: '20px',
-        height: '20px',
-      }}
-      ariaLabel={selectedCurrency === 'AED' ? 'United Arab Emirates' : 'India'}
-    />
-    {selectedCurrency === 'AED' ? '  AED ' : '  INR '}
-  </button>
+                className={styles.resetButton}
+                onClick={() => setSelectedCurrency(selectedCurrency === 'AED' ? 'INR' : 'AED')}
+              >
+                <ReactCountryFlag
+                  countryCode={selectedCurrency === 'AED' ? 'AE' : 'IN'}
+                  svg
+                  style={{
+                    width: '20px',
+                    height: '20px',
+                  }}
+                  ariaLabel={selectedCurrency === 'AED' ? 'United Arab Emirates' : 'India'}
+                />
+                {selectedCurrency === 'AED' ? '  AED ' : '  INR '}
+              </button>
             </div>
           </div>
 
@@ -226,7 +230,7 @@ const PropertyListingPage = () => {
         <div className="row mb-4 align-items-center">
           <div className="col">
             <h1 className={styles.headingPrimary}>
-            Properties in {filters.query || filters.location || filters.area || 'KnightsFin'}
+              Properties in {selectedLocation || 'KnightsFin'}
             </h1>
           </div>
         </div>
@@ -234,7 +238,7 @@ const PropertyListingPage = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
           {displayedProperties.map(property => (
             <div 
-              key={property.id} 
+              key={property._id} 
               className="col" 
               onClick={() => handlePropertyClick(property)}
               style={{ cursor: 'pointer' }}
@@ -250,7 +254,7 @@ const PropertyListingPage = () => {
                   <p className={styles.propertyLocation}>{property.developer}</p>
                   <p className={styles.propertyLocation}>{property.location}</p>
                   <p className={styles.propertyType}>
-                    {property.bedrooms}, {property.propertyType} - 
+                    {property.bedrooms}-Bed {property.propertyType} - 
                     {property.type.charAt(0).toUpperCase() + property.type.slice(1)}
                   </p>
                   <p className={styles.propertyPrice}>
