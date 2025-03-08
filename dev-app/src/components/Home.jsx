@@ -68,6 +68,7 @@ const HeroContent = ({
     <ActionButtons 
       listingType={listingType} 
       handleListingTypeChange={handleListingTypeChange} 
+      handleSearch={handleSearch}
     />
   </div>
 );
@@ -89,11 +90,11 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
   </div>
 );
 
-const ActionButtons = ({ listingType, handleListingTypeChange }) => (
+const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) => (
   <div className={styles.actionButtons}>
     <button 
       className={`${styles.btn} ${listingType === 'sale' ? styles.btnPrimary : styles.btnLight} ${styles.me3}`}
-      onClick={() => handleListingTypeChange('sale')}
+      onClick={handleSearch}
     >
       Explore Properties
     </button>
