@@ -91,7 +91,7 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
                 <Card.Title className="h5 mb-3">{property.buildingName}</Card.Title>
                 <div className="mb-3">
                   <span className="h4 text-warning fw-bold">
-                    AED {property.price.toLocaleString()}
+                    INR {property.price.toLocaleString()}
                   </span>
                 </div>
                 <Button

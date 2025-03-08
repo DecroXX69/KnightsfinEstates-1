@@ -51,7 +51,7 @@ const Mortgage = () => {
   const [loanAmount, setLoanAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [loanTerm, setLoanTerm] = useState('');
-  const [currency, setCurrency] = useState('AED');
+  const [currency, setCurrency] = useState('INR');
   const [downPayment, setDownPayment] = useState('');
   const [monthlyPayment, setMonthlyPayment] = useState(null);
   const [totalPayment, setTotalPayment] = useState(null);
@@ -91,7 +91,7 @@ const Mortgage = () => {
       <div className="container mt-4">
         <button className={styles.btnBack} onClick={handleGoBack}>
           <ArrowLeft size={20} />
-          Back to properties
+          Back
         </button>
         
         <div className="row mt-3">
@@ -220,10 +220,11 @@ const Mortgage = () => {
                         value={currency}
                         onChange={(e) => setCurrency(e.target.value)}
                       >
+                        <option value="INR">INR</option>
                         <option value="AED">AED</option>
                         <option value="USD">USD</option>
                         <option value="EUR">EUR</option>
-                        <option value="EUR">INR</option>
+                        
                       </select>
                     </div>
                   </div>
