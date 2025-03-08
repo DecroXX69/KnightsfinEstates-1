@@ -91,7 +91,7 @@ const Mortgage = () => {
       <div className="container mt-4">
         <button className={styles.btnBack} onClick={handleGoBack}>
           <ArrowLeft size={20} />
-          Back to properties
+          Back
         </button>
         
         <div className="row mt-3">
