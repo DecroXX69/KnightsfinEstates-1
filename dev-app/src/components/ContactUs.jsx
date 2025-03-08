@@ -56,8 +56,8 @@ const ContactUs = () => {
                 </div>
                 <div className={styles.infoText}>
                   <p>Request a call back</p>
-                  <a href="tel:+918177083523" style={{ color: '#e0e0e0', textDecoration: 'none' }}>
-                    <h3>+91 81770 83523</h3>
+                  <a href="tel:+917558273523" style={{ color: '#e0e0e0', textDecoration: 'none' }}>
+                    <h3>+917558273523</h3>
                   </a>
                 </div>
               </div>
