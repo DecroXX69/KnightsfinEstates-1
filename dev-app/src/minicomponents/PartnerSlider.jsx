@@ -142,7 +142,7 @@ const PartnersSlider = () => {
           </div>
 
           {/* Row 2 (Left to Right) */}
-          <div className={`${styles.partnersSlider} ${isVisible ? styles.slidingLeftToRight : ''}`}>
+          {/* <div className={`${styles.partnersSlider} ${isVisible ? styles.slidingLeftToRight : ''}`}>
             {partners.concat(partners).map((partner, index) => (
               <div key={`row2-${index}`} className={styles.partnerLogoContainer}>
                 <div className={styles.partnerLogoCircle}>
@@ -150,10 +150,10 @@ const PartnersSlider = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Row 3 (Right to Left) */}
-          <div className={`${styles.partnersSlider} ${isVisible ? styles.slidingRightToLeft : ''}`}>
+          {/* <div className={`${styles.partnersSlider} ${isVisible ? styles.slidingRightToLeft : ''}`}>
             {partners.concat(partners).map((partner, index) => (
               <div key={`row3-${index}`} className={styles.partnerLogoContainer}>
                 <div className={styles.partnerLogoCircle}>
@@ -161,7 +161,7 @@ const PartnersSlider = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </section>
