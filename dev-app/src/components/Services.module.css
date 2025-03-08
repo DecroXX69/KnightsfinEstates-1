@@ -1,10 +1,11 @@
 /* General Container Styling */
 .servicesContainer {
-  max-width: 1400px;
+  max-width: 100%;
   padding: 60px 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column; /* Align everything vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
   gap: 50px;
   position: relative;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -21,6 +22,7 @@
   text-transform: capitalize;
   letter-spacing: 2px;
   text-align: center;
+  width: 100%;
   margin-bottom: 1.5rem;
   position: relative;
 }
