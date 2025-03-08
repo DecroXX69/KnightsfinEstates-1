@@ -83,7 +83,15 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} onClick={handleSearch}>
+      <button 
+        className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} 
+        onClick={() => {
+          // Direct navigation with location parameter
+          if (searchQuery) {
+            window.location.href = `/propertylisting?location=${encodeURIComponent(searchQuery)}`;
+          }
+        }}
+      >
         <i className="fas fa-search"></i>
       </button>
     </div>
@@ -94,7 +102,7 @@ const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) =
   <div className={styles.actionButtons}>
     <button 
       className={`${styles.btn} ${listingType === 'sale' ? styles.btnPrimary : styles.btnLight} ${styles.me3}`}
-      onClick={handleSearch}
+      onClick={() => handleSearch(false)}  // Pass false to indicate this is NOT a location search
     >
       Explore Properties
     </button>

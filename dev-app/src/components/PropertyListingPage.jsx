@@ -30,10 +30,22 @@ const PropertyListingPage = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
+        const locationParam = searchParams.get('location') || '';
+        
+        // If there's a location parameter, update the filter
+        if (locationParam && filters.query !== locationParam) {
+          setFilters(prev => ({
+            ...prev,
+            query: locationParam,
+            activeFilters: prev.activeFilters + 1
+          }));
+        }
+        
         const params = new URLSearchParams({
           sort: getSortParam(),
-          ...(selectedLocation && { location: selectedLocation })
+          ...(locationParam && { location: locationParam })
         });
+        
         const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/properties?${params}`);
         const data = await response.json();
         setProperties(data.map(p => ({
@@ -47,7 +59,7 @@ const PropertyListingPage = () => {
       }
     };
     fetchProperties();
-  }, [filters, sort, selectedLocation]);
+  }, [sort, searchParams]); // Remove filters dependency to prevent loops
 
   const getSortParam = () => {
     switch (sort) {
@@ -97,7 +109,7 @@ const PropertyListingPage = () => {
       property.propertyType === filters.propertyType : true;
     const isBedCountMatch = filters.beds ? 
       property.bedrooms === filters.beds : true;
-    const isLocationMatch = selectedLocation ? 
+      const isLocationMatch = selectedLocation ? 
       property.location.toLowerCase().includes(selectedLocation.toLowerCase()) : true;
     const isQueryMatch = filters.query ? 
       [property.area, property.location, property.propertyType].some(text => 
