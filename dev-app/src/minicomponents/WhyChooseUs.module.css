@@ -36,7 +36,7 @@
 .whyChooseUs h2 {
     font-size: 3.2rem;
     font-weight: 800;
-    background: linear-gradient(90deg, #00ffcc, #3b82f6);
+    background:#D4AF37;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -55,7 +55,7 @@
     transform: translateX(-50%);
     width: 100px;
     height: 3px;
-    background: linear-gradient(90deg, #00ffcc, #3b82f6);
+    background: #D4AF37;
     border-radius: 3px;
     animation: glowLine 2s ease-in-out infinite;
 }

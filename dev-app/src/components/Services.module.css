@@ -1,10 +1,11 @@
 /* General Container Styling */
 .servicesContainer {
-  max-width: 1400px;
+  max-width: 100%;
   padding: 60px 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column; /* Align everything vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center;
   gap: 50px;
   position: relative;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -14,13 +15,14 @@
 .servicesHeading {
   font-size: 4rem;
   font-weight: 800;
-  background: linear-gradient(45deg, #002147, #004d9e);
+  background: #D4AF37;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-transform: capitalize;
   letter-spacing: 2px;
   text-align: center;
+  width: 100%;
   margin-bottom: 1.5rem;
   position: relative;
 }
@@ -33,7 +35,7 @@
   transform: translateX(-50%);
   width: 100px;
   height: 4px;
-  background: linear-gradient(90deg, #002147, #004d9e);
+  background: #D4AF37;
   border-radius: 2px;
 }
 

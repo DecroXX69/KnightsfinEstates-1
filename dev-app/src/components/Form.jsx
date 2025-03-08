@@ -118,7 +118,7 @@ const PropertyForm = () => {
         images: formData.images.filter((url) => url),
       };
 
-      const response = await fetch('http://localhost:5000/api/properties', {
+      const response = await fetch('https://knightsfinestates-backend-1.onrender.com/api/properties', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
