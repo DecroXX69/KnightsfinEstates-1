@@ -14,7 +14,7 @@
 .servicesHeading {
   font-size: 4rem;
   font-weight: 800;
-  background: linear-gradient(45deg, #002147, #004d9e);
+  background: #D4AF37;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -33,7 +33,7 @@
   transform: translateX(-50%);
   width: 100px;
   height: 4px;
-  background: linear-gradient(90deg, #002147, #004d9e);
+  background: #D4AF37;
   border-radius: 2px;
 }
 
