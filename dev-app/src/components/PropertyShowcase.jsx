@@ -35,7 +35,7 @@ const PropertyShowcase = ({ selectedLocation, activeLocation }) => {
   const navigate = useNavigate();
 
   const handleExplore = (propertyId) => {
-    navigate(`/property/${propertyId}`);
+    navigate(`/sale/${propertyId}`);
   };
 
   return (
