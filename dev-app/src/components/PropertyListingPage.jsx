@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Search, RefreshCcw } from 'lucide-react';
 import MiniContact from './miniContactComponent.jsx';
@@ -7,11 +7,13 @@ import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 import logo1 from "../assets/logo.png";
+
 const PropertyListingPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState(''); // Local state for input field
   const [filters, setFilters] = useState({
     listingType: '',
     query: '',
@@ -22,28 +24,71 @@ const PropertyListingPage = () => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [sort, setSort] = useState('recent');
   const [selectedCurrency, setSelectedCurrency] = useState('INR');
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const EXCHANGE_RATE = 23.7;
 
-  const selectedLocation = searchParams.get('location') || '';
+  // Initialize from URL params
+  useEffect(() => {
+    const locationParam = searchParams.get('location') || '';
+    const queryParam = searchParams.get('query') || '';
+    const initialQuery = locationParam || queryParam || '';
+    
+    // Set both the filter query and the input field value
+    if (initialQuery) {
+      setFilters(prev => ({
+        ...prev,
+        query: initialQuery,
+        activeFilters: initialQuery ? 1 : 0
+      }));
+      setSearchInput(initialQuery);
+    }
+  }, [searchParams]);
 
+  // Debounced search function using useCallback
+  const debouncedSearch = useCallback(
+    // Create a debounced version of our search function
+    (() => {
+      let timer;
+      return (searchValue) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          // Only update URL if value is different from current filter
+          if (searchValue !== filters.query) {
+            // Update filters state
+            setFilters(prev => ({
+              ...prev,
+              query: searchValue,
+              activeFilters: searchValue ? 1 : 0
+            }));
+            
+            // Update URL parameters
+            const newParams = new URLSearchParams(searchParams);
+            
+            // Clear both location and query params before setting new one
+            newParams.delete('location');
+            
+            if (searchValue) {
+              newParams.set('query', searchValue);
+            } else {
+              newParams.delete('query');
+            }
+            
+            setSearchParams(newParams);
+          }
+        }, 1500); // Wait 800ms after last keystroke before triggering search
+      };
+    })(),
+    [searchParams, filters.query, setSearchParams]
+  );
+
+  // Fetch properties when filters or sort changes
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const locationParam = searchParams.get('location') || '';
-        
-        // If there's a location parameter, update the filter
-        if (locationParam && filters.query !== locationParam) {
-          setFilters(prev => ({
-            ...prev,
-            query: locationParam,
-            activeFilters: prev.activeFilters + 1
-          }));
-        }
+        setLoading(true);
         
         const params = new URLSearchParams({
           sort: getSortParam(),
-          ...(selectedLocation && { location: selectedLocation }),
           ...(filters.query && { query: filters.query })
         });
         
@@ -59,14 +104,9 @@ const PropertyListingPage = () => {
         setLoading(false);
       }
     };
-
-    const queryParam = searchParams.get('query') || '';
-    if (queryParam && filters.query !== queryParam) {
-      setFilters(prev => ({ ...prev, query: queryParam }));
-    }
   
     fetchProperties();
-  }, [filters, sort, selectedLocation, searchParams]);
+  }, [filters, sort]);
 
   const getSortParam = () => {
     switch (sort) {
@@ -85,16 +125,21 @@ const PropertyListingPage = () => {
   };
 
   const handleFilterChange = (key, value) => {
-    const newFilters = { ...filters, [key]: value };
-    const activeCount = Object.entries(newFilters)
-      .filter(([k, v]) => k !== 'listingType' && k !== 'activeFilters' && v !== '')
-      .length;
-    setFilters({ ...newFilters, activeFilters: activeCount });
-
-    if (key === 'location') {
-      const newParams = new URLSearchParams({ location: value });
-      navigate(`/propertylisting?${newParams}`);
+    // For all filters except query, update immediately
+    if (key !== 'query') {
+      const newFilters = { ...filters, [key]: value };
+      const activeCount = Object.entries(newFilters)
+        .filter(([k, v]) => k !== 'listingType' && k !== 'activeFilters' && v !== '')
+        .length;
+      
+      setFilters({ ...newFilters, activeFilters: activeCount });
     }
+  };
+
+  // Handle input change separately from filter updates
+  const handleSearchInputChange = (value) => {
+    setSearchInput(value);
+    debouncedSearch(value);
   };
 
   const handleReset = () => {
@@ -105,8 +150,10 @@ const PropertyListingPage = () => {
       beds: '',
       activeFilters: 0
     });
-    const newParams = new URLSearchParams();
-    navigate(`/propertylisting?${newParams}`);
+    setSearchInput('');
+    
+    // Clear all search parameters
+    navigate('/propertylisting');
   };
 
   const filteredProperties = properties.filter(property => {
@@ -116,34 +163,19 @@ const PropertyListingPage = () => {
       property.propertyType === filters.propertyType : true;
     const isBedCountMatch = filters.beds ? 
       property.bedrooms === filters.beds : true;
-      const isLocationMatch = selectedLocation ? 
-      property.location.toLowerCase().includes(selectedLocation.toLowerCase()) : true;
-
+    
     const isQueryMatch = filters.query ? 
-      [property.location, property.area, property.buildingName].some((text, index) => {
+      [property.location, property.area, property.buildingName].some(text => {
+        if (!text) return false;
         const query = filters.query.toLowerCase();
         const textLower = text.toLowerCase();
         
-        // Give priority to exact location matches
-        if (index === 0 && textLower === query) {
-          return true;
-        }
-        
-        // Check if query is a substring of the location
-        if (textLower.includes(query)) {
-          return true;
-        }
-        
-        // Fuzzy matching for locations
-        if (textLower.split(' ').some(word => word.includes(query))) {
-          return true;
-        }
-        
-        return false;
+        // Check if query is a substring of the text
+        return textLower.includes(query) || query.includes(textLower);
       }) : true;
 
     return isListingTypeMatch && isPropertyTypeMatch && 
-      isBedCountMatch && isLocationMatch && isQueryMatch;
+      isBedCountMatch && isQueryMatch;
   });
 
   const itemsPerPage = 9;
@@ -192,8 +224,14 @@ const PropertyListingPage = () => {
                   type="text" 
                   className="form-control" 
                   placeholder="Search by location or area..."
-                  value={filters.query}
-                  onChange={(e) => handleFilterChange('query', e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => handleSearchInputChange(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      // Apply search immediately when Enter is pressed
+                      debouncedSearch(searchInput);
+                    }
+                  }}
                 />
                 <Search className={styles.searchIcon} size={20} />
               </div>
@@ -275,7 +313,7 @@ const PropertyListingPage = () => {
         <div className="row mb-4 align-items-center">
           <div className="col">
             <h1 className={styles.headingPrimary}>
-            Properties in {filters.location || filters.area || filters.query ||'KnightsFin'}
+              Properties in {filters.query || 'KnightsFin'}
             </h1>
           </div>
         </div>
@@ -348,8 +386,7 @@ const PropertyListingPage = () => {
         )}
         
       </div>
-      {/* <MiniContact /> */}
-        <Footer />
+      <Footer />
     </>
   );
 };

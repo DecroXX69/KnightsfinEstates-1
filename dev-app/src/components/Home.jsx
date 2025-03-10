@@ -91,10 +91,10 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
       <button 
         className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} 
         onClick={() => {
-          // Direct navigation with location parameter
           if (searchQuery) {
+            // Update to use query parameter for consistency
             const searchParams = new URLSearchParams();
-            searchParams.set('location', encodeURIComponent(searchQuery));
+            searchParams.set('query', encodeURIComponent(searchQuery));
             window.location.href = `/propertylisting?${searchParams.toString()}`;
           }
         }}
