@@ -23,9 +23,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts build && purgecss --config purgecss.config.js && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/obfuscated.js && mv build/static/js/obfuscated.js build/static/js/bundle.min.js && optipng -o5 build/static/media/*.png && mozjpeg -quality 85 build/static/media/*.jpg",
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer build/static/js/*.js"
   },
   "eslintConfig": {
     "extends": [
