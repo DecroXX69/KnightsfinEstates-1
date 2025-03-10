@@ -21,64 +21,110 @@ import ContactUs from './ContactUs';
 import Trusted from '../minicomponents/Trusted';
 import Timeless from '../minicomponents/Timeless';
 
-const locationData = {
-  Pune: {
-    title: "Find The Best Pune Real Estate Property",
-    subtitle: "Explore Pune's finest real estate properties today",
-    videoUrl: dubai,
-    locations: ["Wakad", "Baner", "Punawale", "Kiwale", "Ravet"],
-    flag: "PN",
-    initials: "PNQ"
-  },
-  Dubai: {
-    title: "Find The Best Dubai Real Estate Property",
-    subtitle: "Explore Dubai's finest real estate properties today",
-    videoUrl: dubai,
-    locations: ["Downtown Dubai", "Arabian Ranches", "Dubai Hills", "Palm Jumeirah", "Dubai Marina"],
-    flag: "🇦🇪",
-    initials: "DXB"
-  },
-  Thailand: {
-    title: "Discover Premium Thailand Properties",
-    subtitle: "Explore Thailand's most exclusive real estate opportunities",
-    videoUrl: thailand,
-    locations: ["Phuket", "Pattaya", "Koh Samui", "Chiang Mai", "Hua Hin"],
-    flag: "🇹🇭",
-    initials: "TH"
-  },
-  Bangkok: {
-    title: "Premium Bangkok Real Estate",
-    subtitle: "Find your perfect property in the heart of Bangkok",
-    videoUrl: "/videos/bangkok.mp4",
-    locations: ["Sukhumvit", "Silom", "Sathorn", "Thonglor", "Asoke"],
-    flag: "🇹🇭",
-    initials: "BKK"
-  },
-  Greece: {
-    title: "Luxurious Greek Properties",
-    subtitle: "Experience the finest Mediterranean real estate",
-    videoUrl: "/videos/greece.mp4",
-    locations: ["Athens", "Santorini", "Mykonos", "Crete", "Rhodes"],
-    flag: "🇬🇷",
-    initials: "GR"
-  },
-  Cyprus: {
-    title: "Elite Cyprus Real Estate",
-    subtitle: "Discover pristine properties in Cyprus",
-    videoUrl: "/videos/cyprus.mp4",
-    locations: ["Limassol", "Paphos", "Larnaca", "Nicosia", "Famagusta"],
-    flag: "🇨🇾",
-    initials: "CY"
-  },
-};
+// Data imports
+import { locationData, propertyTypes, bedroomOptions } from './homeData';
+
+// Asset imports
+import styles from './Home.module.css';
+import dubai from '../videos/dubai.mp4';
+import thailand from '../videos/thailand.mp4';
+import dubai1 from '../assets/dubai1.jpg';
+import dubai2 from '../assets/dubai2.jpg';
+import dubai3 from '../assets/dubai3.jpg';
+import dubai4 from '../assets/dubai4.jpg';
+
+// Sub-components
+const HeroBackground = ({ videoUrl }) => (
+  <div className={styles.videoBg}>
+    <video className={styles.videoContent} autoPlay muted loop>
+      <source src={videoUrl} type="video/mp4" />
+    </video>
+    <div className={styles.videoOverlay}></div>
+  </div>
+);
+
+const HeroContent = ({ 
+  locationData, 
+  activeLocation, 
+  listingType, 
+  searchQuery, 
+  selectedLocation, 
+  selectedPropertyType, 
+  selectedBedroom,
+  handleListingTypeChange, 
+  setSearchQuery, 
+  handleSearch 
+}) => (
+  <div className={styles.heroContent}>
+    <h1 className={styles.heroTitle}>{locationData[activeLocation].title}</h1>
+    <p className={styles.heroSubtitle}>{locationData[activeLocation].subtitle}</p>
+
+    <SearchBar 
+      searchQuery={searchQuery} 
+      setSearchQuery={setSearchQuery} 
+      handleSearch={handleSearch} 
+    />
+
+    <ActionButtons 
+      listingType={listingType} 
+      handleListingTypeChange={handleListingTypeChange} 
+      handleSearch={handleSearch}
+    />
+  </div>
+);
+
+const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
+  <div className={styles.searchContainer}>
+    <div className={styles.searchBar}>
+      <input
+        type="text"
+        placeholder="Search..."
+        className={styles.searchInput}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch();
+          }
+        }}
+      />
+      <button 
+        className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} 
+        onClick={() => {
+          // Direct navigation with location parameter
+          if (searchQuery) {
+            const searchParams = new URLSearchParams();
+            searchParams.set('location', encodeURIComponent(searchQuery));
+            window.location.href = `/propertylisting?${searchParams.toString()}`;
+          }
+        }}
+      >
+        <i className="fas fa-search"></i>
+      </button>
+    </div>
+  </div>
+);
+
+const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) => (
+  <div className={styles.actionButtons}>
+    <button 
+      className={`${styles.btn} ${listingType === 'sale' ? styles.btnPrimary : styles.btnLight} ${styles.me3}`}
+      onClick={() => handleSearch()}
+    >
+      Explore Properties
+    </button>
+  </div>
+);
 
 const Home = () => {
   const navigate = useNavigate();
   const [activeLocation, setActiveLocation] = useState('Pune');
   const [listingType, setListingType] = useState('sale');
-  const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedBedroom, setSelectedBedroom] = useState('');
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const handleListingTypeChange = (type) => {
     setListingType(type);
@@ -101,16 +147,6 @@ const Home = () => {
     navigate(`/propertylisting?${searchParams.toString()}`);
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
-  const closeAllDropdowns = (except) => {
-    if (except !== 'location') setIsLocationOpen(false);
-  };
-
   const luxuryPropertyData = {
     mainImage: dubai1,
     propertyName: "The Sapphire Residences",
@@ -123,72 +159,21 @@ const Home = () => {
   };
 
   return (
-    <div className="hero-section">
-      <div className="video-bg">
-        <video className="video-content" autoPlay muted loop key={locationData[activeLocation].videoUrl}>
-          <source src={locationData[activeLocation].videoUrl} type="video/mp4" />
-        </video>
-        <div className="video-overlay"></div>
-      </div>
+    <div className={styles.heroSection}>
+      <HeroBackground videoUrl={locationData[activeLocation].videoUrl} />
 
-      <div className="hero-content">
-        <h1 className="hero-title">{locationData[activeLocation].title}</h1>
-        <p className="hero-subtitle">{locationData[activeLocation].subtitle}</p>
-
-        <div className="search-container">
-          <div className="search-bar">
-            <input
-              type="text"
-              placeholder="Search by name or location..."
-              className="search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-
-            <div className="dropdown search-dropdown">
-              <button 
-                className="btn dropdown-toggle search-btn"
-                onClick={() => {
-                  closeAllDropdowns('location');
-                  setIsLocationOpen(!isLocationOpen);
-                }}
-              >
-                {selectedLocation || 'Location'}
-              </button>
-              {isLocationOpen && (
-                <div className="dropdown-menu show">
-                  {locationData[activeLocation].locations.map(loc => (
-                    <button
-                      key={loc}
-                      className="dropdown-item"
-                      onClick={() => {
-                        setSelectedLocation(loc);
-                        setIsLocationOpen(false);
-                      }}
-                    >
-                      {loc}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <button className="btn btn-primary search-submit" onClick={handleSearch}>
-              <i className="fas fa-search"></i>
-            </button>
-          </div>
-        </div>
-
-        <div className="action-buttons">
-          <button 
-            className={`btn ${listingType === 'sale' ? 'btn-primary' : 'btn-light'} me-3`}
-            onClick={() => handleListingTypeChange('sale')}
-          >
-            Explore Properties
-          </button>
-        </div>
-      </div>
+      <HeroContent 
+        locationData={locationData}
+        activeLocation={activeLocation}
+        listingType={listingType}
+        searchQuery={searchQuery}
+        selectedLocation={selectedLocation}
+        selectedPropertyType={selectedPropertyType}
+        selectedBedroom={selectedBedroom}
+        handleListingTypeChange={handleListingTypeChange}
+        setSearchQuery={setSearchQuery}
+        handleSearch={handleSearch}
+      />
 
       <Trusted />
       <Timeless />
@@ -197,13 +182,14 @@ const Home = () => {
         activeLocation={activeLocation}
         selectedLocation={selectedLocation}
       />
-
+      
       <section>
         <LuxuryProperty {...luxuryPropertyData} />
       </section>
       
       <FloatingChat phoneNumber='+917558273523' />
       <About />
+      
       <Testimonials />
       <ContactUs />
       <Footer />
