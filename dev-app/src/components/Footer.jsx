@@ -75,7 +75,7 @@ const ModernFooter = () => {
               <ul className={styles.linkList}>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/properties">Properties</Link>
+                  <Link to="/propertylisting">Properties</Link>
                 </li>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />

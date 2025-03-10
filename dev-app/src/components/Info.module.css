@@ -25,6 +25,17 @@
   color: #d4af37;
   padding-bottom: 1rem;
 }
+.mainTitle::after {
+  content: "";
+  position: absolute;
+  bottom: 250px; /* Adjusts the line’s position */
+  left: 50%;
+  width: 100px; /* Set the line’s width */
+  height: 3px; /* Thickness of the line */
+  background: #d4af37; /* Gold color */
+  transform: translateX(-50%); /* Centers the line */
+  border-radius: 2px;
+}
 
 /* Carousel Section */
 .carousel {

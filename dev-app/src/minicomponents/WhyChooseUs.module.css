@@ -1,11 +1,11 @@
 /* WHY CHOOSE US SECTION */
 .whyChooseUs {
     padding: 100px 5%;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    background: white;
     position: relative;
     overflow: hidden;
     border-radius: 25px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     text-align: center;
     border: 2px solid rgba(0, 255, 204, 0.1);
     margin: 40px auto;
@@ -17,11 +17,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: 
-        linear-gradient(45deg, rgba(0, 255, 204, 0.05) 25%, transparent 25%) -50px 0,
-        linear-gradient(45deg, transparent 75%, rgba(0, 255, 204, 0.05) 75%) -50px 0,
-        linear-gradient(135deg, rgba(59, 130, 246, 0.05) 25%, transparent 25%),
-        linear-gradient(135deg, transparent 75%, rgba(59, 130, 246, 0.05) 75%);
+    background: white;
     background-size: 100px 100px;
     animation: backgroundFlow 15s linear infinite;
     opacity: 0.3;
@@ -34,8 +30,8 @@
 
 /* HEADER STYLING */
 .whyChooseUs h2 {
-    font-size: 3.2rem;
-    font-weight: 800;
+    font-size: 3rem;
+    font-weight: bold;
     background:#D4AF37;
     -webkit-background-clip: text;
     background-clip: text;
@@ -60,14 +56,20 @@
     animation: glowLine 2s ease-in-out infinite;
 }
 
-@keyframes glowLine {
-    0%, 100% { box-shadow: 0 0 10px #00ffcc; }
-    50% { box-shadow: 0 0 20px #3b82f6; }
+.featureHeading {
+    font-size:1.5rem;
+    font-weight: 700;
+    border: none;
+    color: #D4AF37; /* Change this to any color you prefer */
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: none;
 }
 
 .whyChooseUs p {
     font-size: 1.2rem;
-    color: #e5e7eb;
+    color: #6c757d;
     max-width: 900px;
     margin: 0 auto 60px auto;
     line-height: 1.8;
@@ -76,6 +78,13 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 400;
     opacity: 0.9;
+}
+.icon {
+    font-size: 3rem; /* Increase icon size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px; /* Adjust spacing if needed */
 }
 
 /* IMAGE GRID LAYOUT */
@@ -89,69 +98,72 @@
 }
 
 /* ENHANCED HEXAGONAL CARDS */
+/* HEXAGONAL IMAGE - FULL-WIDTH */
 .circle {
-    width: 280px;
-    height: 280px;
-    margin: 0 auto;
-    position: relative;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%; /* Full width of the container */
+    max-width: 800px; /* Adjust this based on your preference */
+    height: auto; /* Maintain aspect ratio */
+    aspect-ratio: 16 / 9; /* Enforce landscape ratio */
+    margin: 0 auto; /* Center the image */
+    display: block;
 }
 
-/* Enhanced Image Effects */
 .circle img {
+    position: relative;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    filter: brightness(0.8) contrast(1.1);
+    object-fit: cover; /* Ensures proper cropping */
+    clip-path: none; /* Remove hexagonal clipping */
+    border-radius: 15px; /* Optional: adds soft rounded corners */
+    z-index: 2;
+    transform: rotate(0deg); 
 }
 
-/* Advanced Hover Effects */
-.circle::before,
-.circle::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, #00ffcc, #3b82f6, #00ffcc);
-    z-index: -1;
-    opacity: 0;
-    transition: all 0.4s ease;
-    animation: borderRotate 3s linear infinite;
+
+
+
+
+/* Feature Boxes */
+.features {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
 }
 
-@keyframes borderRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+.featureBox {
+    background: rgba(245, 245, 245, 0.9);
+    border-radius: 20px;
+    padding: 30px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 2px solid rgba(212, 175, 55, 0.3);
 }
 
-.circle:hover {
+.featureBox:hover {
     transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-.circle:hover::before,
-.circle:hover::after {
-    opacity: 1;
-    filter: blur(5px);
+.icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
 }
 
-.circle:hover img {
-    transform: scale(1.1);
-    filter: brightness(1) contrast(1.2);
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
 }
-
-/* Floating Animation with Variation */
-.circle:nth-child(1) { animation: float3D 4s ease-in-out infinite; }
-.circle:nth-child(2) { animation: float3D 4.5s ease-in-out infinite 0.5s; }
-.circle:nth-child(3) { animation: float3D 5s ease-in-out infinite 1s; }
-
-@keyframes float3D {
-    0%, 100% { transform: translateY(0) translateZ(0); }
-    50% { transform: translateY(-15px) translateZ(20px); }
+@media (max-width: 768px) {
+    .imageSection {
+        display: none;
+    }
 }
-
 /* RESPONSIVE DESIGN */
 @media (max-width: 1200px) {
     .imageSection {
