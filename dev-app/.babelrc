@@ -1,8 +1,8 @@
 {
-  "presets": ["react-app"],
+  "presets": ["react-app", "@babel/preset-env", "@babel/preset-react"],
   "plugins": [
     "transform-react-remove-prop-types",
-    ["transform-react-inline-elements"],
-    ["transform-react-constant-elements"]
+    "transform-react-inline-elements",
+    "transform-react-constant-elements"
   ]
 }
