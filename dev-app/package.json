@@ -23,7 +23,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-"build": "react-scripts build && purgecss --css build/static/css/*.css --content build/**/*.html build/static/js/*.js --output build/static/css && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && rm build/static/js/*.js && mv build/static/js/bundle.min.js build/static/js/ && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/ --configuration obfuscator.config.js && optipng build/public/**/*.png && mozjpeg build/public/**/*.jpg && font-face-observer build/public/**/*.woff2",    "eject": "react-scripts eject",
+    "build": "react-scripts build && purgecss --css build/static/css/*.css --content build/**/*.html build/static/js/*.js --output build/static/css && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && rm build/static/js/*.js && mv build/static/js/bundle.min.js build/static/js/ && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/ --configuration obfuscator.config.js && optipng build/public/**/*.png && mozjpeg build/public/**/*.jpg && font-face-observer build/public/**/*.woff2",
+    "eject": "react-scripts eject",
     "analyze": "source-map-explorer build/static/js/*.js"
   },
   "eslintConfig": {
@@ -45,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "font-face-observer": "^1.0.0",
     "javascript-obfuscator": "^4.1.1",
     "mozjpeg": "^8.0.0",
