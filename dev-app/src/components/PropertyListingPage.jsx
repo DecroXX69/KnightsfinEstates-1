@@ -6,7 +6,7 @@ import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
-
+import logo1 from "../assets/logo.png";
 const PropertyListingPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -155,7 +155,14 @@ const PropertyListingPage = () => {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
-  if (loading) return <div className={styles.loader}>Loading...</div>;
+  if (loading) return (
+    <div className={styles.loader}>
+      <div className={styles.loaderContent}>
+        <img src={logo1} alt="Logo" className={styles.logo} />
+        <div className={styles.spinner}></div>
+      </div>
+    </div>
+  );
 
   return (
     <>
