@@ -18,13 +18,14 @@
     "react-flagkit": "^2.0.4",
     "react-icons": "^5.4.0",
     "react-leaflet": "^5.0.0",
-    "react-router-dom": "^6.30.0",
+    "react-router-dom": "^7.1.1",
     "react-scripts": "5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
-"build": "react-scripts build && purgecss --css build/static/css/*.css --content build/**/*.html build/static/js/*.js --output build/static/css && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && rm build/static/js/*.js && mv build/static/js/bundle.min.js build/static/js/ && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/ --configuration obfuscator.config.js && optipng build/public/**/*.png && mozjpeg build/public/**/*.jpg && font-face-observer build/public/**/*.woff2",    "eject": "react-scripts eject",
-    "analyze": "source-map-explorer build/static/js/*.js"
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -45,13 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "font-face-observer": "^1.0.0",
-    "javascript-obfuscator": "^4.1.1",
-    "mozjpeg": "^8.0.0",
-    "optipng": "^4.2.0",
-    "purgecss": "^7.0.2",
-    "source-map-explorer": "^2.5.3",
-    "terser": "^5.39.0"
+    "purgecss": "^7.0.2"
   }
 }
