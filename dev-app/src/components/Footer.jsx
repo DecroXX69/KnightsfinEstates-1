@@ -34,10 +34,10 @@ const ModernFooter = () => {
           {/* <div className={styles.contactInfoContainer}>
             <div className={styles.contactCard}>
               <div className={styles.contactIcon}>
-                <a href="tel:+918177083523"><FaPhoneAlt /></a>
+                <a href="tel:+917558273523"><FaPhoneAlt /></a>
               </div>
               <h4>Call Us</h4>
-              <a href="tel:+918177083523">+918177083523</a>
+              <a href="tel:+917558273523">+917558273523</a>
               <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
             </div>
 
@@ -119,7 +119,7 @@ const ModernFooter = () => {
               <ul className={styles.linkList}>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/properties">Properties</Link>
+                  <Link to="/propertylisting">Properties</Link>
                 </li>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />
@@ -138,12 +138,12 @@ const ModernFooter = () => {
               <ul className={styles.linkList}>
                 <li>
                   <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/properties/sale">Property for Sale</Link>
+                  <Link to="/propertylisting?location=Pune">Domestic Properties</Link>
                 </li>
-                <li>
+                {/* <li>
                   <FaAngleRight className={styles.bulletIcon} />
-                  <Link to="/properties/off-plan">Off Plan Properties</Link>
-                </li>
+                  <Link to="/properties/off-plan">Foreign Properties</Link>
+                </li> */}
               </ul>
             </div>
 

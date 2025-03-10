@@ -6,7 +6,7 @@ import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
-
+import logo1 from "../assets/logo.png";
 const PropertyListingPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,10 +30,23 @@ const PropertyListingPage = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
+        const locationParam = searchParams.get('location') || '';
+        
+        // If there's a location parameter, update the filter
+        if (locationParam && filters.query !== locationParam) {
+          setFilters(prev => ({
+            ...prev,
+            query: locationParam,
+            activeFilters: prev.activeFilters + 1
+          }));
+        }
+        
         const params = new URLSearchParams({
           sort: getSortParam(),
-          ...(selectedLocation && { location: selectedLocation })
+          ...(selectedLocation && { location: selectedLocation }),
+          ...(filters.query && { query: filters.query })
         });
+        
         const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/properties?${params}`);
         const data = await response.json();
         setProperties(data.map(p => ({
@@ -46,8 +59,14 @@ const PropertyListingPage = () => {
         setLoading(false);
       }
     };
+
+    const queryParam = searchParams.get('query') || '';
+    if (queryParam && filters.query !== queryParam) {
+      setFilters(prev => ({ ...prev, query: queryParam }));
+    }
+  
     fetchProperties();
-  }, [filters, sort, selectedLocation]);
+  }, [filters, sort, selectedLocation, searchParams]);
 
   const getSortParam = () => {
     switch (sort) {
@@ -97,12 +116,31 @@ const PropertyListingPage = () => {
       property.propertyType === filters.propertyType : true;
     const isBedCountMatch = filters.beds ? 
       property.bedrooms === filters.beds : true;
-    const isLocationMatch = selectedLocation ? 
+      const isLocationMatch = selectedLocation ? 
       property.location.toLowerCase().includes(selectedLocation.toLowerCase()) : true;
+
     const isQueryMatch = filters.query ? 
-      [property.area, property.location, property.propertyType].some(text => 
-        text.toLowerCase().includes(filters.query.toLowerCase())
-      ) : true;
+      [property.location, property.area, property.buildingName].some((text, index) => {
+        const query = filters.query.toLowerCase();
+        const textLower = text.toLowerCase();
+        
+        // Give priority to exact location matches
+        if (index === 0 && textLower === query) {
+          return true;
+        }
+        
+        // Check if query is a substring of the location
+        if (textLower.includes(query)) {
+          return true;
+        }
+        
+        // Fuzzy matching for locations
+        if (textLower.split(' ').some(word => word.includes(query))) {
+          return true;
+        }
+        
+        return false;
+      }) : true;
 
     return isListingTypeMatch && isPropertyTypeMatch && 
       isBedCountMatch && isLocationMatch && isQueryMatch;
@@ -117,7 +155,14 @@ const PropertyListingPage = () => {
 
   const handlePageChange = (page) => setCurrentPage(page);
 
-  if (loading) return <div className={styles.loader}>Loading...</div>;
+  if (loading) return (
+    <div className={styles.loader}>
+      <div className={styles.loaderContent}>
+        <img src={logo1} alt="Logo" className={styles.logo} />
+        <div className={styles.spinner}></div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -230,70 +275,81 @@ const PropertyListingPage = () => {
         <div className="row mb-4 align-items-center">
           <div className="col">
             <h1 className={styles.headingPrimary}>
-              Properties in {selectedLocation || 'KnightsFin'}
+            Properties in {filters.location || filters.area || filters.query ||'KnightsFin'}
             </h1>
           </div>
         </div>
 
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-          {displayedProperties.map(property => (
-            <div 
-              key={property._id} 
-              className="col" 
-              onClick={() => handlePropertyClick(property)}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className="card h-100" style={{ borderRadius: "15px", overflow: "hidden", padding: "15px" }}>
-                <img 
-                  src={property.image} 
-                  className={styles.propertyImage} 
-                  alt={property.title}
-                />
-                <div className="card-body">
-                  <h3 className={styles.propertyTitle}>{property.buildingName}</h3>
-                  <p className={styles.propertyLocation}>{property.developer}</p>
-                  <p className={styles.propertyLocation}>{property.location}</p>
-                  <p className={styles.propertyType}>
-                    {property.bedrooms}-Bed {property.propertyType} - 
-                    {property.type.charAt(0).toUpperCase() + property.type.slice(1)}
-                  </p>
-                  <p className={styles.propertyPrice}>
-                    {selectedCurrency === 'AED' ? (
-                      `AED ${property.price.toLocaleString()}`
-                    ) : (
-                      `INR ${Math.round(property.price * EXCHANGE_RATE).toLocaleString()}`
-                    )}
-                  </p>
+        {filteredProperties.length === 0 ? (
+          <div className="row">
+            <div className="col text-center">
+              <p className={styles.noPropertiesFound}>No properties found</p>
+            </div>
+          </div>
+        ) : (
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+            {displayedProperties.map(property => (
+              <div 
+                key={property._id} 
+                className="col" 
+                onClick={() => handlePropertyClick(property)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="card h-100" style={{ borderRadius: "15px", overflow: "hidden", padding: "15px" }}>
+                  <img 
+                    src={property.image} 
+                    className={styles.propertyImage} 
+                    alt={property.title}
+                  />
+                  <div className="card-body">
+                    <h3 className={styles.propertyTitle}>{property.buildingName}</h3>
+                    <p className={styles.propertyLocation}>{property.developer}</p>
+                    <p className={styles.propertyLocation}>{property.location}</p>
+                    <p className={styles.propertyType}>
+                      {property.bedrooms}-Bed {property.propertyType} - 
+                      {property.type.charAt(0).toUpperCase() + property.type.slice(1)}
+                    </p>
+                    <p className={styles.propertyPrice}>
+                      {selectedCurrency === 'AED' ? (
+                        `AED ${property.price.toLocaleString()}`
+                      ) : (
+                        `INR ${Math.round(property.price * EXCHANGE_RATE).toLocaleString()}`
+                      )}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <nav className="d-flex justify-content-center">
-          <ul className="pagination">
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <li 
-                key={index + 1} 
-                className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-              >
-                <button className="page-link" onClick={() => handlePageChange(index + 1)}>
-                  {index + 1}
+        {filteredProperties.length > 0 && (
+          <nav className="d-flex justify-content-center">
+            <ul className="pagination">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <li 
+                  key={index + 1} 
+                  className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  <button className="page-link" onClick={() => handlePageChange(index + 1)}>
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className="page-item">
+                <button 
+                  className="page-link" 
+                  onClick={() => handlePageChange(currentPage + 1 > totalPages ? totalPages : currentPage + 1)}>
+                  Next
                 </button>
               </li>
-            ))}
-            <li className="page-item">
-              <button 
-                className="page-link" 
-                onClick={() => handlePageChange(currentPage + 1 > totalPages ? totalPages : currentPage + 1)}>
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-        <MiniContact />
-        <Footer />
+            </ul>
+          </nav>
+        )}
+        
       </div>
+      {/* <MiniContact /> */}
+        <Footer />
     </>
   );
 };

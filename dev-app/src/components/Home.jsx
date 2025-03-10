@@ -114,7 +114,7 @@ const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) =
   <div className={styles.actionButtons}>
     <button 
       className={`${styles.btn} ${listingType === 'sale' ? styles.btnPrimary : styles.btnLight} ${styles.me3}`}
-      onClick={handleSearch}
+      onClick={() => handleSearch()}
     >
       Explore Properties
     </button>
@@ -129,21 +129,27 @@ const Home = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedBedroom, setSelectedBedroom] = useState('');
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const handleListingTypeChange = (type) => {
     setListingType(type);
   };
 
   const handleSearch = () => {
-    navigate('/propertylisting', {
-      state: {
-        listingType: listingType,
-        location: activeLocation,
-        query: selectedLocation || searchQuery,
-        propertyType: selectedPropertyType,
-        beds: selectedBedroom,
-      }
-    });
+    // Create search parameters similar to PropertyListing page
+    const searchParams = new URLSearchParams();
+    
+    // Add query parameter for the search text (similar to PropertyListing's query filter)
+    if (searchQuery) {
+      searchParams.set('query', searchQuery);
+    }
+    
+    // Add area parameter if a specific location is selected
+    if (selectedLocation) {
+      searchParams.set('area', selectedLocation);
+    }
+
+    navigate(`/propertylisting?${searchParams.toString()}`);
   };
 
   const luxuryPropertyData = {
