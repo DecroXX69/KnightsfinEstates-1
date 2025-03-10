@@ -5,10 +5,11 @@
   box-sizing: border-box;
 } */
 
-body {
+/* body {
   overflow-x: hidden;
   font-family: Poppins, sans-serif;
-}
+} */
+ 
 .aboutUsHero {
   position: relative;
   width: 100%;
