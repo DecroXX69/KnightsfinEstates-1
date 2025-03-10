@@ -74,35 +74,45 @@ const HeroContent = ({
 );
 
 const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
+  // <div className={styles.searchContainer}>
+  //   <div className={styles.searchBar}>
+  //     <input
+  //       type="text"
+  //       placeholder="Search..."
+  //       className={styles.searchInput}
+  //       value={searchQuery}
+  //       onChange={(e) => setSearchQuery(e.target.value)}
+  //     />
+  //     <button className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} onClick={handleSearch}>
+  //       <i className="fas fa-search"></i>
+  //     </button>
+  //   </div>
+  // </div>
   <div className={styles.searchContainer}>
-    <div className={styles.searchBar}>
-      <input
-        type="text"
-        placeholder="Search..."
-        className={styles.searchInput}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            handleSearch();
-          }
-        }}
-      />
-      <button 
-        className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} 
-        onClick={() => {
-          if (searchQuery) {
-            // Update to use query parameter for consistency
-            const searchParams = new URLSearchParams();
-            searchParams.set('query', encodeURIComponent(searchQuery));
-            window.location.href = `/propertylisting?${searchParams.toString()}`;
-          }
-        }}
-      >
-        <i className="fas fa-search"></i>
-      </button>
-    </div>
+  <div className={styles.searchBar}>
+    <input
+      type="text"
+      placeholder="Search..."
+      className={styles.searchInput}
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      aria-label="Search"  // Accessible label for the input
+    />
+    <button
+      className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`}
+      onClick={handleSearch}
+      aria-label="Search"  // Accessible label for the button
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          handleSearch();
+        }
+      }}
+    >
+      <i className="fas fa-search"></i>
+    </button>
   </div>
+</div>
+
 );
 
 const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) => (
