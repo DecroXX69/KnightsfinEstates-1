@@ -1,5 +1,4 @@
 import React from "react";  // Ensure this line is present
-
 import Info from "./Info.jsx"; // Import the Info component
 import hero from "../assets/About-us-hero.jpg"; // Import the hero image
 import styles from "../components/Aboutus.module.css";
@@ -17,6 +16,7 @@ const AboutUs = () => {
           src={hero}
           alt="About Us Hero"
           className={styles.heroImage}
+           loading="lazy"  // Lazy load the hero image
         />
       
 

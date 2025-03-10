@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styles from './Testimonials.module.css';
-import james from '../assets/james.jpg';
-import download from '../assets/download.jpg';
-import sarah from '../assets/sarah.jpg';
+// import james from '../assets/james.jpg';
+// import download from '../assets/download.jpg';
+// import sarah from '../assets/sarah.jpg';
 
 const Testimonials = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -12,19 +12,19 @@ const Testimonials = () => {
       text: "KnightsfinEstates exceeded my expectations in every way. Their deep knowledge of the Dubai property market, combined with their unwavering commitment to finding the perfect home for my family, made the entire process seamless and enjoyable. I wholeheartedly recommend KnightsfinEstates to anyone seeking a truly exceptional real estate experience in Dubai.",
       name: "MR. RAJESH KUMAR",
       position: "CEO At DigiMagar Swap, Mumbai",
-      image: download
+      // image: download
     },
     {
       text: "Working with KnightsfinEstates was an outstanding experience. Their expertise in Dubai's luxury real estate market and attention to detail made our property search efficient and successful. The team's professionalism and dedication to client satisfaction are truly commendable.",
       name: "MS. SARAH ANDERSON",
       position: "Managing Director, London Finance Group",
-      image: sarah
+      // image: sarah
     },
     {
       text: "As an international investor, I needed a trustworthy partner in Dubai's real estate market. KnightsfinEstates provided exceptional service, offering valuable insights and guidance throughout the investment process. Their market knowledge and professional approach made the entire experience smooth and rewarding.",
       name: "MR. JAMES WILSON",
       position: "Investment Director, Singapore",
-      image: james
+      // image: james
     }
   ];
 
