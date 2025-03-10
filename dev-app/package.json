@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && purgecss --css build/static/css/*.css --content build/**/*.html build/static/js/*.js --output build/static/css && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && rimraf build/static/js/*.js && mv build/static/js/bundle.min.js build/static/js/ && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/ --configuration obfuscator.config.js && optipng build/public/**/*.png && mozjpeg build/public/**/*.jpg && font-face-observer build/public/**/*.woff2",
+    "build": "react-scripts build && purgecss --css build/static/css/*.css --content build/**/*.html build/static/js/*.js --output build/static/css && terser build/static/js/*.js --compress --mangle --output build/static/js/bundle.min.js && rm build/static/js/*.js && mv build/static/js/bundle.min.js build/static/js/ && javascript-obfuscator build/static/js/bundle.min.js --output build/static/js/ --configuration obfuscator.config.js && optipng build/public/**/*.png && mozjpeg build/public/**/*.jpg && font-face-observer build/public/**/*.woff2",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer build/static/js/*.js"
   },
@@ -45,12 +45,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-react": "^7.26.3",
-    "babel-plugin-transform-react-constant-elements": "^6.23.0",
-    "babel-plugin-transform-react-inline-elements": "^6.22.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "font-face-observer": "^1.0.0",
     "javascript-obfuscator": "^4.1.1",
     "mozjpeg": "^8.0.0",
