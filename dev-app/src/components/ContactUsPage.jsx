@@ -117,11 +117,7 @@ const ContactUsPage = () => {
                           referrerPolicy="no-referrer-when-downgrade"
                           title="Office Location"
                       /> */}
-
-<MapComponent />
-
-                      
-                      
+<MapComponent />         
                   </div>
         </div>
       </div>
