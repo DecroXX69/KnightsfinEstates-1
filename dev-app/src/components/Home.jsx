@@ -107,6 +107,11 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
       className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`}
       onClick={handleSearch}
       aria-label="Search"  // Accessible label for the button
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          handleSearch();
+        }
+      }}
     >
       <i className="fas fa-search"></i>
     </button>
