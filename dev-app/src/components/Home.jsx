@@ -299,35 +299,57 @@ const HeroContent = ({
 );
 
 const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
+  // <div className={styles.searchContainer}>
+  //   <div className={styles.searchBar}>
+  //     <input
+  //       type="text"
+  //       placeholder="Search..."
+  //       className={styles.searchInput}
+  //       value={searchQuery}
+  //       onChange={(e) => setSearchQuery(e.target.value)}
+  //     />
+  //     <button className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} onClick={handleSearch}>
+  //       <i className="fas fa-search"></i>
+  //     </button>
+  //   </div>
+  // </div>
   <div className={styles.searchContainer}>
-    <div className={styles.searchBar}>
-      <input
+  <div className={styles.searchBar}>
+    <input
         type="text"
         placeholder="Search..."
         className={styles.searchInput}
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button 
-        className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} 
-        onClick={() => {
-          // Direct navigation with location parameter
-          if (searchQuery) {
-            window.location.href = `/propertylisting?location=${encodeURIComponent(searchQuery)}`;
+        aria-label="Search"  // Accessible label for the input
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch();
           }
         }}
-      >
-        <i className="fas fa-search"></i>
-      </button>
-    </div>
+      />
+    <button
+      className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`}
+      onClick={handleSearch}
+      aria-label="Search"  // Accessible label for the button
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          handleSearch();
+        }
+      }}
+    >
+      <i className="fas fa-search"></i>
+    </button>
   </div>
+</div>
+
 );
 
 const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) => (
   <div className={styles.actionButtons}>
     <button 
       className={`${styles.btn} ${listingType === 'sale' ? styles.btnPrimary : styles.btnLight} ${styles.me3}`}
-      onClick={() => handleSearch(false)}  // Pass false to indicate this is NOT a location search
+      onClick={() => handleSearch()}
     >
       Explore Properties
     </button>
@@ -342,21 +364,27 @@ const Home = () => {
   const [selectedPropertyType, setSelectedPropertyType] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedBedroom, setSelectedBedroom] = useState('');
+  const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const handleListingTypeChange = (type) => {
     setListingType(type);
   };
 
   const handleSearch = () => {
-    navigate('/propertylisting', {
-      state: {
-        listingType: listingType,
-        location: activeLocation,
-        query: selectedLocation || searchQuery,
-        propertyType: selectedPropertyType,
-        beds: selectedBedroom,
-      }
-    });
+    // Create search parameters similar to PropertyListing page
+    const searchParams = new URLSearchParams();
+    
+    // Add query parameter for the search text (similar to PropertyListing's query filter)
+    if (searchQuery) {
+      searchParams.set('query', searchQuery);
+    }
+    
+    // Add area parameter if a specific location is selected
+    if (selectedLocation) {
+      searchParams.set('area', selectedLocation);
+    }
+
+    navigate(`/propertylisting?${searchParams.toString()}`);
   };
 
   const luxuryPropertyData = {
