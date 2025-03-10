@@ -74,20 +74,40 @@ const HeroContent = ({
 );
 
 const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
+  // <div className={styles.searchContainer}>
+  //   <div className={styles.searchBar}>
+  //     <input
+  //       type="text"
+  //       placeholder="Search..."
+  //       className={styles.searchInput}
+  //       value={searchQuery}
+  //       onChange={(e) => setSearchQuery(e.target.value)}
+  //     />
+  //     <button className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} onClick={handleSearch}>
+  //       <i className="fas fa-search"></i>
+  //     </button>
+  //   </div>
+  // </div>
   <div className={styles.searchContainer}>
-    <div className={styles.searchBar}>
-      <input
-        type="text"
-        placeholder="Search..."
-        className={styles.searchInput}
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`} onClick={handleSearch}>
-        <i className="fas fa-search"></i>
-      </button>
-    </div>
+  <div className={styles.searchBar}>
+    <input
+      type="text"
+      placeholder="Search..."
+      className={styles.searchInput}
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      aria-label="Search"  // Accessible label for the input
+    />
+    <button
+      className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`}
+      onClick={handleSearch}
+      aria-label="Search"  // Accessible label for the button
+    >
+      <i className="fas fa-search"></i>
+    </button>
   </div>
+</div>
+
 );
 
 const ActionButtons = ({ listingType, handleListingTypeChange, handleSearch }) => (

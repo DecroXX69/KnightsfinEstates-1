@@ -31,7 +31,7 @@ const ModernFooter = () => {
           </div>
 
           {/* Contact Information Cards */}
-          <div className={styles.contactInfoContainer}>
+          {/* <div className={styles.contactInfoContainer}>
             <div className={styles.contactCard}>
               <div className={styles.contactIcon}>
                 <a href="tel:+918177083523"><FaPhoneAlt /></a>
@@ -65,7 +65,51 @@ const ModernFooter = () => {
               <a href="mailto:team@knightsfinestates.com">team@knightsfinestates.com</a>
               <p>24/7 Online Support</p>
             </div>
-          </div>
+          </div> */}
+          <div className={styles.contactInfoContainer}>
+  <div className={styles.contactCard}>
+    <div className={styles.contactIcon}>
+      <a href="tel:+918177083523" aria-label="Call Us">
+        <FaPhoneAlt />
+      </a>
+    </div>
+    <h4>Call Us</h4>
+    <a href="tel:+918177083523" aria-label="Call +918177083523">+918177083523</a>
+    <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
+  </div>
+
+  <div className={styles.contactCard}>
+    <div className={styles.contactIcon}>
+      <a
+        href="https://www.google.com/maps/place/TecMetaverse/@18.5642566,73.7711113,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2bfffda1390d5:0xe9942f5eb5f7a78d!8m2!3d18.5642566!4d73.7711113!16s%2Fg%2F11w48jlpr2?entry=ttu&g_ep=EgoyMDI1MDIxOS4xIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D"
+        target='_blank'
+        aria-label="Find Us on Google Maps"
+      >
+        <FaMapMarkerAlt />
+      </a>
+    </div>
+    <h4>Find Us</h4>
+    <a
+      href="https://www.google.com/maps/place/TecMetaverse/@18.5642566,73.7711113,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc2bfffda1390d5:0xe9942f5eb5f7a78d!8m2!3d18.5642566!4d73.7711113!16s%2Fg%2F11w48jlpr2?entry=ttu&g_ep=EgoyMDI1MDIxOS4xIKXMDSoJLDEwMjExNDUzSAFQAw%3D%3D"
+      target='_blank'
+      aria-label="View our address on Google Maps"
+    >
+      <p>506, 5th floor, Pyramid Axis, Behind Croma,</p>
+      <p>Baner, Pune, Maharashtra, India, 411045</p>
+    </a>
+  </div>
+
+  <div className={styles.contactCard}>
+    <div className={styles.contactIcon}>
+      <a href="mailto:team@knightsfinestates.com" aria-label="Email Us">
+        <FaEnvelope />
+      </a>
+    </div>
+    <h4>Email Us</h4>
+    <a href="mailto:team@knightsfinestates.com" aria-label="Send an email to team@knightsfinestates.com">team@knightsfinestates.com</a>
+    <p>24/7 Online Support</p>
+  </div>
+</div>
 
           {/* Links Grid */}
           <div className={styles.footerLinksGrid}>
@@ -117,13 +161,50 @@ const ModernFooter = () => {
 
           {/* Social Links */}
           <div className={styles.socialContainer}>
-            <div className={styles.socialLinks}>
+            {/* <div className={styles.socialLinks}>
               <a href="https://www.facebook.com/profile.php?id=61559868392921" className={styles.socialIcon}><FaFacebookF /></a>
               <a href="https://www.instagram.com/knightsfinestates/" className={styles.socialIcon}><FaInstagram /></a>
               <a href="https://x.com/EstatesFin16778" className={styles.socialIcon}><FaTwitter /></a>
               <a href="https://in.pinterest.com/knightsfinestates/" className={styles.socialIcon}><FaPinterest /></a>
               <a href="https://www.linkedin.com/company/knights-fin%C2%A0estates/" className={styles.socialIcon}><FaLinkedinIn /></a>
-            </div>
+            </div> */}
+            <div className={styles.socialLinks}>
+  <a
+    href="https://www.facebook.com/profile.php?id=61559868392921"
+    className={styles.socialIcon}
+    aria-label="Facebook"
+  >
+    <FaFacebookF />
+  </a>
+  <a
+    href="https://www.instagram.com/knightsfinestates/"
+    className={styles.socialIcon}
+    aria-label="Instagram"
+  >
+    <FaInstagram />
+  </a>
+  <a
+    href="https://x.com/EstatesFin16778"
+    className={styles.socialIcon}
+    aria-label="Twitter"
+  >
+    <FaTwitter />
+  </a>
+  <a
+    href="https://in.pinterest.com/knightsfinestates/"
+    className={styles.socialIcon}
+    aria-label="Pinterest"
+  >
+    <FaPinterest />
+  </a>
+  <a
+    href="https://www.linkedin.com/company/knights-fin%C2%A0estates/"
+    className={styles.socialIcon}
+    aria-label="LinkedIn"
+  >
+    <FaLinkedinIn />
+  </a>
+</div>
           </div>
         </div>
       </div>
