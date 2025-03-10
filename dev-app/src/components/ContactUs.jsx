@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './ContactUs.module.css';
+// Use `loading="lazy"` for the image
 import indiaIcon from '../assets/india.png';
 import axios from 'axios';
 
@@ -112,6 +113,7 @@ const ContactUs = () => {
                         src={indiaIcon}
                         alt="Indian flag" 
                         className={styles.flagIcon}
+                        loading="lazy"  // Lazy load the flag icon
                       /> +91
                     </span>
                     <input
