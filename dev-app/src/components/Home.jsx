@@ -91,13 +91,18 @@ const SearchBar = ({ searchQuery, setSearchQuery, handleSearch }) => (
   <div className={styles.searchContainer}>
   <div className={styles.searchBar}>
     <input
-      type="text"
-      placeholder="Search..."
-      className={styles.searchInput}
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      aria-label="Search"  // Accessible label for the input
-    />
+        type="text"
+        placeholder="Search..."
+        className={styles.searchInput}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        aria-label="Search"  // Accessible label for the input
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch();
+          }
+        }}
+      />
     <button
       className={`${styles.btn} ${styles.btnPrimary} ${styles.searchSubmit}`}
       onClick={handleSearch}
