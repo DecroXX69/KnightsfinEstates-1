@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './ContactUs.module.css';
 // Use `loading="lazy"` for the image
-import indiaIcon from '../assets/india.png';
+import indiaIcon from '../assets/india.webp';
 import axios from 'axios';
 
 const ContactUs = () => {

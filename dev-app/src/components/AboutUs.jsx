@@ -1,6 +1,6 @@
 import React from "react";  // Ensure this line is present
 import Info from "./Info.jsx"; // Import the Info component
-import hero from "../assets/About-us-hero.jpg"; // Import the hero image
+import hero from "../assets/About-us-hero.webp"; // Import the hero image
 import styles from "../components/Aboutus.module.css";
 import Services from './Services.jsx';
 import WhyChooseUs from '../minicomponents/WhyChooseUs.jsx';

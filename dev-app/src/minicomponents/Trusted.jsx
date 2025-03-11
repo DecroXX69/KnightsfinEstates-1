@@ -1,7 +1,7 @@
 import React from "react";
-import bedroom from "../assets/bedroom_img.jpg";
-import stairs from "../assets/stairs.jpg";
-import kitchen from "../assets/kitchen.jpg";
+import bedroom from "../assets/bedroom_img.webp";
+import stairs from "../assets/stairs.webp";
+import kitchen from "../assets/kitchen.webp";
 import styles from "./Trusted.module.css";
 
 function Trusted() {
