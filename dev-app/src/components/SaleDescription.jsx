@@ -58,6 +58,8 @@ const SaleDescription = () => {
     navigate(-1);
   };
 
+  const EXCHANGE_RATE = 23.7;
+
   const handleShowMore = () => {
     setShowFullDescription(!showFullDescription);
   };
@@ -118,7 +120,7 @@ const SaleDescription = () => {
   }
 
   // Calculate variables that depend on property after checking it exists
-  const formattedPrice = `AED ${property.price.toLocaleString()}`;
+  const formattedPrice = `INR ${(property.price * EXCHANGE_RATE).toLocaleString()}`;
   const allImages = property.images ? [property.image, ...property.images] : [property.image];
  
   return (
