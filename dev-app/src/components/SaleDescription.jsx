@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, MapPin, Phone } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize } from 'lucide-react';
 import styles from './SaleDescription.module.css';
 import MiniContact from './miniContactComponent';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -16,7 +17,6 @@ const customIcon = new L.Icon({
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
 });
-
 const SaleDescription = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -27,6 +27,8 @@ const SaleDescription = () => {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [formData, setFormData] = useState({
     fullname: '',
     email: '',
@@ -50,16 +52,32 @@ const SaleDescription = () => {
     fetchProperty();
   }, [id]);
 
-  if (loading || !property) {
-    return <div className={styles.loading}>Loading...</div>;
-  }
-
   const handleGoBack = () => {
     navigate(-1);
   };
 
   const handleShowMore = () => {
     setShowFullDescription(!showFullDescription);
+  };
+
+  const handleThumbnailClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  const handleImageNavigation = (direction) => {
+    if (direction === 'prev') {
+      setCurrentImageIndex(prev => 
+        prev === 0 ? allImages.length - 1 : prev - 1
+      );
+    } else {
+      setCurrentImageIndex(prev => 
+        prev === allImages.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(prev => !prev);
   };
 
   const handleSubmit = async (e) => {
@@ -93,9 +111,16 @@ const SaleDescription = () => {
     }
   };
 
-  // Convert price to AED format
-  const formattedPrice = `AED ${property.price.toLocaleString()}`;
+  if (loading || !property) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
+  // Calculate variables that depend on property after checking it exists
+  const formattedPrice = `AED ${property.price.toLocaleString()}`;
+  const allImages = property.images ? [property.image, ...property.images] : [property.image];
+
+
+ 
   return (
     <div className={styles.propertyDetailsContainer}>
       <Navbar />
@@ -128,23 +153,69 @@ const SaleDescription = () => {
         </div>
       </div>
 
-      {/* Property Images Gallery */}
-      <div className="container mt-4">
-        <div className={`row ${styles.propertyGallery}`}>
-          <div className="col-md-7 main-image-container">
-            <img src={property.image} alt={property.buildingName} className={styles.mainPropertyImage} />
-          </div>
-          <div className="col-md-5">
-            <div className="row">
-              {property.images?.map((image, index) => (
-                <div className="col-md-6 mb-3" key={index}>
-                  <img src={image} alt={`${property.buildingName} - view ${index + 1}`} className={styles.additionalPropertyImage} />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+    {/* Property Images Gallery */}
+<div className="container mt-4">
+  <div className={styles.galleryContainer}>
+    <div className={styles.mainImageContainer}>
+    <img 
+  src={allImages[currentImageIndex]} 
+  alt={property.buildingName}
+  className={styles.mainImage}
+  onClick={toggleFullscreen}
+/>
+      <div className={styles.imageCount}>
+        {currentImageIndex + 1} / {property.images?.length + 1 || 1}
       </div>
+      <div className={styles.galleryNavigation}>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageNavigation('prev');
+          }}
+          className={styles.navButton}
+          aria-label="Previous image"
+        >
+          <ChevronLeft />
+        </button>
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            handleImageNavigation('next');
+          }}
+          className={styles.navButton}
+          aria-label="Next image"
+        >
+          <ChevronRight />
+        </button>
+      </div>
+    </div>
+    
+    <div className={styles.thumbnailsContainer}>
+    {property.images?.map((image, index) => (
+  <div 
+    key={index}
+    className={`${styles.thumbnailItem} ${currentImageIndex === index + 1 ? styles.active : ''}`}
+    onClick={() => handleThumbnailClick(index + 1)}
+  >
+    <img 
+      src={image} 
+      alt={`${property.buildingName} - Thumbnail ${index + 1}`}
+      className={styles.thumbnailImage}
+    />
+  </div>
+))}
+      {property.images?.length > 3 && (
+        <div 
+          className={styles.moreImages}
+          onClick={toggleFullscreen}
+        >
+          <Maximize size={20} className="me-2" />
+          +{property.images.length - 3} more
+        </div>
+      )}
+    </div>
+  </div>
+</div>
 
       {/* Property Details Container */}
       <div className="container mt-4">
@@ -316,6 +387,46 @@ const SaleDescription = () => {
       </div>
       {/* Footer */}
       <Footer />
+
+      {/* Fullscreen Gallery */}
+{isFullscreen && (
+  <div className={`${styles.fullscreenOverlay} ${styles.active}`}>
+    <button 
+      className={styles.closeButton} 
+      onClick={toggleFullscreen}
+      aria-label="Close fullscreen gallery"
+    >
+      &times;
+    </button>
+    <img 
+      src={allImages[currentImageIndex]} 
+      alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
+      className={styles.fullscreenImage}
+    />
+    <div className={styles.galleryNavigation}>
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          handleImageNavigation('prev');
+        }}
+        className={styles.navButton}
+        aria-label="Previous image"
+      >
+        <ChevronLeft />
+      </button>
+      <button 
+        onClick={(e) => {
+          e.stopPropagation();
+          handleImageNavigation('next');
+        }}
+        className={styles.navButton}
+        aria-label="Next image"
+      >
+        <ChevronRight />
+      </button>
+    </div>
+  </div>
+)}
     </div>
   );
 };
