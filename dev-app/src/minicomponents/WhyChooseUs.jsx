@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './WhyChooseUs.module.css';
-import image1 from '../assets/whyus.jpg';
-import image2 from '../assets/whyus2.jpg';
-import image3 from '../assets/whyus1.jpg';
+import image1 from '../assets/whyus.webp';
+import image2 from '../assets/whyus2.webp';
+import image3 from '../assets/whyus1.webp';
 
 const WhyChooseUs = () => {
   return (

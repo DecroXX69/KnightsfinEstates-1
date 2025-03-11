@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import Navbar from './Navbar';
 
 // Import hero image
-import hero from '../assets/About-us-hero.jpg';  // Add this import
+import hero from '../assets/About-us-hero.webp';  // Add this import
 
 // Lazy load the PartnersSlider and MapComponent
 const PartnersSlider = lazy(() => import('../minicomponents/PartnerSlider'));

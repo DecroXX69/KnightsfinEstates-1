@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import logo1 from "../assets/logo12.png";
+import logo1 from "../assets/logo12.webp";
 
 const locationData = {
   Dubai: { flag: "🇦🇪", initials: "DXB" },

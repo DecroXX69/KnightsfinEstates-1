@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { MapContainer, Marker, TileLayer, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import locationIcon from '../assets/locationIcon.png';
+import locationIcon from '../assets/locationIcon.webp';
 import axios from 'axios';
 import Footer from './Footer';
 import Navbar from './Navbar';
