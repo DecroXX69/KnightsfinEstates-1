@@ -11,12 +11,14 @@ import locationIcon from '../assets/locationIcon.webp';
 import axios from 'axios';
 import Footer from './Footer';
 import Navbar from './Navbar';
+
 const customIcon = new L.Icon({
   iconUrl: locationIcon,
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
 });
+
 const SaleDescription = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -118,8 +120,6 @@ const SaleDescription = () => {
   // Calculate variables that depend on property after checking it exists
   const formattedPrice = `AED ${property.price.toLocaleString()}`;
   const allImages = property.images ? [property.image, ...property.images] : [property.image];
-
-
  
   return (
     <div className={styles.propertyDetailsContainer}>
@@ -144,6 +144,10 @@ const SaleDescription = () => {
               <span className={styles.specItem}><i className="bi bi-building"></i> Beds: {property.bedrooms}</span>
               <span className={styles.specItem}><i className="bi bi-rulers"></i> {property.area}</span>
               <span className={styles.specItem}><i className="bi bi-house-door"></i> {property.propertyType}</span>
+              {/* Add locality if available */}
+              {property.locality && (
+                <span className={styles.specItem}><i className="bi bi-geo-alt"></i> {property.locality}</span>
+              )}
             </div>
           </div>
           <div className="col-md-4 text-md-end">
@@ -153,69 +157,69 @@ const SaleDescription = () => {
         </div>
       </div>
 
-    {/* Property Images Gallery */}
-<div className="container mt-4">
-  <div className={styles.galleryContainer}>
-    <div className={styles.mainImageContainer}>
-    <img 
-  src={allImages[currentImageIndex]} 
-  alt={property.buildingName}
-  className={styles.mainImage}
-  onClick={toggleFullscreen}
-/>
-      <div className={styles.imageCount}>
-        {currentImageIndex + 1} / {property.images?.length + 1 || 1}
-      </div>
-      <div className={styles.galleryNavigation}>
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            handleImageNavigation('prev');
-          }}
-          className={styles.navButton}
-          aria-label="Previous image"
-        >
-          <ChevronLeft />
-        </button>
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            handleImageNavigation('next');
-          }}
-          className={styles.navButton}
-          aria-label="Next image"
-        >
-          <ChevronRight />
-        </button>
-      </div>
-    </div>
-    
-    <div className={styles.thumbnailsContainer}>
-    {property.images?.map((image, index) => (
-  <div 
-    key={index}
-    className={`${styles.thumbnailItem} ${currentImageIndex === index + 1 ? styles.active : ''}`}
-    onClick={() => handleThumbnailClick(index + 1)}
-  >
-    <img 
-      src={image} 
-      alt={`${property.buildingName} - Thumbnail ${index + 1}`}
-      className={styles.thumbnailImage}
-    />
-  </div>
-))}
-      {property.images?.length > 3 && (
-        <div 
-          className={styles.moreImages}
-          onClick={toggleFullscreen}
-        >
-          <Maximize size={20} className="me-2" />
-          +{property.images.length - 3} more
+      {/* Property Images Gallery */}
+      <div className="container mt-4">
+        <div className={styles.galleryContainer}>
+          <div className={styles.mainImageContainer}>
+            <img 
+              src={allImages[currentImageIndex]} 
+              alt={property.buildingName}
+              className={styles.mainImage}
+              onClick={toggleFullscreen}
+            />
+            <div className={styles.imageCount}>
+              {currentImageIndex + 1} / {property.images?.length + 1 || 1}
+            </div>
+            <div className={styles.galleryNavigation}>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleImageNavigation('prev');
+                }}
+                className={styles.navButton}
+                aria-label="Previous image"
+              >
+                <ChevronLeft />
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleImageNavigation('next');
+                }}
+                className={styles.navButton}
+                aria-label="Next image"
+              >
+                <ChevronRight />
+              </button>
+            </div>
+          </div>
+          
+          <div className={styles.thumbnailsContainer}>
+            {property.images?.map((image, index) => (
+              <div 
+                key={index}
+                className={`${styles.thumbnailItem} ${currentImageIndex === index + 1 ? styles.active : ''}`}
+                onClick={() => handleThumbnailClick(index + 1)}
+              >
+                <img 
+                  src={image} 
+                  alt={`${property.buildingName} - Thumbnail ${index + 1}`}
+                  className={styles.thumbnailImage}
+                />
+              </div>
+            ))}
+            {property.images?.length > 3 && (
+              <div 
+                className={styles.moreImages}
+                onClick={toggleFullscreen}
+              >
+                <Maximize size={20} className="me-2" />
+                +{property.images.length - 3} more
+              </div>
+            )}
+          </div>
         </div>
-      )}
-    </div>
-  </div>
-</div>
+      </div>
 
       {/* Property Details Container */}
       <div className="container mt-4">
@@ -254,6 +258,14 @@ const SaleDescription = () => {
                     <div className={styles.overviewValue}>{property.bedrooms}</div>
                   </div>
                 </div>
+                {/* Add Locality to the overview section */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-geo-alt"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Locality</div>
+                    <div className={styles.overviewValue}>{property.locality || 'Not specified'}</div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -275,7 +287,7 @@ const SaleDescription = () => {
             {/* Property Features */}
             {property.amenities && property.amenities.length > 0 && (
               <div className={`${styles.detailsCard} mb-4`}>
-                <h2>Property features</h2>
+                <h2>Amenities</h2>
                 <div className={styles.propertyFeatures}>
                   {property.amenities.map((amenity, index) => (
                     <div className={styles.featureItem} key={index}>
@@ -294,7 +306,11 @@ const SaleDescription = () => {
               <h2>Map Location</h2>
               <div className={styles.mapContainer}>
                 <MapContainer
-                  center={[25.276987, 55.296249]}
+                  // Use property coordinates, fall back to Dubai coordinates if missing
+                  center={[
+                    property.coordinates?.lat || 25.276987, 
+                    property.coordinates?.lng || 55.296249
+                  ]}
                   zoom={13}
                   style={{ height: '400px', width: '100%' }}
                 >
@@ -302,9 +318,16 @@ const SaleDescription = () => {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   />
-                  <Marker position={[25.276987, 55.296249]} icon={customIcon}>
+                  <Marker 
+                    position={[
+                      property.coordinates?.lat || 25.276987, 
+                      property.coordinates?.lng || 55.296249
+                    ]} 
+                    icon={customIcon}
+                  >
                     <Popup>
-                      {property.buildingName}
+                      {property.buildingName}, {property.location}
+                      {property.locality && `, ${property.locality}`}
                     </Popup>
                   </Marker>
                 </MapContainer>
@@ -389,44 +412,44 @@ const SaleDescription = () => {
       <Footer />
 
       {/* Fullscreen Gallery */}
-{isFullscreen && (
-  <div className={`${styles.fullscreenOverlay} ${styles.active}`}>
-    <button 
-      className={styles.closeButton} 
-      onClick={toggleFullscreen}
-      aria-label="Close fullscreen gallery"
-    >
-      &times;
-    </button>
-    <img 
-      src={allImages[currentImageIndex]} 
-      alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
-      className={styles.fullscreenImage}
-    />
-    <div className={styles.galleryNavigation}>
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          handleImageNavigation('prev');
-        }}
-        className={styles.navButton}
-        aria-label="Previous image"
-      >
-        <ChevronLeft />
-      </button>
-      <button 
-        onClick={(e) => {
-          e.stopPropagation();
-          handleImageNavigation('next');
-        }}
-        className={styles.navButton}
-        aria-label="Next image"
-      >
-        <ChevronRight />
-      </button>
-    </div>
-  </div>
-)}
+      {isFullscreen && (
+        <div className={`${styles.fullscreenOverlay} ${styles.active}`}>
+          <button 
+            className={styles.closeButton} 
+            onClick={toggleFullscreen}
+            aria-label="Close fullscreen gallery"
+          >
+            &times;
+          </button>
+          <img 
+            src={allImages[currentImageIndex]} 
+            alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
+            className={styles.fullscreenImage}
+          />
+          <div className={styles.galleryNavigation}>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleImageNavigation('prev');
+              }}
+              className={styles.navButton}
+              aria-label="Previous image"
+            >
+              <ChevronLeft />
+            </button>
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                handleImageNavigation('next');
+              }}
+              className={styles.navButton}
+              aria-label="Next image"
+            >
+              <ChevronRight />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
