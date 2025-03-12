@@ -28,10 +28,10 @@
 // import styles from './Home.module.css';
 // import dubai from '../videos/dubai.mp4';
 // import thailand from '../videos/thailand.mp4';
-// import dubai1 from '../assets/dubai1.jpg';
-// import dubai2 from '../assets/dubai2.jpg';
-// import dubai3 from '../assets/dubai3.jpg';
-// import dubai4 from '../assets/dubai4.jpg';
+// import dubai1 from '../assets/dubai1.webp';
+// import dubai2 from '../assets/dubai2.webp';
+// import dubai3 from '../assets/dubai3.webp';
+// import dubai4 from '../assets/dubai4.webp';
 
 // // Sub-components
 // const HeroBackground = ({ videoUrl }) => (
@@ -217,10 +217,10 @@ import { locationData, propertyTypes, bedroomOptions } from './homeData';
 import styles from './Home.module.css';
 import dubai from '../videos/dubai.mp4';
 import thailand from '../videos/thailand.mp4';
-import dubai1 from '../assets/dubai1.jpg';
-import dubai2 from '../assets/dubai2.jpg';
-import dubai3 from '../assets/dubai3.jpg';
-import dubai4 from '../assets/dubai4.jpg';
+import dubai1 from '../assets/dubai1.webp';
+import dubai2 from '../assets/dubai2.webp';
+import dubai3 from '../assets/dubai3.webp';
+import dubai4 from '../assets/dubai4.webp';
 
 // Lazy-loaded Component Import for FloatingChat
 const FloatingChatLazy = React.lazy(() => import('../services/FloatingChat'));

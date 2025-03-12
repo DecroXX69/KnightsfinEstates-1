@@ -11,7 +11,7 @@ export const locationData = {
   Pune: {
     title: "Find The Best Pune Real Estate Property",
     subtitle: "Explore Pune's finest real estate properties today",
-    videoUrl: dubai,
+    videoUrl: "https://files.catbox.moe/pdtuvo.mp4",
     locations: ["Wakad", "Baner", "Punawale", "Kiwale", "Ravet"],
     flag: "PN",
     initials: "PNQ"
@@ -19,7 +19,7 @@ export const locationData = {
   Dubai: {
     title: "Find The Best Dubai Real Estate Property",
     subtitle: "Explore Dubai's finest real estate properties today",
-    videoUrl: dubai,
+    videoUrl: "https://files.catbox.moe/pdtuvo.mp4",
     locations: ["Wakad", "Baner", "Downtown Dubai", "Arabian Ranches", "Dubai Hills"],
     flag: "🇦🇪",
     initials: "DXB"

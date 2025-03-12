@@ -6,7 +6,7 @@ import Footer from './Footer';
 import axios from 'axios';
 
 import MiniContact from './miniContactComponent';
-import mortgageImage from '../assets/About-us-hero.jpg';
+import mortgageImage from '../assets/About-us-hero.webp';
 
 const Mortgage = () => {
 

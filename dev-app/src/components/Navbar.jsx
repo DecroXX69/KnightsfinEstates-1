@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.css";
-import logo1 from "../assets/logo12.png";
+import logo1 from "../assets/logo12.webp";
 
 const locationData = {
   Dubai: { flag: "🇦🇪", initials: "DXB" },
@@ -69,23 +69,24 @@ const Navbar = () => {
     Domestic Properties
   </button>
 
-          {/* Overseas Properties Dropdown */}
-          <div className={`${styles.dropdown} ${styles.navLink}`}>
-            <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-              Overseas Properties <ChevronDown size={16} />
-            </button>
-            {isDropdownOpen && (
-              <div className={styles.dropdownMenu}>
-               
-{Object.keys(locationData).map((location) => (
-  <button
-    key={location}
-    className={styles.dropdownItem}
-    onClick={() => {
-      closeMenu();
-      navigate(`/propertylisting?location=${location}`); // Use query parameter
-    }}
+  <div className={`${styles.dropdown} ${styles.navLink}`}>
+  <button 
+    className={styles.dropdownButton} // Add a specific class for this button
+    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
   >
+    Overseas Properties <ChevronDown size={16} />
+  </button>
+  {isDropdownOpen && (
+    <div className={styles.dropdownMenu}>
+      {Object.keys(locationData).map((location) => (
+        <button
+          key={location}
+          className={styles.dropdownItem}
+          onClick={() => {
+            closeMenu();
+            navigate(`/propertylisting?location=${location}`);
+          }}
+        >
               <span className={styles.flag}>{locationData[location].flag}</span>
     <span className={styles.initials}>{locationData[location].initials}</span>
     {location}

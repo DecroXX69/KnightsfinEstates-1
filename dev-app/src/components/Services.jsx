@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './Services.module.css';  
-import propertyImg from '../assets/property management.jpg';
-import consultImg from '../assets/consulting.jpg';
-import consultImg2 from '../assets/consulting2.jpg'
+import propertyImg from '../assets/property management.webp';
+import consultImg from '../assets/consulting.webp';
+import consultImg2 from '../assets/consulting2.webp'
 
 const Services = () => {
   return (

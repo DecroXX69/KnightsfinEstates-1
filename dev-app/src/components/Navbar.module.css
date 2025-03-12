@@ -128,14 +128,18 @@ body {
 }
 
 /* Dropdown Styles */
-.dropdown button {
-  background: transparent;
-  color: white;
+.dropdownButton {
+  font-size: inherit; /* Inherit from parent */
+  font-weight: inherit; /* Inherit from parent */
+  color: inherit; /* Inherit from parent */
+  background: none;
   border: none;
-  font-size: 17px;
   cursor: pointer;
-  padding: 8px 12px;
-  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  font-family: inherit; /* Inherit from parent */
 }
 
 .dropdown button:hover {

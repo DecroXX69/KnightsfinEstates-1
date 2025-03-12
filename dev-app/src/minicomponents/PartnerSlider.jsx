@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PartnersSlider.module.css';
-import abc from '../assets/abc.png';
-import emaar from '../assets/emaar.png';
-import damac from '../assets/damac.jpeg';
-import meraas from '../assets/meraas.png';
-import danube from '../assets/danube.jpeg';
-import binghatti from '../assets/binghatti.jpeg';
+import abc from '../assets/abc.webp';
+import emaar from '../assets/emaar.webp';
+import damac from '../assets/damac.webp';
+import meraas from '../assets/meraas.webp';
+import danube from '../assets/danube.webp';
+import binghatti from '../assets/binghatti.webp';
 
 const PartnersSlider = () => {
   const [isVisible, setIsVisible] = useState(true);

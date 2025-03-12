@@ -1,6 +1,7 @@
 .modernFooter {
     position: relative;
     background-color: rgba(0, 0, 0, 0.85); /* Dark overlay base */
+    overflow-x: hidden;
 }
 
 .modernFooter::before {
@@ -10,7 +11,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("../assets/footer-bg.png") repeat;
+    background: url("../assets/footer-bg.webp") repeat;
     opacity: 0.14; /* Slightly more visible but still subtle */
     z-index: 1;
 }

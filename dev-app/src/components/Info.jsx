@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import ceoImage from "../assets/ceo.jpg";
-import mdImage from "../assets/md.jpg";
-import mgImage from "../assets/manager-img.png"
+import ceoImage from "../assets/ceo.webp";
+import mdImage from "../assets/md.webp";
+import mgImage from "../assets/manager-img.webp";
 import styles from "./Info.module.css";
 
 const Info = () => {

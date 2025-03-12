@@ -211,7 +211,7 @@ const ModernFooter = () => {
 
       {/* Copyright */}
       <div className={styles.copyrightSection}>
-        <p>©2025 Knightsfin Estates. All Rights Reserved. Knightsfin Estates is a company registered in Dubai, United Arab Emirates</p>
+        <p>©2025 Knightsfin Estates. All Rights Reserved.</p>
       </div>
     </footer>
   );

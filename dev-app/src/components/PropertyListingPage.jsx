@@ -6,7 +6,7 @@ import currencySymbols from './currencySymbols.js';
 import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
-import logo1 from "../assets/logo.png";
+import logo1 from "../assets/logo.webp";
 
 const PropertyListingPage = () => {
   const navigate = useNavigate();
