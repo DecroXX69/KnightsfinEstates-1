@@ -7,7 +7,7 @@ import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 import logo1 from "../assets/logo.webp";
-
+import axios from 'axios';
 const PropertyListingPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,11 +116,19 @@ const PropertyListingPage = () => {
     }
   };
 
-  const handlePropertyClick = (property) => {
-    if (property.type === 'sale') {
-      navigate(`/sale/${property._id}`);
-    } else if (property.type === 'offplan') {
-      navigate(`/offplan/${property._id}`);
+  const handlePropertyClick = async (property) => {
+    try {
+      // Send PATCH request to increment view count
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${property._id}/view`);
+    } catch (error) {
+      console.error('Error updating view count:', error);
+    } finally {
+      // Navigate to the property page regardless of view count update success
+      if (property.type === 'sale') {
+        navigate(`/sale/${property._id}`);
+      } else if (property.type === 'offplan') {
+        navigate(`/offplan/${property._id}`);
+      }
     }
   };
 

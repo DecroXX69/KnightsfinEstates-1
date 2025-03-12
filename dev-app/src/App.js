@@ -6,6 +6,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import './App.css';
 import FloatingChat from './services/FloatingChat.jsx';
 import Navbar from './components/Navbar.jsx';
+import AdminPanel from './components/admin.jsx';
 
 // Lazy-loaded components
 const Home = React.lazy(() => import('./components/Home.jsx'));
@@ -53,6 +54,8 @@ function App() {
             <Route path="/property/:id" element={<PropertyPage />} />
             <Route path="/sale/:id" element={<SaleDescription />} />
             <Route path="/form" element={<PropertyForm />} />
+            <Route path="/admin" element={<AdminPanel />} />
+
           </Routes>
         </Suspense>
       </div>
