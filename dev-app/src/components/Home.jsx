@@ -282,7 +282,7 @@ const HeroContent = ({
 }) => (
   <div className={styles.heroContent}>
     <h1 className={styles.heroTitle}>{locationData[activeLocation].title}</h1>
-    <p className={styles.heroSubtitle}>{locationData[activeLocation].subtitle}</p>
+    <p className={styles.heroSubtitle}>{locationData[activeLocation].subtitle}.</p>
 
     <SearchBar 
       searchQuery={searchQuery} 
