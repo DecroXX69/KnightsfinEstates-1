@@ -27,6 +27,56 @@
   color: #f97316;
 }
 
+/* Adding to SaleDescription.module.css */
+
+/* Sold property status styling */
+.propertySold {
+  background-color: #dc3545 !important; /* Red color for sold status */
+}
+
+.soldPrice {
+  text-decoration: line-through;
+  color: #6c757d !important; /* Gray color for sold price */
+}
+
+.soldNotice {
+  background-color: #f8f9fa;
+  border-left: 4px solid #dc3545;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+.soldNotice p {
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.inlineLink {
+  background: none;
+  border: none;
+  color: #f97316;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.inlineLink:hover {
+  color: #ea580c;
+}
+
+.soldContactMessage {
+  text-align: center;
+  padding: 1rem;
+}
+
+.soldContactMessage p {
+  margin-bottom: 1rem;
+  color: #6c757d;
+}
+
 /* Property Title Section */
 .propertyTitle {
   text-align: left;
