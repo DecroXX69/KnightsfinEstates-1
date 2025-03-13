@@ -97,7 +97,7 @@ const AdminPanel = () => {
     }
   };
 
-
+  // Handle sub-status update
   const handleSubStatusUpdate = async (propertyId, newSubStatus) => {
     try {
       await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
@@ -262,6 +262,7 @@ const AdminPanel = () => {
                   <th>Building</th>
                   <th>Location</th>
                   <th>Price</th>
+                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -273,6 +274,22 @@ const AdminPanel = () => {
                     <td>{property.buildingName}</td>
                     <td>{property.location}</td>
                     <td>${property.price}</td>
+                    <td>
+                      <div className={styles.statusButtons}>
+                        <button 
+                          className={`${styles.statusButton} ${property.subStatus === 'sold' ? styles.statusActive : ''}`}
+                          onClick={() => handleSubStatusUpdate(property._id, 'sold')}
+                        >
+                          Sold
+                        </button>
+                        <button 
+                          className={`${styles.statusButton} ${property.subStatus === 'available' || !property.subStatus ? styles.statusActive : ''}`}
+                          onClick={() => handleSubStatusUpdate(property._id, 'available')}
+                        >
+                          Available
+                        </button>
+                      </div>
+                    </td>
                     <td className={styles.actions}>
                       <button 
                         className={styles.editButton}
@@ -286,12 +303,6 @@ const AdminPanel = () => {
                       >
                         Delete
                       </button>
-                      <button
-  className={`styles.statusbutton ${property.subStatus === 'sold' ? 'active' : ''}`}
-  onClick={() => handleSubStatusUpdate(property._id, 'sold')}
->
-  Sold
-</button>
                     </td>
                   </tr>
                 ))}

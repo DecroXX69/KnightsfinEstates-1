@@ -63,7 +63,7 @@
 
 /* Add these styles to your PropertyListing.module.css file */
 
-.imageContainer {
+/* .imageContainer {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -75,7 +75,7 @@
   object-fit: cover;
   border-radius: 12px;
   transition: all 0.3s ease;
-}
+} */
 
 .grayscaleImage {
   filter: grayscale(100%);

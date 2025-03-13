@@ -132,29 +132,29 @@ const PropertyListingPage = () => {
     }
   };
 
-  // New function to handle updating the property's subStatus
-  const handleSubStatusUpdate = async (propertyId, status) => {
-    try {
-      // Prevent event propagation to avoid navigating to property page
-      event.stopPropagation();
+  // // New function to handle updating the property's subStatus
+  // const handleSubStatusUpdate = async (propertyId, status) => {
+  //   try {
+  //     // Prevent event propagation to avoid navigating to property page
+  //     event.stopPropagation();
       
-      // Send PATCH request to update subStatus
-      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
-        subStatus: status
-      });
+  //     // Send PATCH request to update subStatus
+  //     await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
+  //       subStatus: status
+  //     });
       
-      // Update the local state to reflect the change
-      setProperties(prevProperties => 
-        prevProperties.map(property => 
-          property._id === propertyId 
-            ? { ...property, subStatus: status } 
-            : property
-        )
-      );
-    } catch (error) {
-      console.error('Error updating property status:', error);
-    }
-  };
+  //     // Update the local state to reflect the change
+  //     setProperties(prevProperties => 
+  //       prevProperties.map(property => 
+  //         property._id === propertyId 
+  //           ? { ...property, subStatus: status } 
+  //           : property
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error('Error updating property status:', error);
+  //   }
+  // };
 
   const handleFilterChange = (key, value) => {
     // For all filters except query, update immediately
@@ -212,9 +212,9 @@ const PropertyListingPage = () => {
 
   // Sort properties to show sold properties first
   const sortedProperties = [...filteredProperties].sort((a, b) => {
-    // First sort by sold status (sold properties first)
-    if ((a.subStatus === 'sold') && (b.subStatus !== 'sold')) return -1;
-    if ((a.subStatus !== 'sold') && (b.subStatus === 'sold')) return 1;
+    // First sort by sold status (available properties first)
+    if ((a.subStatus !== 'sold') && (b.subStatus === 'sold')) return -1;
+    if ((a.subStatus === 'sold') && (b.subStatus !== 'sold')) return 1;
     return 0;
   });
 

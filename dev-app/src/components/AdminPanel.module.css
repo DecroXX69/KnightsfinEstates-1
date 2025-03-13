@@ -124,7 +124,7 @@
   gap: 0.5rem;
 }
 
-.approveButton, .editButton, .deleteButton, .sub-status {
+.approveButton, .editButton, .deleteButton {
   border: none;
   border-radius: 4px;
   padding: 0.5rem 0.8rem;
@@ -158,6 +158,37 @@
 
 .deleteButton:hover {
   background-color: #c82333;
+}
+
+/* Status buttons styling */
+.statusButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.statusButton {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.statusButton:hover {
+  background-color: #e9ecef;
+}
+
+.statusActive {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.statusActive:hover {
+  background-color: #2980b9;
 }
 
 .loading {
@@ -209,5 +240,9 @@
   
   .sectionHeading {
     font-size: 1.3rem;
+  }
+  
+  .statusButtons {
+    flex-direction: column;
   }
 }
