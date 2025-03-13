@@ -97,6 +97,18 @@ const AdminPanel = () => {
     }
   };
 
+
+  const handleSubStatusUpdate = async (propertyId, newSubStatus) => {
+    try {
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
+        subStatus: newSubStatus
+      });
+      fetchProperties();
+    } catch (error) {
+      console.error('Error updating sub-status:', error);
+    }
+  };
+
   // Handle cancel edit
   const handleCancelEdit = () => {
     setSelectedProperty(null);
@@ -274,6 +286,12 @@ const AdminPanel = () => {
                       >
                         Delete
                       </button>
+                      <button
+  className={`styles.statusbutton ${property.subStatus === 'sold' ? 'active' : ''}`}
+  onClick={() => handleSubStatusUpdate(property._id, 'sold')}
+>
+  Sold
+</button>
                     </td>
                   </tr>
                 ))}

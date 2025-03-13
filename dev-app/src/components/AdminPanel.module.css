@@ -124,7 +124,7 @@
   gap: 0.5rem;
 }
 
-.approveButton, .editButton, .deleteButton {
+.approveButton, .editButton, .deleteButton, .sub-status {
   border: none;
   border-radius: 4px;
   padding: 0.5rem 0.8rem;

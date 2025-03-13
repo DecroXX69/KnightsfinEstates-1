@@ -132,6 +132,30 @@ const PropertyListingPage = () => {
     }
   };
 
+  // New function to handle updating the property's subStatus
+  const handleSubStatusUpdate = async (propertyId, status) => {
+    try {
+      // Prevent event propagation to avoid navigating to property page
+      event.stopPropagation();
+      
+      // Send PATCH request to update subStatus
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
+        subStatus: status
+      });
+      
+      // Update the local state to reflect the change
+      setProperties(prevProperties => 
+        prevProperties.map(property => 
+          property._id === propertyId 
+            ? { ...property, subStatus: status } 
+            : property
+        )
+      );
+    } catch (error) {
+      console.error('Error updating property status:', error);
+    }
+  };
+
   const handleFilterChange = (key, value) => {
     // For all filters except query, update immediately
     if (key !== 'query') {
@@ -186,9 +210,17 @@ const PropertyListingPage = () => {
       isBedCountMatch && isQueryMatch;
   });
 
+  // Sort properties to show sold properties first
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    // First sort by sold status (sold properties first)
+    if ((a.subStatus === 'sold') && (b.subStatus !== 'sold')) return -1;
+    if ((a.subStatus !== 'sold') && (b.subStatus === 'sold')) return 1;
+    return 0;
+  });
+
   const itemsPerPage = 9;
-  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
-  const displayedProperties = filteredProperties.slice(
+  const totalPages = Math.ceil(sortedProperties.length / itemsPerPage);
+  const displayedProperties = sortedProperties.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -342,11 +374,26 @@ const PropertyListingPage = () => {
                 style={{ cursor: 'pointer' }}
               >
                 <div className="card h-100" style={{ borderRadius: "15px", overflow: "hidden", padding: "15px" }}>
-                  <img 
-                    src={property.image} 
-                    className={styles.propertyImage} 
-                    alt={property.title}
-                  />
+                  <div className={styles.imageContainer} style={{ position: "relative" }}>
+                    <img 
+                      src={property.image} 
+                      className={`${styles.propertyImage} ${property.subStatus === 'sold' ? styles.grayscaleImage : ''}`} 
+                      alt={property.title}
+                    />
+                    {property.subStatus === 'sold' && (
+                      <div className={styles.soldBadge}>SOLD</div>
+                    )}
+                    {/* Admin-only status button (could be hidden for regular users) */}
+                    {/* <button
+                      className={`${styles.statusButton} ${property.subStatus === 'sold' ? styles.active : ''}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleSubStatusUpdate(property._id, property.subStatus === 'sold' ? 'available' : 'sold');
+                      }}
+                    >
+                      {property.subStatus === 'sold' ? 'Mark Available' : 'Mark Sold'}
+                    </button> */}
+                  </div>
                   <div className="card-body">
                     <h3 className={styles.propertyTitle}>{property.buildingName}</h3>
                     <p className={styles.propertyLocation}>{property.developer}</p>
