@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import PropertyForm from './Form';
+import PropertyForm from './Form.jsx';
 import styles from './AdminPanel.module.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from './AuthContext.jsx';
+import { Navigate } from 'react-router-dom'; // Added missing import
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('create');
@@ -10,8 +14,25 @@ const AdminPanel = () => {
   const [viewCountProperties, setViewCountProperties] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [formKey, setFormKey] = useState(0); // Used to force re-render the form
+  const [formKey, setFormKey] = useState(0);
+  const { isAuthenticated, token } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  // Check if user is authenticated, if not redirect to login
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+    }
+  }, [token]);
+
+  // Check if user is authenticated, if not redirect to login
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
   // Fetch properties when the component mounts
   useEffect(() => {
     fetchProperties();
@@ -44,7 +65,9 @@ const AdminPanel = () => {
   // Handle approve property
   const handleApprove = async (id) => {
     try {
-      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/approve/${id}`);
+      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/approve/${id}`, {}, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       // Refresh properties list
       fetchProperties();
     } catch (error) {
@@ -56,7 +79,9 @@ const AdminPanel = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        await axios.delete(`https://knightsfinestates-backend-1.onrender.com/api/${id}`);
+        await axios.delete(`https://knightsfinestates-backend-1.onrender.com/api/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
         // Refresh properties list
         fetchProperties();
       } catch (error) {
@@ -70,7 +95,9 @@ const AdminPanel = () => {
     try {
       setLoading(true);
       // Fetch the complete property details to ensure we have all fields
-      const response = await axios.get(`https://knightsfinestates-backend-1.onrender.com/api/properties/${property._id}`);
+      const response = await axios.get(`https://knightsfinestates-backend-1.onrender.com/api/properties/${property._id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       setSelectedProperty(response.data);
       setActiveTab('create');
       setFormKey(prevKey => prevKey + 1); // Force form re-render with new data
@@ -85,7 +112,9 @@ const AdminPanel = () => {
   const handleUpdateProperty = async (updatedData) => {
     try {
       setLoading(true);
-      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/${selectedProperty._id}`, updatedData);
+      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/${selectedProperty._id}`, updatedData, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       setSelectedProperty(null);
       fetchProperties();
       alert('Property updated successfully!');
@@ -102,6 +131,8 @@ const AdminPanel = () => {
     try {
       await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
         subStatus: newSubStatus
+      }, {
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       fetchProperties();
     } catch (error) {
@@ -113,6 +144,11 @@ const AdminPanel = () => {
   const handleCancelEdit = () => {
     setSelectedProperty(null);
   };
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+
 
   return (
     <div className={styles.adminPanel}>

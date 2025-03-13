@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './PropertyForm.module.css';
+import AuthContext from './AuthContext.jsx';
 
 const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
+  const { isAuthenticated, token } = useContext(AuthContext);
+  
   const [formData, setFormData] = useState({
     developer: '',
     buildingName: '',
@@ -150,7 +153,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       setIsLoading(true);
 
       // Upload main image if it's a file
-      let mainImageSecureUrl = formData.mainImageSecureUrl || '';
+      let mainImageSecureUrl = formData.imagePreviewUrl || '';
       if (formData.image instanceof File) {
         const result = await cloudinaryUpload(formData.image);
         mainImageSecureUrl = result.secure_url;
@@ -190,7 +193,10 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       // For creating a new property
       const response = await fetch('https://knightsfinestates-backend-1.onrender.com/api/properties', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify(dataToSend),
       });
 
