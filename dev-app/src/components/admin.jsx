@@ -140,6 +140,20 @@ const AdminPanel = () => {
     }
   };
 
+  // Handle trend update
+  const handleTrendUpdate = async (propertyId, newTrend) => {
+    try {
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/trend`, {
+        Trend: newTrend
+      }, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      fetchProperties();
+    } catch (error) {
+      console.error('Error updating trend:', error);
+    }
+  };
+
   // Handle cancel edit
   const handleCancelEdit = () => {
     setSelectedProperty(null);
@@ -148,7 +162,6 @@ const AdminPanel = () => {
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
-
 
   return (
     <div className={styles.adminPanel}>
@@ -299,6 +312,7 @@ const AdminPanel = () => {
                   <th>Location</th>
                   <th>Price</th>
                   <th>Status</th>
+                  <th>Trend</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -323,6 +337,28 @@ const AdminPanel = () => {
                           onClick={() => handleSubStatusUpdate(property._id, 'available')}
                         >
                           Available
+                        </button>
+                        <button 
+                          className={`${styles.statusButton} ${property.subStatus === 'under construction' ? styles.statusActive : ''}`}
+                          onClick={() => handleSubStatusUpdate(property._id, 'under construction')}
+                        >
+                          Under Construction
+                        </button>
+                      </div>
+                    </td>
+                    <td>
+                      <div className={styles.statusButtons}>
+                        <button 
+                          className={`${styles.statusButton} ${property.Trend === 'normal' || !property.Trend ? styles.statusActive : ''}`}
+                          onClick={() => handleTrendUpdate(property._id, 'normal')}
+                        >
+                          Normal
+                        </button>
+                        <button 
+                          className={`${styles.statusButton} ${property.Trend === 'Hot' ? styles.statusActive : ''}`}
+                          onClick={() => handleTrendUpdate(property._id, 'Hot')}
+                        >
+                          Hot Deal
                         </button>
                       </div>
                     </td>

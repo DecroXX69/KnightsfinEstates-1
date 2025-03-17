@@ -8,6 +8,7 @@ import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 import logo1 from "../assets/logo.webp";
 import axios from 'axios';
+
 const PropertyListingPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -131,30 +132,6 @@ const PropertyListingPage = () => {
       }
     }
   };
-
-  // // New function to handle updating the property's subStatus
-  // const handleSubStatusUpdate = async (propertyId, status) => {
-  //   try {
-  //     // Prevent event propagation to avoid navigating to property page
-  //     event.stopPropagation();
-      
-  //     // Send PATCH request to update subStatus
-  //     await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
-  //       subStatus: status
-  //     });
-      
-  //     // Update the local state to reflect the change
-  //     setProperties(prevProperties => 
-  //       prevProperties.map(property => 
-  //         property._id === propertyId 
-  //           ? { ...property, subStatus: status } 
-  //           : property
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error('Error updating property status:', error);
-  //   }
-  // };
 
   const handleFilterChange = (key, value) => {
     // For all filters except query, update immediately
@@ -380,19 +357,22 @@ const PropertyListingPage = () => {
                       className={`${styles.propertyImage} ${property.subStatus === 'sold' ? styles.grayscaleImage : ''}`} 
                       alt={property.title}
                     />
+                    
+                    {/* Hot Property Badge */}
+                    {property.Trend === 'Hot' && (
+                      <div className={styles.hotBadge}>🔥 Hot Property</div>
+                    )}
+                    
+                    {/* Property Status Badges */}
                     {property.subStatus === 'sold' && (
                       <div className={styles.soldBadge}>SOLD</div>
                     )}
-                    {/* Admin-only status button (could be hidden for regular users) */}
-                    {/* <button
-                      className={`${styles.statusButton} ${property.subStatus === 'sold' ? styles.active : ''}`}
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleSubStatusUpdate(property._id, property.subStatus === 'sold' ? 'available' : 'sold');
-                      }}
-                    >
-                      {property.subStatus === 'sold' ? 'Mark Available' : 'Mark Sold'}
-                    </button> */}
+                    {property.subStatus === 'available' && (
+                      <div className={styles.availableBadge}>Ready to Move</div>
+                    )}
+                    {property.subStatus === 'Under Construction' && (
+                      <div className={styles.constructionBadge}>Under Construction</div>
+                    )}
                   </div>
                   <div className="card-body">
                     <h3 className={styles.propertyTitle}>{property.buildingName}</h3>

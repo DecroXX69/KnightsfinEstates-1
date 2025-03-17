@@ -127,7 +127,6 @@ const SaleDescription = () => {
   const formattedPrice = `INR ${(property.price * EXCHANGE_RATE).toLocaleString()}`;
   const allImages = property.images ? [property.image, ...property.images] : [property.image];
   const isSold = property.subStatus === 'sold';
- 
   return (
     <div className={styles.propertyDetailsContainer}>
       <Navbar />
@@ -164,6 +163,11 @@ const SaleDescription = () => {
             <div className={`${styles.propertyPrice} ${isSold ? styles.soldPrice : ''}`}>
               {formattedPrice}
             </div>
+            {property.Trend === 'Hot' && (
+              <div className={styles.hotProperty}>
+                <span>🔥 Hot Property</span>
+              </div>
+            )}
           </div>
         </div>
         
@@ -296,9 +300,37 @@ const SaleDescription = () => {
                   <div className={styles.overviewIcon}><i className="bi bi-tag"></i></div>
                   <div className={styles.overviewDetails}>
                     <div className={styles.overviewLabel}>Status</div>
-                    <div className={styles.overviewValue}>{isSold ? 'Sold' : 'Available'}</div>
+                    <div className={styles.overviewValue}>
+                      {property.subStatus === 'available' ? 'Ready to Move' : property.subStatus}
+                    </div>
                   </div>
                 </div>
+                {/* Add RERA Approval */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-check2-square"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>RERA Approved</div>
+                    <div className={styles.overviewValue}>{property.reraApproved ? 'Yes' : 'No'}</div>
+                  </div>
+                </div>
+                {/* Add RERA Number */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-card-text"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>RERA Number</div>
+                    <div className={styles.overviewValue}>{property.reraNumber || 'Not available'}</div>
+                  </div>
+                </div>
+                {/* Add Trend */}
+                {/* {property.Trend === 'Hot' && (
+                  <div className={styles.overviewItem}>
+                    <div className={styles.overviewIcon}><i className="bi bi-arrow-up"></i></div>
+                    <div className={styles.overviewDetails}>
+                      <div className={styles.overviewLabel}>Trend</div>
+                      <div className={styles.overviewValue}>{property.Trend}</div>
+                    </div>
+                  </div>
+                )} */}
               </div>
             </div>
 
@@ -334,6 +366,46 @@ const SaleDescription = () => {
               </div>
             )}
 
+            {/* Documents Section */}
+            <div className={`${styles.detailsCard} mb-4`}>
+              <h2>Documents</h2>
+              <div className={styles.documentsGrid}>
+                {property.floorPlan && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-image"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Floor Plan</div>
+                      <a href={property.floorPlan} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        View Floor Plan
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {property.brochureURL && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-pdf"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Brochure</div>
+                      <a href={property.brochureURL} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        Download Brochure
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {property.LegalDocURL && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-text"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Legal Documents</div>
+                      <a href={property.LegalDocURL} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        Download Legal Documents
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Map Location */}
             <div className={`${styles.detailsCard} mb-4`}>
               <h2>Map Location</h2>
@@ -349,7 +421,7 @@ const SaleDescription = () => {
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright ">OpenStreetMap</a> contributors'
                   />
                   <Marker 
                     position={[

@@ -6,6 +6,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const { isAuthenticated, token } = useContext(AuthContext);
   
   const [formData, setFormData] = useState({
+    status: 'pending',
     developer: '',
     buildingName: '',
     price: 0,
@@ -17,6 +18,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     baths: '',
     propertyType: '',
     createdAt: new Date(),
+    updatedAt: new Date(),
     images: [], // Will store file objects for new additional images
     description: '',
     coordinates: {
@@ -25,14 +27,25 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     },
     locality: '',
     amenities: '',
+    floorPlan: null,
+    brochureURL: '',
+    LegalDocURL: '',
     paymentPlan: {
       onBooking: 0,
       duringConstruction: 0,
       onHandover: 0,
       postHandover: 0,
     },
+    slug: '',
+    metaTitle: '',
+    metaDescription: '',
+    metaKeywords: '',
+    reraApproved: false,
+    reraNumber: '',
   });
+  
   const [previewImages, setPreviewImages] = useState([]); // For displaying previews
+  const [floorPlanPreview, setFloorPlanPreview] = useState(null); // For floor plan preview
   const [isLoading, setIsLoading] = useState(false);
 
   // Populate form with initial values when editing
@@ -43,6 +56,11 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         ? initialValues.amenities.join(', ') 
         : initialValues.amenities || '';
       
+      // Format metaKeywords from array to string for form display
+      const metaKeywordsString = Array.isArray(initialValues.metaKeywords) 
+        ? initialValues.metaKeywords.join(', ') 
+        : initialValues.metaKeywords || '';
+      
       // Prepare initial preview images from existing property
       const initialPreviewImages = [
         ...(initialValues.image ? [initialValues.image] : []),
@@ -52,6 +70,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       setFormData({
         ...initialValues,
         amenities: amenitiesString,
+        metaKeywords: metaKeywordsString,
         imagePreviewUrl: initialValues.image,
         // Ensure payment plan values are present
         paymentPlan: {
@@ -71,6 +90,11 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         ...(initialValues.image ? [initialValues.image] : []),
         ...(initialValues.images || [])
       ]);
+      
+      // Set floor plan preview if exists
+      if (initialValues.floorPlan) {
+        setFloorPlanPreview(initialValues.floorPlan);
+      }
     }
   }, [initialValues]);
 
@@ -108,6 +132,21 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     }
   };
 
+  const handleFloorPlanUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFormData({
+          ...formData,
+          floorPlan: file
+        });
+        setFloorPlanPreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleAdditionalImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length) {
@@ -121,6 +160,24 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         reader.readAsDataURL(file);
       });
     }
+  };
+
+  const generateSlug = (name) => {
+    return name
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  const handleBuildingNameChange = (e) => {
+    const buildingName = e.target.value;
+    setFormData({ 
+      ...formData, 
+      buildingName: buildingName,
+      // Auto-generate slug from building name if slug is empty
+      slug: formData.slug === '' ? generateSlug(buildingName) : formData.slug
+    });
   };
 
   const handleFormSubmit = async (e) => {
@@ -137,6 +194,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       formData.propertyType,
       formData.description,
       formData.locality,
+      formData.slug,
     ];
     
     // When editing, don't require image if it's already set
@@ -170,11 +228,20 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         }
       }
 
+      // Upload floor plan if it's a file
+      let floorPlanUrl = formData.floorPlan;
+      if (formData.floorPlan instanceof File) {
+        const result = await cloudinaryUpload(formData.floorPlan);
+        floorPlanUrl = result.secure_url;
+      }
+
       const dataToSend = {
         ...formData,
         image: mainImageSecureUrl,
         images: additionalImageUrls,
+        floorPlan: floorPlanUrl,
         amenities: formData.amenities.split(',').map((item) => item.trim()),
+        metaKeywords: formData.metaKeywords.split(',').map((item) => item.trim()),
         paymentPlan: {
           ...formData.paymentPlan,
           onBooking: parseFloat(formData.paymentPlan.onBooking),
@@ -182,6 +249,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           onHandover: parseFloat(formData.paymentPlan.onHandover),
           postHandover: parseFloat(formData.paymentPlan.postHandover),
         },
+        updatedAt: new Date(),
       };
 
       // For editing, we'll pass the data back to the parent component
@@ -204,6 +272,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         alert('Property created successfully!');
         // Reset form after successful creation
         setFormData({
+          status: 'pending',
           developer: '',
           buildingName: '',
           price: 0,
@@ -215,6 +284,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           baths: '',
           propertyType: '',
           createdAt: new Date(),
+          updatedAt: new Date(),
           images: [],
           description: '',
           coordinates: {
@@ -223,14 +293,24 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           },
           locality: '',
           amenities: '',
+          floorPlan: null,
+          brochureURL: '',
+          LegalDocURL: '',
           paymentPlan: {
             onBooking: 0,
             duringConstruction: 0,
             onHandover: 0,
             postHandover: 0,
           },
+          slug: '',
+          metaTitle: '',
+          metaDescription: '',
+          metaKeywords: '',
+          reraApproved: false,
+          reraNumber: '',
         });
         setPreviewImages([]);
+        setFloorPlanPreview(null);
         
         // Call onSuccess callback if provided
         if (onSuccess) {
@@ -266,10 +346,34 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     });
   };
 
+  // Function to remove floor plan
+  const handleRemoveFloorPlan = () => {
+    setFormData({
+      ...formData,
+      floorPlan: null
+    });
+    setFloorPlanPreview(null);
+  };
+
   return (
     <div className={styles.container}>
-      {/* {!isEditing && <h2 className={styles.heading}>Create New Property</h2>} */}
       <form className={styles.propertyForm} onSubmit={handleFormSubmit}>
+        {/* {isEditing && (
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="status">Approval Status:</label>
+            <select
+              className={styles.select}
+              id="status"
+              value={formData.status}
+              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+            >
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        )} */}
+
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="developer">Developer:</label>
           <input
@@ -289,9 +393,22 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
             type="text"
             id="buildingName"
             value={formData.buildingName}
-            onChange={(e) => setFormData({ ...formData, buildingName: e.target.value })}
+            onChange={handleBuildingNameChange}
             required
           />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="slug">Slug (URL friendly name):</label>
+          <input
+            className={styles.input}
+            type="text"
+            id="slug"
+            value={formData.slug}
+            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+            required
+          />
+          <small className={styles.helpText}>Auto-generated from building name, but can be customized</small>
         </div>
 
         <div className={styles.formGroup}>
@@ -384,6 +501,35 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
             id="image"
             onChange={handleMainImageUpload}
             required={!isEditing || !formData.image}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="floorPlan">Floor Plan Image:</label>
+          {floorPlanPreview && (
+            <div className={styles.imagePreviewItem}>
+              <img
+                src={floorPlanPreview}
+                alt="Floor plan"
+                width="200"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <button 
+                type="button" 
+                className={styles.removeImageBtn}
+                onClick={handleRemoveFloorPlan}
+              >
+                ✕
+              </button>
+            </div>
+          )}
+          <input
+            className={styles.input}
+            type="file"
+            id="floorPlan"
+            onChange={handleFloorPlanUpload}
           />
         </div>
 
@@ -482,6 +628,28 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
             id="amenities"
             value={formData.amenities}
             onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="brochureURL">Brochure URL:</label>
+          <input
+            className={styles.input}
+            type="text"
+            id="brochureURL"
+            value={formData.brochureURL}
+            onChange={(e) => setFormData({ ...formData, brochureURL: e.target.value })}
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="LegalDocURL">Legal Document URL:</label>
+          <input
+            className={styles.input}
+            type="text"
+            id="LegalDocURL"
+            value={formData.LegalDocURL}
+            onChange={(e) => setFormData({ ...formData, LegalDocURL: e.target.value })}
           />
         </div>
 
@@ -590,6 +758,65 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                 }
               />
             </div>
+          </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <h4 className={styles.paymentPlanHeading}>SEO Information</h4>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="metaTitle">Meta Title:</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="metaTitle"
+              value={formData.metaTitle}
+              onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="metaDescription">Meta Description:</label>
+            <textarea
+              className={styles.textarea}
+              id="metaDescription"
+              value={formData.metaDescription}
+              onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="metaKeywords">Meta Keywords (comma-separated):</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="metaKeywords"
+              value={formData.metaKeywords}
+              onChange={(e) => setFormData({ ...formData, metaKeywords: e.target.value })}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formGroup}>
+          <h4 className={styles.paymentPlanHeading}>RERA Information</h4>
+          <div className={styles.checkboxGroup}>
+            <input
+              type="checkbox"
+              id="reraApproved"
+              checked={formData.reraApproved}
+              onChange={(e) => setFormData({ 
+                ...formData, 
+                reraApproved: e.target.checked 
+              })}
+            />
+            <label className={styles.checkboxLabel} htmlFor="reraApproved">RERA Approved</label>
+          </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="reraNumber">RERA Number:</label>
+            <input
+              className={styles.input}
+              type="text"
+              id="reraNumber"
+              value={formData.reraNumber}
+              onChange={(e) => setFormData({ ...formData, reraNumber: e.target.value })}
+            />
           </div>
         </div>
 

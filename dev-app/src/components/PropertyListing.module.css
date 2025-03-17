@@ -1132,6 +1132,65 @@
   margin-bottom: 1rem;
 }
 
+/* Hot Property Badge */
+.hotBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Status Badges */
+/* .soldBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+} */
+
+.availableBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #52c41a;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.constructionBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #faad14;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Image styling for sold properties
+.grayscaleImage {
+  filter: grayscale(100%);
+  opacity: 0.7;
+} */
 .emptyStateSubtext {
   font-size: 1rem;
   color: var(--text-light);
