@@ -301,7 +301,10 @@ const SaleDescription = () => {
                   <div className={styles.overviewDetails}>
                     <div className={styles.overviewLabel}>Status</div>
                     <div className={styles.overviewValue}>
-                      {property.subStatus === 'available' ? 'Ready to Move' : property.subStatus}
+                      {property.subStatus === 'available' ? 'Ready to Move' : 
+                       property.subStatus === 'under construction' ? 'Under Construction' : 
+                       property.subStatus === 'sold' ? 'Property is Sold' : 
+                       property.subStatus}
                     </div>
                   </div>
                 </div>
