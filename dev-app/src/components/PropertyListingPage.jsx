@@ -370,7 +370,7 @@ const PropertyListingPage = () => {
                     {property.subStatus === 'available' && (
                       <div className={styles.availableBadge}>Ready to Move</div>
                     )}
-                    {property.subStatus === 'under construction' && (
+                    {property.subStatus === 'Under Construction' && (
                       <div className={styles.constructionBadge}>Under Construction</div>
                     )}
                   </div>
