@@ -339,8 +339,8 @@ const AdminPanel = () => {
                           Available
                         </button>
                         <button 
-                          className={`${styles.statusButton} ${property.subStatus === 'under construction' ? styles.statusActive : ''}`}
-                          onClick={() => handleSubStatusUpdate(property._id, 'under construction')}
+                          className={`${styles.statusButton} ${property.subStatus === 'Under Construction' ? styles.statusActive : ''}`}
+                          onClick={() => handleSubStatusUpdate(property._id, 'Under Construction')}
                         >
                           Under Construction
                         </button>
