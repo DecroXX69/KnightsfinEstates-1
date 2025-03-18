@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropertyForm from './Form.jsx';
 import styles from './AdminPanel.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import AuthContext from './AuthContext.jsx';
 import { Navigate } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('create');
@@ -16,9 +16,12 @@ const AdminPanel = () => {
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formKey, setFormKey] = useState(0);
-  const [selectedMessage, setSelectedMessage] = useState(null); // State for full message display
+  const [selectedMessage, setSelectedMessage] = useState(null);
   const { isAuthenticated, token } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [approvedPage, setApprovedPage] = useState(1);
+  const [contactPage, setContactPage] = useState(1);
+  const itemsPerPage = 30;
 
   useEffect(() => {
     if (token) {
@@ -167,6 +170,43 @@ const AdminPanel = () => {
   const closeMessageModal = () => {
     setSelectedMessage(null);
   };
+
+  const exportToExcel = () => {
+    const exportData = contactUsQueries.map(query => ({
+      Date: new Date(query.createdAt).toLocaleDateString(),
+      Time: new Date(query.createdAt).toLocaleTimeString(),
+      Name: query.fullname,
+      Email: query.email,
+      Phone: query.phone,
+      'Property Type': query.chooseProperty || 'Not specified',
+      Profession: query.profession || 'Not specified',
+      Message: query.message
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(exportData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Contact Queries');
+    
+    const colWidths = Object.keys(exportData[0]).map((key, i) => ({
+      wch: Math.max(
+        key.length,
+        ...exportData.map(row => String(row[key]).length)
+      )
+    }));
+    worksheet['!cols'] = colWidths;
+
+    XLSX.writeFile(workbook, `contact_queries_${new Date().toISOString().split('T')[0]}.xlsx`);
+  };
+
+  const approvedTotalPages = Math.ceil(approvedProperties.length / itemsPerPage);
+  const approvedStartIndex = (approvedPage - 1) * itemsPerPage;
+  const approvedEndIndex = approvedStartIndex + itemsPerPage;
+  const paginatedApprovedProperties = approvedProperties.slice(approvedStartIndex, approvedEndIndex);
+
+  const contactTotalPages = Math.ceil(contactUsQueries.length / itemsPerPage);
+  const contactStartIndex = (contactPage - 1) * itemsPerPage;
+  const contactEndIndex = contactStartIndex + itemsPerPage;
+  const paginatedContactQueries = contactUsQueries.slice(contactStartIndex, contactEndIndex);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
@@ -320,83 +360,104 @@ const AdminPanel = () => {
           {approvedProperties.length === 0 ? (
             <p className={styles.noProperties}>No approved properties found.</p>
           ) : (
-            <table className={styles.propertiesTable}>
-              <thead>
-                <tr className={styles.tableHeader}>
-                  <th>ID</th>
-                  <th>Developer</th>
-                  <th>Building</th>
-                  <th>Location</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Trend</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {approvedProperties.map(property => (
-                  <tr key={property._id} className={styles.tableRow}>
-                    <td>{property._id}</td>
-                    <td>{property.developer}</td>
-                    <td>{property.buildingName}</td>
-                    <td>{property.location}</td>
-                    <td>${property.price}</td>
-                    <td>
-                      <div className={styles.statusButtons}>
-                        <button 
-                          className={`${styles.statusButton} ${property.subStatus === 'sold' ? styles.statusActive : ''}`}
-                          onClick={() => handleSubStatusUpdate(property._id, 'sold')}
-                        >
-                          Sold
-                        </button>
-                        <button 
-                          className={`${styles.statusButton} ${property.subStatus === 'available' || !property.subStatus ? styles.statusActive : ''}`}
-                          onClick={() => handleSubStatusUpdate(property._id, 'available')}
-                        >
-                          Available
-                        </button>
-                        <button 
-                          className={`${styles.statusButton} ${property.subStatus === 'Under Construction' ? styles.statusActive : ''}`}
-                          onClick={() => handleSubStatusUpdate(property._id, 'Under Construction')}
-                        >
-                          Under Construction
-                        </button>
-                      </div>
-                    </td>
-                    <td>
-                      <div className={styles.statusButtons}>
-                        <button 
-                          className={`${styles.statusButton} ${property.Trend === 'normal' || !property.Trend ? styles.statusActive : ''}`}
-                          onClick={() => handleTrendUpdate(property._id, 'normal')}
-                        >
-                          Normal
-                        </button>
-                        <button 
-                          className={`${styles.statusButton} ${property.Trend === 'Hot' ? styles.statusActive : ''}`}
-                          onClick={() => handleTrendUpdate(property._id, 'Hot')}
-                        >
-                          Hot Deal
-                        </button>
-                      </div>
-                    </td>
-                    <td className={styles.actions}>
-                      <button 
-                        className={styles.editButton}
-                        onClick={() => handleEdit(property)}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete(property._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+            <>
+              <table className={styles.propertiesTable}>
+                <thead>
+                  <tr className={styles.tableHeader}>
+                    <th>ID</th>
+                    <th>Developer</th>
+                    <th>Building</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Trend</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedApprovedProperties.map(property => (
+                    <tr key={property._id} className={styles.tableRow}>
+                      <td>{property._id}</td>
+                      <td>{property.developer}</td>
+                      <td>{property.buildingName}</td>
+                      <td>{property.location}</td>
+                      <td>${property.price}</td>
+                      <td>
+                        <div className={styles.statusButtons}>
+                          <button 
+                            className={`${styles.statusButton} ${property.subStatus === 'sold' ? styles.statusActive : ''}`}
+                            onClick={() => handleSubStatusUpdate(property._id, 'sold')}
+                          >
+                            Sold
+                          </button>
+                          <button 
+                            className={`${styles.statusButton} ${property.subStatus === 'available' || !property.subStatus ? styles.statusActive : ''}`}
+                            onClick={() => handleSubStatusUpdate(property._id, 'available')}
+                          >
+                            Available
+                          </button>
+                          <button 
+                            className={`${styles.statusButton} ${property.subStatus === 'Under Construction' ? styles.statusActive : ''}`}
+                            onClick={() => handleSubStatusUpdate(property._id, 'Under Construction')}
+                          >
+                            Under Construction
+                          </button>
+                        </div>
+                      </td>
+                      <td>
+                        <div className={styles.statusButtons}>
+                          <button 
+                            className={`${styles.statusButton} ${property.Trend === 'normal' || !property.Trend ? styles.statusActive : ''}`}
+                            onClick={() => handleTrendUpdate(property._id, 'normal')}
+                          >
+                            Normal
+                          </button>
+                          <button 
+                            className={`${styles.statusButton} ${property.Trend === 'Hot' ? styles.statusActive : ''}`}
+                            onClick={() => handleTrendUpdate(property._id, 'Hot')}
+                          >
+                            Hot Deal
+                          </button>
+                        </div>
+                      </td>
+                      <td className={styles.actions}>
+                        <button 
+                          className={styles.editButton}
+                          onClick={() => handleEdit(property)}
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          className={styles.deleteButton}
+                          onClick={() => handleDelete(property._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className={styles.pagination}>
+                <button
+                  disabled={approvedPage === 1}
+                  onClick={() => setApprovedPage(prev => prev - 1)}
+                  className={styles.paginationButton}
+                >
+                  Previous
+                </button>
+                <span className={styles.pageInfo}>
+                  Page {approvedPage} of {approvedTotalPages}
+                </span>
+                <button
+                  disabled={approvedPage === approvedTotalPages}
+                  onClick={() => setApprovedPage(prev => prev + 1)}
+                  className={styles.paginationButton}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
@@ -437,53 +498,82 @@ const AdminPanel = () => {
           
           <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
             <p><strong>Debug Info:</strong> {contactUsQueries.length} queries loaded</p>
-            <button 
-              className={styles.editButton}
-              onClick={() => {
-                console.log('Contact queries:', contactUsQueries);
-                fetchProperties();
-              }}
-            >
-              Refresh Data
-            </button>
+            <div className={styles.buttonGroup}>
+              <button 
+                className={styles.editButton}
+                onClick={() => {
+                  console.log('Contact queries:', contactUsQueries);
+                  fetchProperties();
+                }}
+              >
+                Refresh Data
+              </button>
+              <button 
+                className={styles.exportButton}
+                onClick={exportToExcel}
+              >
+                Export to Excel
+              </button>
+            </div>
           </div>
           
           {contactUsQueries.length === 0 ? (
             <p className={styles.noProperties}>No contact queries found.</p>
           ) : (
-            <table className={styles.propertiesTable}>
-              <thead>
-                <tr className={styles.tableHeader}>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone</th>
-                  <th>Property Type</th>
-                  <th>Profession</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {contactUsQueries.map(query => (
-                  <tr key={query._id} className={styles.tableRow}>
-                    <td>{new Date(query.createdAt).toLocaleDateString()}</td>
-                    <td>{new Date(query.createdAt).toLocaleTimeString()}</td>
-                    <td>{query.fullname}</td>
-                    <td>{query.email}</td>
-                    <td>{query.phone}</td>
-                    <td>{query.chooseProperty || 'Not specified'}</td>
-                    <td>{query.profession || 'Not specified'}</td>
-                    <td 
-                      className={styles.messageCell}
-                      onClick={() => handleMessageClick(query.message)}
-                    >
-                      {query.message}
-                    </td>
+            <>
+              <table className={styles.propertiesTable}>
+                <thead>
+                  <tr className={styles.tableHeader}>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Property Type</th>
+                    <th>Profession</th>
+                    <th>Message</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedContactQueries.map(query => (
+                    <tr key={query._id} className={styles.tableRow}>
+                      <td>{new Date(query.createdAt).toLocaleDateString()}</td>
+                      <td>{new Date(query.createdAt).toLocaleTimeString()}</td>
+                      <td>{query.fullname}</td>
+                      <td>{query.email}</td>
+                      <td>{query.phone}</td>
+                      <td>{query.chooseProperty || 'Not specified'}</td>
+                      <td>{query.profession || 'Not specified'}</td>
+                      <td 
+                        className={styles.messageCell}
+                        onClick={() => handleMessageClick(query.message)}
+                      >
+                        {query.message}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className={styles.pagination}>
+                <button
+                  disabled={contactPage === 1}
+                  onClick={() => setContactPage(prev => prev - 1)}
+                  className={styles.paginationButton}
+                >
+                  Previous
+                </button>
+                <span className={styles.pageInfo}>
+                  Page {contactPage} of {contactTotalPages}
+                </span>
+                <button
+                  disabled={contactPage === contactTotalPages}
+                  onClick={() => setContactPage(prev => prev + 1)}
+                  className={styles.paginationButton}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}

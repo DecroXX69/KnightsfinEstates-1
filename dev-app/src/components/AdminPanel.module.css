@@ -1,258 +1,421 @@
+/* Base Styles */
 .adminPanel {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  margin-top: 90px;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f6fa;
+  margin-top: 100px;
+  padding: 5px;
+  font-family: 'Georgia', serif;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f0 100%);
   min-height: 100vh;
-  position: relative; /* For modal positioning */
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
+/* Heading Styles */
 .heading {
-  font-size: 2.5rem;
-  color: #2c3e50;
+  font-size: 3rem;
+  color: #1a2b3c;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
+.heading::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(to right, #3498db, #2ecc71);
+  border-radius: 2px;
+}
+
+/* Tab Container */
 .tabContainer {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 30px;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  gap: 15px;
+  margin-bottom: 40px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
 }
 
 .tab {
-  padding: 12px 25px;
-  font-size: 1rem;
-  color: #7f8c8d;
-  background-color: #ecf0f1;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  color: #5d6d7e;
+  background: linear-gradient(145deg, #f0f3f5, #e6eaed);
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   text-transform: uppercase;
   font-weight: 600;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tab:hover {
-  background-color: #dcdcdc;
+  background: linear-gradient(145deg, #e6eaed, #d5dce0);
   color: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .activeTab {
-  padding: 12px 25px;
-  font-size: 1rem;
+  padding: 15px 30px;
+  font-size: 1.1rem;
   color: #ffffff;
-  background-color: #3498db;
+  background: linear-gradient(145deg, #3498db, #2980b9);
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   text-transform: uppercase;
   font-weight: 600;
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
 .activeTab:hover {
-  background-color: #2980b9;
+  background: linear-gradient(145deg, #2980b9, #2471a3);
+  transform: translateY(-2px);
 }
 
+/* Loading Animation */
 .loading {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #7f8c8d;
-  margin: 20px 0;
+  margin: 30px 0;
   animation: pulse 1.5s infinite;
+  font-style: italic;
 }
 
 @keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
+/* Tab Content */
 .tabContent {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
+.tabContent:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Section Heading */
 .sectionHeading {
-  font-size: 1.8rem;
-  color: #34495e;
-  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 25px;
   font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
 }
 
+.sectionHeading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #3498db;
+  border-radius: 1px;
+}
+
+/* Edit Header */
 .editHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
+  padding: 15px;
+  background: #fafbfc;
+  border-radius: 8px;
 }
 
+/* Buttons */
 .cancelButton {
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 12px 25px;
+  font-size: 1.1rem;
   color: #ffffff;
-  background-color: #e74c3c;
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
 .cancelButton:hover {
-  background-color: #c0392b;
+  background: linear-gradient(145deg, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(231, 76, 60, 0.4);
 }
 
+/* Table Styles */
 .propertiesTable {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background-color: #ffffff;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  margin-top: 25px;
+  background: #ffffff;
 }
 
 .tableHeader {
-  background-color: #34495e;
+  background: linear-gradient(145deg, #34495e, #2c3e50);
   color: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .tableHeader th {
-  padding: 15px;
+  padding: 18px;
   text-align: left;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .tableRow {
-  border-bottom: 1px solid #ecf0f1;
-  transition: background-color 0.2s ease;
+  background: #ffffff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .tableRow:hover {
-  background-color: #f9f9f9;
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .tableRow td {
-  padding: 15px;
-  font-size: 0.95rem;
+  padding: 18px;
+  font-size: 1rem;
   color: #2c3e50;
   word-wrap: break-word;
+  border-bottom: 1px solid #ecf0f1;
 }
 
+/* Action Buttons */
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  padding: 10px;
 }
 
 .approveButton {
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  padding: 10px 20px;
+  font-size: 0.95rem;
   color: #ffffff;
-  background-color: #2ecc71;
+  background: linear-gradient(145deg, #2ecc71, #27ae60);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
 }
 
 .approveButton:hover {
-  background-color: #27ae60;
+  background: linear-gradient(145deg, #27ae60, #219653);
+  transform: translateY(-2px);
 }
 
 .editButton {
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  padding: 10px 20px;
+  font-size: 0.95rem;
   color: #ffffff;
-  background-color: #3498db;
+  background: linear-gradient(145deg, #3498db, #2980b9);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .editButton:hover {
-  background-color: #2980b9;
+  background: linear-gradient(145deg, #2980b9, #2471a3);
+  transform: translateY(-2px);
 }
 
 .deleteButton {
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  padding: 10px 20px;
+  font-size: 0.95rem;
   color: #ffffff;
-  background-color: #e74c3c;
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
 .deleteButton:hover {
-  background-color: #c0392b;
+  background: linear-gradient(145deg, #c0392b, #a93226);
+  transform: translateY(-2px);
 }
 
+/* Status Buttons */
 .statusButtons {
   display: flex;
-  gap: 5px;
+  gap: 8px;
   flex-wrap: wrap;
+  padding: 5px;
 }
 
 .statusButton {
-  padding: 6px 12px;
-  font-size: 0.85rem;
+  padding: 8px 15px;
+  font-size: 0.9rem;
   color: #7f8c8d;
-  background-color: #ecf0f1;
+  background: linear-gradient(145deg, #f0f3f5, #e6eaed);
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .statusButton:hover {
-  background-color: #dcdcdc;
+  background: linear-gradient(145deg, #e6eaed, #d5dce0);
+  transform: translateY(-1px);
 }
 
 .statusActive {
-  background-color: #3498db;
+  background: linear-gradient(145deg, #3498db, #2980b9);
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 .statusActive:hover {
-  background-color: #2980b9;
+  background: linear-gradient(145deg, #2980b9, #2471a3);
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.paginationButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: linear-gradient(145deg, #2980b9, #2471a3);
+  transform: translateY(-2px);
+}
+
+.paginationButton:disabled {
+  background: linear-gradient(145deg, #bdc3c7, #a6adb4);
+  cursor: not-allowed;
+  opacity: 0.7;
+  box-shadow: none;
+}
+
+.pageInfo {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  font-weight: 600;
+  padding: 8px 15px;
+  background: #f0f3f5;
+  border-radius: 6px;
+}
+
+/* Button Group */
+.buttonGroup {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.exportButton {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #ffffff;
+  background: linear-gradient(145deg, #2ecc71, #27ae60);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.exportButton:hover {
+  background: linear-gradient(145deg, #27ae60, #219653);
+  transform: translateY(-2px);
+}
+
+/* Additional Elements */
 .noProperties {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #7f8c8d;
-  padding: 20px;
+  padding: 25px;
+  font-style: italic;
+  background: #fafbfc;
+  border-radius: 8px;
+  margin: 20px 0;
 }
 
 .messageCell {
-  max-width: 200px;
+  max-width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 12px;
 }
 
 .messageCell:hover {
   color: #3498db;
+  background: #f0f3f5;
+  border-radius: 4px;
 }
 
 .messageModal {
@@ -261,93 +424,123 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(3px);
 }
 
 .messageModalContent {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 550px;
+  width: 95%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .messageModalContent h3 {
   margin-top: 0;
-  color: #34495e;
-  font-size: 1.5rem;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #3498db;
 }
 
 .messageModalContent p {
-  margin: 15px 0;
-  color: #2c3e50;
-  font-size: 1rem;
-  white-space: pre-wrap; /* Allows line breaks in the message */
+  margin: 20px 0;
+  color: #34495e;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
 }
 
 .closeButton {
-  padding: 8px 15px;
-  font-size: 0.9rem;
+  padding: 10px 20px;
+  font-size: 1rem;
   color: #ffffff;
-  background-color: #e74c3c;
+  background: linear-gradient(145deg, #e74c3c, #c0392b);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
 .closeButton:hover {
-  background-color: #c0392b;
+  background: linear-gradient(145deg, #c0392b, #a93226);
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 1400px) {
+  .adminPanel {
+    max-width: 1200px;
+    margin-top: 80px;
+    padding: 25px;
+  }
+
+  .heading {
+    font-size: 2.8rem;
+  }
+
+  .tabContainer {
+    gap: 12px;
+    padding: 12px;
+  }
 }
 
 @media (max-width: 1200px) {
   .adminPanel {
-    padding: 15px;
+    max-width: 1000px;
+    padding: 20px;
   }
 
   .heading {
-    font-size: 2rem;
-  }
-
-  .tabContainer {
-    gap: 8px;
+    font-size: 2.5rem;
   }
 
   .tab, .activeTab {
-    padding: 10px 20px;
-    font-size: 0.95rem;
+    padding: 12px 25px;
+    font-size: 1rem;
   }
 
   .sectionHeading {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 
   .tableHeader th {
-    padding: 12px;
-    font-size: 0.85rem;
+    padding: 15px;
+    font-size: 0.9rem;
   }
 
   .tableRow td {
-    padding: 12px;
-    font-size: 0.9rem;
+    padding: 15px;
+    font-size: 0.95rem;
   }
 }
 
 @media (max-width: 992px) {
+  .adminPanel {
+    margin-top: 60px;
+    padding: 15px;
+  }
+
   .tabContainer {
     flex-direction: column;
     align-items: center;
+    gap: 10px;
   }
 
   .tab, .activeTab {
     width: 100%;
-    max-width: 300px;
+    max-width: 350px;
+    padding: 12px 20px;
   }
 
   .propertiesTable {
@@ -356,27 +549,34 @@
 
   .actions {
     flex-direction: column;
-    align-items: flex-start;
+    gap: 8px;
   }
 
   .approveButton, .editButton, .deleteButton {
     width: 100%;
-    max-width: 120px;
+    max-width: 140px;
   }
 
   .statusButtons {
     flex-direction: column;
+    gap: 6px;
   }
 
   .statusButton {
     width: 100%;
-    max-width: 150px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 768px) {
+  .adminPanel {
+    margin-top: 50px;
+    padding: 10px;
+  }
+
   .heading {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-bottom: 30px;
   }
 
   .tabContent {
@@ -384,171 +584,437 @@
   }
 
   .sectionHeading {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   .propertiesTable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
+    border-radius: 6px;
   }
 
   .tableHeader th, .tableRow td {
-    min-width: 120px;
+    min-width: 130px;
+    padding: 12px;
   }
 
   .editHeader {
     flex-direction: column;
     align-items: flex-start;
+    padding: 10px;
   }
 
   .cancelButton {
     width: 100%;
-    max-width: 200px;
+    max-width: 220px;
   }
 
   .messageModalContent {
     width: 95%;
-    padding: 15px;
+    padding: 20px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 
 @media (max-width: 576px) {
   .adminPanel {
-    padding: 10px;
+    margin-top: 40px;
+    padding: 8px;
   }
 
   .heading {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
   }
 
   .tab, .activeTab {
+    padding: 10px 15px;
+    font-size: 0.95rem;
+  }
+
+  .sectionHeading {
+    font-size: 1.4rem;
+  }
+
+  .tableHeader th, .tableRow td {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .approveButton, .editButton, .deleteButton {
     padding: 8px 15px;
     font-size: 0.9rem;
+  }
+
+  .statusButton {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .noProperties {
+    font-size: 1.1rem;
+    padding: 15px;
+  }
+
+  .messageModalContent {
+    padding: 15px;
+  }
+
+  .messageModalContent h3 {
+    font-size: 1.4rem;
+  }
+
+  .messageModalContent p {
+    font-size: 1rem;
+  }
+
+  .paginationButton {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .pageInfo {
+    font-size: 1rem;
+  }
+}
+
+/* Accessibility */
+:focus {
+  outline: 3px solid #3498db;
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+button:disabled:hover {
+  background: inherit;
+}
+
+/* Scrollbar */
+.propertiesTable::-webkit-scrollbar {
+  height: 10px;
+  background: #f0f3f5;
+}
+
+.propertiesTable::-webkit-scrollbar-track {
+  background: #f0f3f5;
+  border-radius: 5px;
+}
+
+.propertiesTable::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #7f8c8d, #6c757d);
+  border-radius: 5px;
+  border: 2px solid #f0f3f5;
+}
+
+.propertiesTable::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(145deg, #6c757d, #5d6469);
+}
+
+/* Animations */
+.tabContent {
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.tableRow {
+  animation: rowFadeIn 0.4s ease-in;
+}
+
+@keyframes rowFadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(5px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .adminPanel {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
+
+  .tab {
+    background: #cccccc;
+    color: #000000;
+    border: 1px solid #000000;
+  }
+
+  .activeTab {
+    background: #0000ff;
+    color: #ffffff;
+    border: 1px solid #000000;
+  }
+
+  .tableHeader {
+    background: #000000;
+    color: #ffffff;
+    border-bottom: 3px solid #ffffff;
+  }
+
+  .tableRow {
+    border: 1px solid #000000;
+  }
+
+  .messageModal {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  .paginationButton {
+    border: 1px solid #000000;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .adminPanel {
+    margin-top: 0;
+    box-shadow: none;
+  }
+
+  .tabContainer, 
+  .actions, 
+  .statusButtons, 
+  .cancelButton, 
+  .messageModal,
+  .pagination,
+  .buttonGroup {
+    display: none;
+  }
+
+  .propertiesTable {
+    border: 2px solid #000000;
+    box-shadow: none;
+  }
+
+  .tableHeader {
+    background: #ffffff;
+    color: #000000;
+    border-bottom: 3px solid #000000;
+  }
+
+  .tableRow {
+    border-bottom: 1px solid #000000;
+    box-shadow: none;
+  }
+
+  .tabContent {
+    box-shadow: none;
+    border: none;
+  }
+}
+
+/* Additional Utility Classes */
+.shadow-light {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.shadow-dark {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.rounded-sm {
+  border-radius: 4px;
+}
+
+.rounded-md {
+  border-radius: 8px;
+}
+
+.rounded-lg {
+  border-radius: 12px;
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.text-primary {
+  color: #3498db;
+}
+
+.text-secondary {
+  color: #2ecc71;
+}
+
+.bg-primary {
+  background: #3498db;
+}
+
+.bg-secondary {
+  background: #2ecc71;
+}
+
+/* Custom Scroll Effects */
+.adminPanel::-webkit-scrollbar {
+  width: 12px;
+}
+
+.adminPanel::-webkit-scrollbar-track {
+  background: #f0f3f5;
+  border-radius: 6px;
+}
+
+.adminPanel::-webkit-scrollbar-thumb {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  border-radius: 6px;
+  border: 3px solid #f0f3f5;
+}
+
+.adminPanel::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(145deg, #2980b9, #2471a3);
+}
+
+/* Enhanced Hover Effects */
+.tab:hover,
+.activeTab:hover,
+.approveButton:hover,
+.editButton:hover,
+.deleteButton:hover,
+.cancelButton:hover,
+.exportButton:hover,
+.paginationButton:hover:not(:disabled),
+.closeButton:hover,
+.statusButton:hover {
+  transition: all 0.3s ease;
+}
+
+/* Additional Animation Keyframes */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Extra Styling for Specific Elements */
+.tableHeader th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.tableHeader th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.tableRow td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.tableRow td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+/* Enhanced Modal Animation */
+.messageModal {
+  animation: modalFadeIn 0.4s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Form Field Enhancements (if used with PropertyForm) */
+.form-field {
+  padding: 12px;
+  border: 1px solid #ecf0f1;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.form-field:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+}
+
+/* Additional Breakpoints */
+@media (max-width: 1600px) {
+  .adminPanel {
+    max-width: 1400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading {
+    font-size: 1.6rem;
   }
 
   .sectionHeading {
     font-size: 1.2rem;
   }
 
-  .tableHeader th, .tableRow td {
-    padding: 10px;
-    font-size: 0.8rem;
-  }
-
-  .approveButton, .editButton, .deleteButton {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-  }
-
-  .statusButton {
-    padding: 5px 10px;
-    font-size: 0.75rem;
-  }
-
-  .noProperties {
-    font-size: 1rem;
-  }
-
-  .messageModalContent {
-    padding: 10px;
-  }
-
-  .messageModalContent h3 {
-    font-size: 1.2rem;
-  }
-
-  .messageModalContent p {
+  .tab, .activeTab {
     font-size: 0.9rem;
+    padding: 8px 12px;
   }
 }
 
-:focus {
-  outline: 2px solid #3498db;
-  outline-offset: 2px;
+/* Enhanced Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Georgia', serif;
+  line-height: 1.3;
 }
 
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+p {
+  line-height: 1.6;
 }
 
-button:disabled:hover {
-  background-color: inherit;
+/* Custom Utility Classes */
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.propertiesTable::-webkit-scrollbar {
-  height: 8px;
+.text-shadow-sm {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.propertiesTable::-webkit-scrollbar-track {
-  background: #ecf0f1;
-}
-
-.propertiesTable::-webkit-scrollbar-thumb {
-  background: #7f8c8d;
-  border-radius: 4px;
-}
-
-.propertiesTable::-webkit-scrollbar-thumb:hover {
-  background: #6c757d;
-}
-
-.tabContent {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@media (prefers-contrast: high) {
-  .adminPanel {
-    background-color: #ffffff;
-    color: #000000;
-  }
-
-  .tab {
-    background-color: #cccccc;
-    color: #000000;
-  }
-
-  .activeTab {
-    background-color: #0000ff;
-    color: #ffffff;
-  }
-
-  .tableHeader {
-    background-color: #000000;
-    color: #ffffff;
-  }
-
-  .tableRow {
-    border-bottom: 1px solid #000000;
-  }
-
-  .messageModal {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-}
-
-@media print {
-  .tabContainer, .actions, .statusButtons, .cancelButton, .messageModal {
-    display: none;
-  }
-
-  .propertiesTable {
-    border: 1px solid #000000;
-  }
-
-  .tableHeader {
-    background-color: #ffffff;
-    color: #000000;
-    border-bottom: 2px solid #000000;
-  }
-
-  .tableRow {
-    border-bottom: 1px solid #000000;
-  }
+.text-shadow-md {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }

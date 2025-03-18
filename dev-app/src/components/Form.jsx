@@ -31,7 +31,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     metaKeywords: '',
     reraApproved: false,
     reraNumber: '',
-    images: [], // Ensure this is always an array
+    images: [],
   });
 
   const [previewImages, setPreviewImages] = useState([]);
@@ -47,15 +47,13 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       const metaKeywordsString = Array.isArray(initialValues.metaKeywords)
         ? initialValues.metaKeywords.join(', ')
         : initialValues.metaKeywords || '';
-
-      // Ensure images is always an array, defaulting to [] if undefined/null
       const imagesArray = Array.isArray(initialValues.images) ? initialValues.images : [];
 
       setFormData({
         ...initialValues,
         amenities: amenitiesString,
         metaKeywords: metaKeywordsString,
-        image: null, // Reset file input for editing
+        image: null,
         imagePreviewUrl: initialValues.image,
         paymentPlan: {
           onBooking: initialValues.paymentPlan?.onBooking || '',
@@ -67,7 +65,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           lat: initialValues.coordinates?.lat || 25.276987,
           lng: initialValues.coordinates?.lng || 55.296249,
         },
-        images: imagesArray, // Set images to a guaranteed array
+        images: imagesArray,
       });
 
       setPreviewImages([
@@ -122,7 +120,6 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const handleAdditionalImagesUpload = (e) => {
     const files = Array.from(e.target.files);
     if (files.length) {
-      // Ensure formData.images is always an array before spreading
       const currentImages = Array.isArray(formData.images) ? formData.images : [];
       setFormData({ ...formData, images: [...currentImages, ...files] });
 
@@ -183,18 +180,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
     if (!validateForm()) return;
-  
+
     try {
       setIsLoading(true);
       setErrors({});
-  
+
       let mainImageSecureUrl = formData.imagePreviewUrl || '';
       if (formData.image instanceof File) {
         mainImageSecureUrl = await cloudinaryUpload(formData.image);
       }
-  
+
       const additionalImageUrls = [];
       for (const image of formData.images) {
         if (image instanceof File) {
@@ -203,12 +199,12 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           additionalImageUrls.push(image);
         }
       }
-  
+
       let floorPlanUrl = formData.floorPlan;
       if (formData.floorPlan instanceof File) {
         floorPlanUrl = await cloudinaryUpload(formData.floorPlan);
       }
-  
+
       const dataToSend = {
         status: formData.status,
         developer: formData.developer,
@@ -224,7 +220,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         description: formData.description,
         coordinates: {
           lat: formData.coordinates.lat,
-          lng: formData.coordinates.lng
+          lng: formData.coordinates.lng,
         },
         locality: formData.locality,
         amenities: formData.amenities ? formData.amenities.split(',').map((item) => item.trim()) : [],
@@ -248,12 +244,12 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         images: additionalImageUrls,
         updatedAt: new Date(),
       };
-  
+
       if (isEditing && onSuccess) {
         onSuccess(dataToSend);
         return;
       }
-  
+
       const response = await fetch('https://knightsfinestates-backend-1.onrender.com/api/properties', {
         method: 'POST',
         headers: {
@@ -262,12 +258,12 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         },
         body: JSON.stringify(dataToSend),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to create property');
       }
-  
+
       alert('Property created successfully!');
       setFormData({
         status: 'pending',
@@ -324,14 +320,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.propertyForm} onSubmit={handleFormSubmit}>
-        {errors.submit && <div className={styles.errorMessage}>{errors.submit}</div>}
+    <div className={`${styles.container} ${styles.transitionAll}`}>
+      <form className={`${styles.propertyForm} ${styles.shadowMd}`} onSubmit={handleFormSubmit}>
+        <h2 className={styles.heading}>{isEditing ? 'Edit Property' : 'Add New Property'}</h2>
+        {errors.submit && <div className={`${styles.errorMessage} ${styles.shadowSm}`}>{errors.submit}</div>}
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="developer">Developer:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="developer">
+            Developer:
+          </label>
           <input
-            className={`${styles.input} ${errors.developer ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.developer ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="developer"
             value={formData.developer}
@@ -339,26 +338,32 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, developer: e.target.value });
               setErrors({ ...errors, developer: e.target.value ? '' : 'Developer is required' });
             }}
+            placeholder="Enter developer name"
           />
           {errors.developer && <span className={styles.errorText}>{errors.developer}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="buildingName">Building Name:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="buildingName">
+            Building Name:
+          </label>
           <input
-            className={`${styles.input} ${errors.buildingName ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.buildingName ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="buildingName"
             value={formData.buildingName}
             onChange={handleBuildingNameChange}
+            placeholder="Enter building name"
           />
           {errors.buildingName && <span className={styles.errorText}>{errors.buildingName}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="slug">Slug (URL friendly name):</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="slug">
+            Slug (URL friendly name):
+          </label>
           <input
-            className={`${styles.input} ${errors.slug ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.slug ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="slug"
             value={formData.slug}
@@ -366,15 +371,18 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, slug: e.target.value });
               setErrors({ ...errors, slug: e.target.value ? '' : 'Slug is required' });
             }}
+            placeholder="Eg. luxury-villa-Pune"
           />
           {errors.slug && <span className={styles.errorText}>{errors.slug}</span>}
-          <small className={styles.helpText}>Auto-generated from building name, but customizable</small>
+          <span className={styles.helpText}>Auto-generated from building name, but customizable</span>
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="price">Price:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="price">
+            Price (INR):
+          </label>
           <input
-            className={`${styles.input} ${errors.price ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.price ? styles.inputError : ''} ${styles.shadowSm}`}
             type="number"
             id="price"
             min="0"
@@ -383,14 +391,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, price: e.target.value });
               setErrors({ ...errors, price: e.target.value ? '' : 'Price is required' });
             }}
+            placeholder="Enter price"
           />
           {errors.price && <span className={styles.errorText}>{errors.price}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="location">Location (city, state):</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="location">
+            Location (city):
+          </label>
           <input
-            className={`${styles.input} ${errors.location ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.location ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="location"
             value={formData.location}
@@ -398,14 +409,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, location: e.target.value });
               setErrors({ ...errors, location: e.target.value ? '' : 'Location is required' });
             }}
+            placeholder="Eg. Pune"
           />
           {errors.location && <span className={styles.errorText}>{errors.location}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="locality">Locality (e.g., Wakad, Baner):</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="locality">
+            Locality:
+          </label>
           <input
-            className={`${styles.input} ${errors.locality ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.locality ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="locality"
             value={formData.locality}
@@ -413,14 +427,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, locality: e.target.value });
               setErrors({ ...errors, locality: e.target.value ? '' : 'Locality is required' });
             }}
+            placeholder="Eg. Baner"
           />
           {errors.locality && <span className={styles.errorText}>{errors.locality}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="area">Area (sq. ft):</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="area">
+            Area (sq. ft):
+          </label>
           <input
-            className={`${styles.input} ${errors.area ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.area ? styles.inputError : ''} ${styles.shadowSm}`}
             type="text"
             id="area"
             value={formData.area}
@@ -428,14 +445,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setFormData({ ...formData, area: e.target.value });
               setErrors({ ...errors, area: e.target.value ? '' : 'Area is required' });
             }}
+            placeholder="Eg. 1500"
           />
           {errors.area && <span className={styles.errorText}>{errors.area}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="type">Type:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="type">
+            Type:
+          </label>
           <select
-            className={`${styles.select} ${errors.type ? styles.inputError : ''}`}
+            className={`${styles.select} ${errors.type ? styles.inputError : ''} ${styles.shadowSm}`}
             id="type"
             value={formData.type}
             onChange={(e) => {
@@ -450,79 +470,108 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="image">Main Image:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="image">
+            Main Image:
+          </label>
           {formData.imagePreviewUrl && (
-            <div className={styles.imagePreviewItem}>
+            <div className={`${styles.imagePreviewItem} ${styles.shadowSm}`}>
               <img
                 src={formData.imagePreviewUrl}
                 alt="Main property"
-                width="200"
+                className={styles.roundedSm}
                 onError={(e) => (e.target.style.display = 'none')}
               />
-              <button type="button" className={styles.removeImageBtn} onClick={handleRemoveMainImage}>
+              <button
+                type="button"
+                className={`${styles.removeImageBtn} ${styles.shadowSm}`}
+                onClick={handleRemoveMainImage}
+              >
                 ✕
               </button>
             </div>
           )}
           <input
-            className={`${styles.input} ${errors.image ? styles.inputError : ''}`}
+            className={`${styles.input} ${errors.image ? styles.inputError : ''} ${styles.shadowSm}`}
             type="file"
             id="image"
+            accept="image/*"
             onChange={handleMainImageUpload}
           />
           {errors.image && <span className={styles.errorText}>{errors.image}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="floorPlan">Floor Plan Image:</label>
+          <label className={styles.label} htmlFor="floorPlan">
+            Floor Plan Image:
+          </label>
           {floorPlanPreview && (
-            <div className={styles.imagePreviewItem}>
+            <div className={`${styles.imagePreviewItem} ${styles.shadowSm}`}>
               <img
                 src={floorPlanPreview}
                 alt="Floor plan"
-                width="200"
+                className={styles.roundedSm}
                 onError={(e) => (e.target.style.display = 'none')}
               />
-              <button type="button" className={styles.removeImageBtn} onClick={handleRemoveFloorPlan}>
+              <button
+                type="button"
+                className={`${styles.removeImageBtn} ${styles.shadowSm}`}
+                onClick={handleRemoveFloorPlan}
+              >
                 ✕
               </button>
             </div>
           )}
-          <input className={styles.input} type="file" id="floorPlan" onChange={handleFloorPlanUpload} />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="bedrooms">Bedrooms:</label>
           <input
-            className={`${styles.input} ${errors.bedrooms ? styles.inputError : ''}`}
-            type="number"
-            id="bedrooms"
-            min="0"
-            value={formData.bedrooms}
-            onChange={(e) => {
-              setFormData({ ...formData, bedrooms: e.target.value });
-              setErrors({ ...errors, bedrooms: e.target.value ? '' : 'Bedrooms is required' });
-            }}
-          />
-          {errors.bedrooms && <span className={styles.errorText}>{errors.bedrooms}</span>}
-        </div>
-
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="baths">Baths:</label>
-          <input
-            className={styles.input}
-            type="number"
-            id="baths"
-            min="0"
-            value={formData.baths}
-            onChange={(e) => setFormData({ ...formData, baths: e.target.value })}
+            className={`${styles.input} ${styles.shadowSm}`}
+            type="file"
+            id="floorPlan"
+            accept="image/*"
+            onChange={handleFloorPlanUpload}
           />
         </div>
 
+        <div className={styles.formGroupSideBySide}>
+          <div className={styles.formGroup}>
+            <label className={`${styles.label} ${styles.required}`} htmlFor="bedrooms">
+              Bedrooms:
+            </label>
+            <input
+              className={`${styles.input} ${errors.bedrooms ? styles.inputError : ''} ${styles.shadowSm}`}
+              type="number"
+              id="bedrooms"
+              min="0"
+              value={formData.bedrooms}
+              onChange={(e) => {
+                setFormData({ ...formData, bedrooms: e.target.value });
+                setErrors({ ...errors, bedrooms: e.target.value ? '' : 'Bedrooms is required' });
+              }}
+              placeholder="Eg. 3"
+            />
+            {errors.bedrooms && <span className={styles.errorText}>{errors.bedrooms}</span>}
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="baths">
+              Baths:
+            </label>
+            <input
+              className={`${styles.input} ${styles.shadowSm}`}
+              type="number"
+              id="baths"
+              min="0"
+              value={formData.baths}
+              onChange={(e) => setFormData({ ...formData, baths: e.target.value })}
+              placeholder="Eg. 2"
+            />
+          </div>
+        </div>
+
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="propertyType">Property Type:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="propertyType">
+            Property Type:
+          </label>
           <select
-            className={`${styles.select} ${errors.propertyType ? styles.inputError : ''}`}
+            className={`${styles.select} ${errors.propertyType ? styles.inputError : ''} ${styles.shadowSm}`}
             id="propertyType"
             value={formData.propertyType}
             onChange={(e) => {
@@ -530,7 +579,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               setErrors({ ...errors, propertyType: e.target.value ? '' : 'Property Type is required' });
             }}
           >
-            <option value="">Select</option>
+            <option value="">Select Property Type</option>
             <option value="Villa">Villa</option>
             <option value="Townhouse">Townhouse</option>
             <option value="Penthouse">Penthouse</option>
@@ -540,33 +589,42 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="description">Description:</label>
+          <label className={`${styles.label} ${styles.required}`} htmlFor="description">
+            Description:
+          </label>
           <textarea
-            className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
+            className={`${styles.textarea} ${errors.description ? styles.inputError : ''} ${styles.shadowSm}`}
             id="description"
             value={formData.description}
             onChange={(e) => {
               setFormData({ ...formData, description: e.target.value });
               setErrors({ ...errors, description: e.target.value ? '' : 'Description is required' });
             }}
+            placeholder="Describe the property..."
           />
           {errors.description && <span className={styles.errorText}>{errors.description}</span>}
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="additionalImages">Additional Images:</label>
+          <label className={styles.label} htmlFor="additionalImages">
+            Additional Images:
+          </label>
           {previewImages.length > 0 && (
-            <div className={styles.imagesGrid}>
+            <div className={`${styles.imagesGrid} ${styles.shadowSm}`}>
               {previewImages.map((imgUrl, index) => (
                 index > 0 && (
-                  <div key={index} className={styles.imagePreviewItem}>
+                  <div key={index} className={`${styles.imagePreviewItem} ${styles.shadowSm}`}>
                     <img
                       src={imgUrl}
                       alt={`Property ${index}`}
-                      width="150"
+                      className={styles.roundedSm}
                       onError={(e) => (e.target.style.display = 'none')}
                     />
-                    <button type="button" className={styles.removeImageBtn} onClick={() => handleRemoveImage(index - 1)}>
+                    <button
+                      type="button"
+                      className={`${styles.removeImageBtn} ${styles.shadowSm}`}
+                      onClick={() => handleRemoveImage(index - 1)}
+                    >
                       ✕
                     </button>
                   </div>
@@ -574,49 +632,71 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
               ))}
             </div>
           )}
-          <input type="file" id="additionalImages" multiple onChange={handleAdditionalImagesUpload} />
+          <input
+            className={`${styles.input} ${styles.shadowSm}`}
+            type="file"
+            id="additionalImages"
+            accept="image/*"
+            multiple
+            onChange={handleAdditionalImagesUpload}
+          />
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="amenities">Amenities (comma-separated):</label>
+          <label className={styles.label} htmlFor="amenities">
+            Amenities (comma-separated):
+          </label>
           <input
-            className={styles.input}
+            className={`${styles.input} ${styles.shadowSm}`}
             type="text"
             id="amenities"
             value={formData.amenities}
             onChange={(e) => setFormData({ ...formData, amenities: e.target.value })}
+            placeholder="Eg. Pool, Gym, Parking"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="brochureURL">Brochure URL:</label>
-          <input
-            className={styles.input}
-            type="text"
-            id="brochureURL"
-            value={formData.brochureURL}
-            onChange={(e) => setFormData({ ...formData, brochureURL: e.target.value })}
-          />
+        <div className={styles.formGroupSideBySide}>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="brochureURL">
+              Brochure URL:
+            </label>
+            <input
+              className={`${styles.input} ${styles.shadowSm}`}
+              type="text"
+              id="brochureURL"
+              value={formData.brochureURL}
+              onChange={(e) => setFormData({ ...formData, brochureURL: e.target.value })}
+              placeholder="Eg. https://example.com/brochure.pdf"
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="LegalDocURL">
+              Legal Document URL:
+            </label>
+            <input
+              className={`${styles.input} ${styles.shadowSm}`}
+              type="text"
+              id="LegalDocURL"
+              value={formData.LegalDocURL}
+              onChange={(e) => setFormData({ ...formData, LegalDocURL: e.target.value })}
+              placeholder="Eg. https://example.com/legal.pdf"
+            />
+          </div>
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="LegalDocURL">Legal Document URL:</label>
-          <input
-            className={styles.input}
-            type="text"
-            id="LegalDocURL"
-            value={formData.LegalDocURL}
-            onChange={(e) => setFormData({ ...formData, LegalDocURL: e.target.value })}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <h4 className={styles.paymentPlanHeading}>Payment Plan</h4>
-          <div className={styles.paymentPlanGroup}>
+          <h4 className={`${styles.paymentPlanHeading} ${styles.textGray800}`}>
+            Payment Plan
+          </h4>
+          <div className={`${styles.paymentPlanGroup} ${styles.shadowSm}`}>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="onBooking">On Booking:</label>
+              <label className={styles.label} htmlFor="onBooking">
+                On Booking (%):
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 id="onBooking"
                 min="0"
@@ -627,12 +707,15 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     paymentPlan: { ...formData.paymentPlan, onBooking: e.target.value },
                   })
                 }
+                placeholder="Eg. 10"
               />
             </div>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="duringConstruction">During Construction:</label>
+              <label className={styles.label} htmlFor="duringConstruction">
+                During Construction (%):
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 id="duringConstruction"
                 min="0"
@@ -643,12 +726,15 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     paymentPlan: { ...formData.paymentPlan, duringConstruction: e.target.value },
                   })
                 }
+                placeholder="Eg. 40"
               />
             </div>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="onHandover">On Handover:</label>
+              <label className={styles.label} htmlFor="onHandover">
+                On Handover (%):
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 id="onHandover"
                 min="0"
@@ -659,12 +745,15 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     paymentPlan: { ...formData.paymentPlan, onHandover: e.target.value },
                   })
                 }
+                placeholder="Eg. 50"
               />
             </div>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="postHandover">Post Handover:</label>
+              <label className={styles.label} htmlFor="postHandover">
+                Post Handover (%):
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 id="postHandover"
                 min="0"
@@ -675,18 +764,23 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     paymentPlan: { ...formData.paymentPlan, postHandover: e.target.value },
                   })
                 }
+                placeholder="Eg. 0"
               />
             </div>
           </div>
         </div>
 
-        <div className={styles.formGroup}>
-          <h4 className={styles.paymentPlanHeading}>Coordinates</h4>
-          <div className={styles.paymentPlanGroup}>
+        <div className={`${styles.formGroup} ${styles.coordinatesGroup}`}>
+          <h4 className={`${styles.paymentPlanHeading} ${styles.textGray800}`}>
+            Coordinates (For Map Directions)
+          </h4>
+          <div className={styles.formGroupSideBySide}>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="lat">Latitude:</label>
+              <label className={styles.label} htmlFor="lat">
+                Latitude:
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 step="any"
                 id="lat"
@@ -697,12 +791,15 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     coordinates: { ...formData.coordinates, lat: parseFloat(e.target.value) || 25.276987 },
                   })
                 }
+                placeholder="Eg. 25.276987"
               />
             </div>
             <div className={styles.paymentField}>
-              <label className={styles.label} htmlFor="lng">Longitude:</label>
+              <label className={styles.label} htmlFor="lng">
+                Longitude:
+              </label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${styles.shadowSm}`}
                 type="number"
                 step="any"
                 id="lng"
@@ -713,69 +810,88 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
                     coordinates: { ...formData.coordinates, lng: parseFloat(e.target.value) || 55.296249 },
                   })
                 }
+                placeholder="Eg. 55.296249"
               />
             </div>
           </div>
         </div>
 
-        <div className={styles.formGroup}>
-          <h4 className={styles.paymentPlanHeading}>SEO Information</h4>
+        <div className={`${styles.formGroup} ${styles.seoSection}`}>
+          <h4 className={`${styles.paymentPlanHeading} ${styles.textGray800}`}>
+            SEO Information
+          </h4>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="metaTitle">Meta Title:</label>
+            <label className={styles.label} htmlFor="metaTitle">
+              Meta Title:
+            </label>
             <input
-              className={styles.input}
+              className={`${styles.input} ${styles.shadowSm}`}
               type="text"
               id="metaTitle"
               value={formData.metaTitle}
               onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+              placeholder="Eg. Luxury Villa in Pune"
             />
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="metaDescription">Meta Description:</label>
+            <label className={styles.label} htmlFor="metaDescription">
+              Meta Description:
+            </label>
             <textarea
-              className={styles.textarea}
+              className={`${styles.textarea} ${styles.shadowSm}`}
               id="metaDescription"
               value={formData.metaDescription}
               onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+              placeholder="Enter a brief description for search engines..."
             />
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="metaKeywords">Meta Keywords (comma-separated):</label>
+            <label className={styles.label} htmlFor="metaKeywords">
+              Meta Keywords (comma-separated):
+            </label>
             <input
-              className={styles.input}
+              className={`${styles.input} ${styles.shadowSm}`}
               type="text"
               id="metaKeywords"
               value={formData.metaKeywords}
               onChange={(e) => setFormData({ ...formData, metaKeywords: e.target.value })}
+              placeholder="Eg. luxury, villa, Pune"
             />
           </div>
         </div>
 
-        <div className={styles.formGroup}>
-          <h4 className={styles.paymentPlanHeading}>RERA Information</h4>
-          <div className={styles.checkboxGroup}>
+        <div className={`${styles.formGroup} ${styles.reraSection}`}>
+          <h4 className={`${styles.paymentPlanHeading} ${styles.textGray800}`}>
+            RERA Information
+          </h4>
+          <div className={`${styles.checkboxGroup} ${styles.shadowSm}`}>
             <input
               type="checkbox"
               id="reraApproved"
               checked={formData.reraApproved}
               onChange={(e) => setFormData({ ...formData, reraApproved: e.target.checked })}
             />
-            <label className={styles.checkboxLabel} htmlFor="reraApproved">RERA Approved</label>
+            <label className={styles.checkboxLabel} htmlFor="reraApproved">
+              RERA Approved
+            </label>
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="reraNumber">RERA Number:</label>
+            <label className={styles.label} htmlFor="reraNumber">
+              RERA Number:
+            </label>
             <input
-              className={styles.input}
+              className={`${styles.input} ${styles.shadowSm}`}
               type="text"
               id="reraNumber"
               value={formData.reraNumber}
               onChange={(e) => setFormData({ ...formData, reraNumber: e.target.value })}
+              placeholder="Enter RERA number"
             />
           </div>
         </div>
 
         <button
-          className={isLoading ? `${styles.button} ${styles.buttonDisabled}` : styles.button}
+          className={`${styles.button} ${isLoading ? styles.buttonDisabled : ''} ${styles.shadowMd}`}
           type="submit"
           disabled={isLoading}
         >
