@@ -1,84 +1,182 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.container {
-  max-width: 800px;
-  margin: 10rem auto;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.heading {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
 }
 
 .propertyForm {
-  display: grid;
-  row-gap: 16px;
-  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .formGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  margin-bottom: 20px;
 }
 
 .label {
-  font-weight: 600;
-  color: #333;
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
 }
 
 .input,
 .select,
 .textarea {
-  padding: 10px;
+  width: 100%;
+  padding: 10px 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s ease;
 }
 
-.button {
-  margin-top: 16px;
-  padding: 10px 24px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.buttonDisabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: #4a90e2;
+  outline: none;
 }
 
 .textarea {
+  min-height: 120px;
   resize: vertical;
-  min-height: 150px;
 }
 
-.heading {
-  margin: 0 0 24px 0;
-  text-align: center;
+.button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #3a7bc8;
+}
+
+.buttonDisabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.buttonDisabled:hover {
+  background-color: #cccccc;
+}
+
+.paymentPlanHeading {
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #333;
 }
 
 .paymentPlanGroup {
   display: grid;
-  gap: 10px;
-}
-
-.paymentPlanHeading {
-  margin: 0 0 10px 0;
-  font-size: 1.1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
 }
 
 .paymentField {
+  margin-bottom: 10px;
+}
+
+.imagePreview {
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.imagePreview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.imagesGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.imagePreviewItem {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.imagePreviewItem img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.removeImageBtn:hover {
+  background-color: rgba(220, 0, 0, 0.9);
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .propertyForm {
+    padding: 15px;
+  }
+  
+  .paymentPlanGroup {
+    grid-template-columns: 1fr;
+  }
+  
+  .imagesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .heading {
+    font-size: 20px;
+  }
+  
+  .button {
+    width: 100%;
+  }
 }

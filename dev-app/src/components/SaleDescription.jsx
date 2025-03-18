@@ -58,6 +58,12 @@ const SaleDescription = () => {
     navigate(-1);
   };
 
+  const handleNavigateToListing = () => {
+    navigate('/propertylisting');
+  };
+
+  const EXCHANGE_RATE = 23.7;
+
   const handleShowMore = () => {
     setShowFullDescription(!showFullDescription);
   };
@@ -118,9 +124,9 @@ const SaleDescription = () => {
   }
 
   // Calculate variables that depend on property after checking it exists
-  const formattedPrice = `AED ${property.price.toLocaleString()}`;
+  const formattedPrice = `INR ${(property.price * EXCHANGE_RATE).toLocaleString()}`;
   const allImages = property.images ? [property.image, ...property.images] : [property.image];
- 
+  const isSold = property.subStatus === 'sold';
   return (
     <div className={styles.propertyDetailsContainer}>
       <Navbar />
@@ -151,10 +157,33 @@ const SaleDescription = () => {
             </div>
           </div>
           <div className="col-md-4 text-md-end">
-            <div className={styles.propertyStatus}>FOR SALE</div>
-            <div className={styles.propertyPrice}>{formattedPrice}</div>
+            <div className={`${styles.propertyStatus} ${isSold ? styles.propertySold : ''}`}>
+              {isSold ? 'SOLD' : 'FOR SALE'}
+            </div>
+            <div className={`${styles.propertyPrice} ${isSold ? styles.soldPrice : ''}`}>
+              {formattedPrice}
+            </div>
+            {property.Trend === 'Hot' && (
+              <div className={styles.hotProperty}>
+                <span>🔥 Hot Property</span>
+              </div>
+            )}
           </div>
         </div>
+        
+        {/* Sold Notice */}
+        {isSold && (
+          <div className={styles.soldNotice}>
+            <p>
+              This property is sold. Check other properties <button 
+                onClick={handleNavigateToListing} 
+                className={styles.inlineLink}
+              >
+                here
+              </button>.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Property Images Gallery */}
@@ -266,6 +295,45 @@ const SaleDescription = () => {
                     <div className={styles.overviewValue}>{property.locality || 'Not specified'}</div>
                   </div>
                 </div>
+                {/* Add Status to the overview section */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-tag"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>Status</div>
+                    <div className={styles.overviewValue}>
+                      {property.subStatus === 'available' ? 'Ready to Move' : 
+                       property.subStatus === 'under construction' ? 'Under Construction' : 
+                       property.subStatus === 'sold' ? 'Property is Sold' : 
+                       property.subStatus}
+                    </div>
+                  </div>
+                </div>
+                {/* Add RERA Approval */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-check2-square"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>RERA Approved</div>
+                    <div className={styles.overviewValue}>{property.reraApproved ? 'Yes' : 'No'}</div>
+                  </div>
+                </div>
+                {/* Add RERA Number */}
+                <div className={styles.overviewItem}>
+                  <div className={styles.overviewIcon}><i className="bi bi-card-text"></i></div>
+                  <div className={styles.overviewDetails}>
+                    <div className={styles.overviewLabel}>RERA Number</div>
+                    <div className={styles.overviewValue}>{property.reraNumber || 'Not available'}</div>
+                  </div>
+                </div>
+                {/* Add Trend */}
+                {/* {property.Trend === 'Hot' && (
+                  <div className={styles.overviewItem}>
+                    <div className={styles.overviewIcon}><i className="bi bi-arrow-up"></i></div>
+                    <div className={styles.overviewDetails}>
+                      <div className={styles.overviewLabel}>Trend</div>
+                      <div className={styles.overviewValue}>{property.Trend}</div>
+                    </div>
+                  </div>
+                )} */}
               </div>
             </div>
 
@@ -301,6 +369,46 @@ const SaleDescription = () => {
               </div>
             )}
 
+            {/* Documents Section */}
+            <div className={`${styles.detailsCard} mb-4`}>
+              <h2>Documents</h2>
+              <div className={styles.documentsGrid}>
+                {property.floorPlan && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-image"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Floor Plan</div>
+                      <a href={property.floorPlan} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        View Floor Plan
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {property.brochureURL && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-pdf"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Brochure</div>
+                      <a href={property.brochureURL} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        Download Brochure
+                      </a>
+                    </div>
+                  </div>
+                )}
+                {property.LegalDocURL && (
+                  <div className={styles.documentItem}>
+                    <div className={styles.documentIcon}><i className="bi bi-file-earmark-text"></i></div>
+                    <div className={styles.documentDetails}>
+                      <div className={styles.documentLabel}>Legal Documents</div>
+                      <a href={property.LegalDocURL} target="_blank" rel="noopener noreferrer" className={styles.documentLink}>
+                        Download Legal Documents
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Map Location */}
             <div className={`${styles.detailsCard} mb-4`}>
               <h2>Map Location</h2>
@@ -316,7 +424,7 @@ const SaleDescription = () => {
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright ">OpenStreetMap</a> contributors'
                   />
                   <Marker 
                     position={[
@@ -339,66 +447,78 @@ const SaleDescription = () => {
           <div className="col-lg-4">
             <div className={styles.contactCard}>
               <h2>Contact Seller</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label htmlFor="fullName" className="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="fullName"
-                    placeholder="Your Name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                  />
+              {isSold ? (
+                <div className={styles.soldContactMessage}>
+                  <p>This property is no longer available. Please check our other properties.</p>
+                  <button 
+                    onClick={handleNavigateToListing} 
+                    className={`${styles.btnSendMessage} w-100 mt-3`}
+                  >
+                    Browse Properties
+                  </button>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email Address <span className={styles.required}>*</span></label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    placeholder="Your email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phone" className="form-label">Phone Number <span className={styles.required}>*</span></label>
-                  <div className="input-group">
-                    <span className="input-group-text">
-                      <div className="d-flex align-items-center">
-                        <span className="ms-1">+91</span>
-                      </div>
-                    </span>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="fullName" className="form-label">Full Name</label>
                     <input
-                      type="tel"
+                      type="text"
                       className="form-control"
-                      id="phone"
-                      placeholder="Phone number"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      id="fullName"
+                      placeholder="Your Name"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
                       required
                     />
                   </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="message" className="form-label">Message <span className={styles.required}>*</span></label>
-                  <textarea
-                    className="form-control"
-                    id="message"
-                    rows="4"
-                    placeholder="Your message"
-                    value={messageText}
-                    onChange={(e) => setMessageText(e.target.value)}
-                    required
-                  ></textarea>
-                </div>
-                <button type="submit" className={`${styles.btnSendMessage} w-100`}>
-                  Send Message
-                </button>
-              </form>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email Address <span className={styles.required}>*</span></label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      id="email"
+                      placeholder="Your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="phone" className="form-label">Phone Number <span className={styles.required}>*</span></label>
+                    <div className="input-group">
+                      <span className="input-group-text">
+                        <div className="d-flex align-items-center">
+                          <span className="ms-1">+91</span>
+                        </div>
+                      </span>
+                      <input
+                        type="tel"
+                        className="form-control"
+                        id="phone"
+                        placeholder="Phone number"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="message" className="form-label">Message <span className={styles.required}>*</span></label>
+                    <textarea
+                      className="form-control"
+                      id="message"
+                      rows="4"
+                      placeholder="Your message"
+                      value={messageText}
+                      onChange={(e) => setMessageText(e.target.value)}
+                      required
+                    ></textarea>
+                  </div>
+                  <button type="submit" className={`${styles.btnSendMessage} w-100`}>
+                    Send Message
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

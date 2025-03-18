@@ -7,6 +7,7 @@ import styles from './PropertyListing.module.css';
 import Footer from './Footer.jsx';
 import { ReactCountryFlag } from 'react-country-flag';
 import logo1 from "../assets/logo.webp";
+import axios from 'axios';
 
 const PropertyListingPage = () => {
   const navigate = useNavigate();
@@ -116,11 +117,19 @@ const PropertyListingPage = () => {
     }
   };
 
-  const handlePropertyClick = (property) => {
-    if (property.type === 'sale') {
-      navigate(`/sale/${property._id}`);
-    } else if (property.type === 'offplan') {
-      navigate(`/offplan/${property._id}`);
+  const handlePropertyClick = async (property) => {
+    try {
+      // Send PATCH request to increment view count
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${property._id}/view`);
+    } catch (error) {
+      console.error('Error updating view count:', error);
+    } finally {
+      // Navigate to the property page regardless of view count update success
+      if (property.type === 'sale') {
+        navigate(`/sale/${property._id}`);
+      } else if (property.type === 'offplan') {
+        navigate(`/offplan/${property._id}`);
+      }
     }
   };
 
@@ -178,9 +187,17 @@ const PropertyListingPage = () => {
       isBedCountMatch && isQueryMatch;
   });
 
+  // Sort properties to show sold properties first
+  const sortedProperties = [...filteredProperties].sort((a, b) => {
+    // First sort by sold status (available properties first)
+    if ((a.subStatus !== 'sold') && (b.subStatus === 'sold')) return -1;
+    if ((a.subStatus === 'sold') && (b.subStatus !== 'sold')) return 1;
+    return 0;
+  });
+
   const itemsPerPage = 9;
-  const totalPages = Math.ceil(filteredProperties.length / itemsPerPage);
-  const displayedProperties = filteredProperties.slice(
+  const totalPages = Math.ceil(sortedProperties.length / itemsPerPage);
+  const displayedProperties = sortedProperties.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -334,11 +351,29 @@ const PropertyListingPage = () => {
                 style={{ cursor: 'pointer' }}
               >
                 <div className="card h-100" style={{ borderRadius: "15px", overflow: "hidden", padding: "15px" }}>
-                  <img 
-                    src={property.image} 
-                    className={styles.propertyImage} 
-                    alt={property.title}
-                  />
+                  <div className={styles.imageContainer} style={{ position: "relative" }}>
+                    <img 
+                      src={property.image} 
+                      className={`${styles.propertyImage} ${property.subStatus === 'sold' ? styles.grayscaleImage : ''}`} 
+                      alt={property.title}
+                    />
+                    
+                    {/* Hot Property Badge */}
+                    {property.Trend === 'Hot' && (
+                      <div className={styles.hotBadge}>🔥 Hot Property</div>
+                    )}
+                    
+                    {/* Property Status Badges */}
+                    {property.subStatus === 'sold' && (
+                      <div className={styles.soldBadge}>SOLD</div>
+                    )}
+                    {property.subStatus === 'available' && (
+                      <div className={styles.availableBadge}>Ready to Move</div>
+                    )}
+                    {property.subStatus === 'Under Construction' && (
+                      <div className={styles.constructionBadge}>Under Construction</div>
+                    )}
+                  </div>
                   <div className="card-body">
                     <h3 className={styles.propertyTitle}>{property.buildingName}</h3>
                     <p className={styles.propertyLocation}>{property.developer}</p>

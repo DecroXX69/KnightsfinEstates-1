@@ -1,41 +1,34 @@
+// PropertyPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, X, Maximize } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Maximize, MapPin, Eye } from 'lucide-react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 import styles from './PropertyPage.module.css';
-
-const Card = ({ children, className }) => {
-  return (
-    <div className={`${styles.card} ${className}`}>
-      {children}
-    </div>
-  );
-};
 
 const PropertyPage = () => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [showAllOverview, setShowAllOverview] = useState(false);
   const [fullscreenActive, setFullscreenActive] = useState(false);
   const [activeFloorPlan, setActiveFloorPlan] = useState(null);
+
+  // Custom Leaflet icon (you'll need to provide an actual icon URL or use a default)
+  const customIcon = new L.Icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  });
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        // Get the current path to determine if it's an offplan or sale property
-        const isOffplan = window.location.pathname.includes('/offplan/');
-        const endpoint = isOffplan ? 
-          `https://knightsfinestates-backend-1.onrender.com/api/offplan/${id}` : 
-          `https://knightsfinestates-backend-1.onrender.com/api/sale/${id}`;
-  
-        const response = await fetch(endpoint);
+        const response = await fetch(`https://knightsfinestates-backend-1.onrender.com/api/offplan/${id}`);
         const data = await response.json();
         
-        if (!data) {
-          console.error('No property data received');
-          return;
-        }
+        if (!data) throw new Error('No property data received');
         
         setProperty(data);
         setLoading(false);
@@ -44,350 +37,254 @@ const PropertyPage = () => {
         setLoading(false);
       }
     };
-  
-    if (id) {
-      fetchProperty();
-    }
+    
+    fetchProperty();
   }, [id]);
 
-  // Handle keyboard events for fullscreen gallery
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!fullscreenActive) return;
-      
-      if (e.key === 'Escape') {
-        setFullscreenActive(false);
-      } else if (e.key === 'ArrowRight') {
-        handleImageNavigation('next');
-      } else if (e.key === 'ArrowLeft') {
-        handleImageNavigation('prev');
-      }
+      if (e.key === 'Escape') setFullscreenActive(false);
+      if (e.key === 'ArrowRight') handleImageNavigation('next');
+      if (e.key === 'ArrowLeft') handleImageNavigation('prev');
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [fullscreenActive]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [fullscreenActive, property?.images]);
 
-  // Prevent scrolling when fullscreen is active
   useEffect(() => {
-    if (fullscreenActive) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
+    document.body.style.overflow = fullscreenActive ? 'hidden' : 'auto';
+    return () => { document.body.style.overflow = 'auto'; };
   }, [fullscreenActive]);
 
   if (loading || !property) {
     return (
-      <div className="d-flex align-items-center justify-content-center vh-100">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingSpinner}></div>
       </div>
     );
   }
 
-  const handleRegisterInterest = () => {
-    alert('Interest Registered');
-  };
-
   const handleImageNavigation = (direction) => {
-    if (!property.images || property.images.length === 0) return;
-    
-    if (direction === 'next') {
-      setCurrentImageIndex((prev) =>
-        prev === property.images.length - 1 ? 0 : prev + 1
-      );
-    } else {
-      setCurrentImageIndex((prev) =>
-        prev === 0 ? property.images.length - 1 : prev - 1
-      );
-    }
+    const totalImages = property.images?.length || 1;
+    setCurrentImageIndex(prev => 
+      direction === 'next' 
+        ? (prev + 1) % totalImages 
+        : (prev - 1 + totalImages) % totalImages
+    );
   };
 
-  const handleThumbnailClick = (index) => {
-    setCurrentImageIndex(index);
-  };
+  const handleThumbnailClick = (index) => setCurrentImageIndex(index);
+  const toggleFullscreen = () => setFullscreenActive(!fullscreenActive);
 
-  const toggleFullscreen = () => {
-    setFullscreenActive(!fullscreenActive);
-  };
-
-  // For demo purposes, simulate multiple images if none exist
-  const propertyImages = property.images && property.images.length > 0 
-    ? property.images 
-    : [property.image, property.image, property.image, property.image];
+  const propertyImages = property.images?.length > 0 ? property.images : [property.image];
+  const formattedDate = new Date(property.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+  });
 
   return (
-    <div className="min-vh-100 bg-light">
+    <div className={styles.luxuryContainer}>
       {/* Hero Section */}
-      <div 
-        className={styles.heroSection} 
-        style={{ backgroundImage: `url(${property.image})` }}
-      >
-        <div className={styles.overlay}>
-          <div className="container h-100 d-flex flex-column justify-content-end pb-5">
-            <h1 className="display-4 text-white mb-3">{property.buildingName}</h1>
-            <p className="h3 text-white mb-4">by {property.developer}</p>
-            <button
-              onClick={handleRegisterInterest}
-              className={`${styles.btnPrimary} text-white px-4 py-2 rounded-pill fw-semibold`}
-            >
-              Register your interest
-            </button>
+      <section className={styles.hero}>
+        <div 
+          className={styles.heroImage} 
+          style={{ backgroundImage: `url(${property.image})` }}
+        >
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroContent}>
+              <h1 className={styles.heroTitle}>{property.buildingName}</h1>
+              <p className={styles.heroSubtitle}>
+                {property.propertyType} by {property.developer}
+              </p>
+              <p className={styles.heroLocation}>
+                <MapPin size={18} />  {property.locality}, {property.location}
+              </p>
+              <div className={styles.heroMeta}>
+                <span>Status: {property.subStatus}</span>
+                <span><Eye size={16} /> Views: {property.viewCount}</span>
+                <span>Added: {formattedDate}</span>
+              </div>
+              <button className={styles.heroButton} onClick={() => alert('Interest Registered')}>
+                Enquire Now
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Property Details Section */}
-      <div className={`container py-5 ${styles.propertyDetails}`}>
-        <div className="row g-4">
-          {/* Left Column */}
-          <div className="col-lg-8">
-            <h2 className={`h2 ${styles.textPrimary} mb-4`}>
-              {property.buildingName} at {property.location}
-            </h2>
-            
-            <div className={`${styles.propertyStats} mb-4`}>
-              <div className={styles.statItem}>
-                <img src="/api/placeholder/24/24" alt="Bedrooms" className={styles.icon} />
-                <span>{property.bedrooms} Bedrooms</span>
+      {/* Main Content */}
+      <section className={styles.mainContent}>
+        {/* Gallery */}
+        <div className={styles.gallery}>
+          <div className={styles.mainImage}>
+            <img 
+              src={propertyImages[currentImageIndex]} 
+              alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
+              onClick={toggleFullscreen}
+            />
+            <div className={styles.imageControls}>
+              <button onClick={() => handleImageNavigation('prev')}><ChevronLeft /></button>
+              <span>{currentImageIndex + 1} / {propertyImages.length}</span>
+              <button onClick={() => handleImageNavigation('next')}><ChevronRight /></button>
+            </div>
+          </div>
+          <div className={styles.thumbnails}>
+            {propertyImages.map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={`Thumbnail ${idx + 1}`}
+                className={currentImageIndex === idx ? styles.activeThumbnail : ''}
+                onClick={() => handleThumbnailClick(idx)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Property Details */}
+        <div className={styles.detailsGrid}>
+          <div className={styles.leftColumn}>
+            <div className={styles.propertySpecs}>
+              <div className={styles.specItem}>
+                <span>{property.bedrooms}</span>
+                <span>Bedrooms</span>
               </div>
-              <div className={styles.statItem}>
-                <img src="/api/placeholder/24/24" alt="Area" className={styles.icon} />
-                <span>{property.area} Sq. Ft.</span>
+              <div className={styles.specItem}>
+                <span>{property.baths || 'N/A'}</span>
+                <span>Bathrooms</span>
               </div>
-              {property.bathrooms && (
-                <div className={styles.statItem}>
-                  <img src="/api/placeholder/24/24" alt="Bathrooms" className={styles.icon} />
-                  <span>{property.bathrooms} Bathrooms</span>
-                </div>
-              )}
+              <div className={styles.specItem}>
+                <span>{property.area}</span>
+                <span>Sq. Ft.</span>
+              </div>
+              <div className={styles.specItem}>
+                <span>{property.propertyType}</span>
+                <span>Type</span>
+              </div>
             </div>
 
-            {/* Property Images Gallery */}
-            <div className={styles.galleryContainer}>
-              <div className={styles.mainImageContainer}>
-                <img 
-                  src={propertyImages[currentImageIndex] || property.image} 
-                  alt={`${property.buildingName} - View ${currentImageIndex + 1}`}
-                  className={styles.mainImage}
-                  onClick={toggleFullscreen}
+            <div className={styles.description}>
+              <h2>Property Overview</h2>
+              <p>{property.description}</p>
+            </div>
+
+            {property.amenities?.length > 0 && (
+              <div className={styles.amenities}>
+                <h2>Amenities & Features</h2>
+                <div className={styles.amenitiesGrid}>
+                  {property.amenities.map((amenity, idx) => (
+                    <span key={idx} className={styles.amenityItem}>
+                      <span className={styles.dot}></span>
+                      {amenity}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Location Map */}
+            <div className={styles.mapSection}>
+              <h2>Location</h2>
+              <MapContainer
+                center={[property.coordinates.lat, property.coordinates.lng]}
+                zoom={13}
+                className={styles.mapContainer}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 />
-                <div className={styles.imageCount}>
-                  {currentImageIndex + 1} / {propertyImages.length}
-                </div>
-                <div className={styles.galleryNavigation}>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleImageNavigation('prev');
-                    }}
-                    className={styles.navButton}
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft />
-                  </button>
-                  <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleImageNavigation('next');
-                    }}
-                    className={styles.navButton}
-                    aria-label="Next image"
-                  >
-                    <ChevronRight />
-                  </button>
-                </div>
-              </div>
-              
-              <div className={styles.thumbnailsContainer}>
-                {propertyImages.slice(0, 3).map((image, index) => (
-                  <div 
-                    key={index}
-                    className={`${styles.thumbnailItem} ${currentImageIndex === index ? styles.active : ''}`}
-                    onClick={() => handleThumbnailClick(index)}
-                  >
-                    <img 
-                      src={image} 
-                      alt={`${property.buildingName} - Thumbnail ${index + 1}`}
-                      className={styles.thumbnailImage}
-                    />
+                <Marker 
+                  position={[property.coordinates.lat, property.coordinates.lng]}
+                  icon={customIcon}
+                >
+                  <div className={styles.mapPopup}>
+                    {property.buildingName}, {property.location}
                   </div>
-                ))}
-                {propertyImages.length > 3 && (
-                  <div 
-                    className={styles.moreImages}
-                    onClick={toggleFullscreen}
-                  >
-                    <Maximize size={20} className="me-2" />
-                    +{propertyImages.length - 3} more
-                  </div>
-                )}
-              </div>
+                </Marker>
+              </MapContainer>
             </div>
           </div>
 
-          {/* Right Column */}
-          <div className="col-lg-4">
+          <div className={styles.rightColumn}>
             <div className={styles.priceCard}>
-              <div className="mb-4">
-                <p className="text-muted mb-1">STARTING PRICE</p>
-                <p className={`${styles.priceValue} fw-bold`}>
-                  AED {property.price?.toLocaleString()}
-                </p>
+              <h3>AED {property.price.toLocaleString()}</h3>
+              <p>Starting Price</p>
+              <div className={styles.metaInfo}>
+                <span>Status: {property.status}</span>
+                <span>Sub-Status: {property.subStatus}</span>
               </div>
-              <div className={styles.priceSeparator}></div>
-              <div className="mb-4">
-                <p className="text-muted mb-1">BOOKING AMOUNT</p>
-                <p className="h3 fw-bold">10%</p>
-              </div>
-              <div className={styles.priceSeparator}></div>
-              <div className="mb-4">
-                <p className="text-muted mb-1">HANDOVER</p>
-                <p className="h3 fw-bold">2028</p>
-              </div>
-              <div className={styles.commissionBadge}>
-                <p className="h5 mb-1">Direct Sale</p>
-                <p className="h2 fw-bold mb-0">0% COMMISSION</p>
-              </div>
-              <button
-                onClick={handleRegisterInterest}
-                className={`${styles.btnPrimary} w-100 mt-4 text-white`}
-              >
+              {property.paymentPlan && (
+                <div className={styles.paymentPlan}>
+                  <h4>Payment Plan</h4>
+                  <div className={styles.planItem}>
+                    <span>On Booking</span>
+                    <span>{property.paymentPlan.onBooking}%</span>
+                  </div>
+                  <div className={styles.planItem}>
+                    <span>During Construction</span>
+                    <span>{property.paymentPlan.duringConstruction}%</span>
+                  </div>
+                  <div className={styles.planItem}>
+                    <span>On Handover</span>
+                    <span>{property.paymentPlan.onHandover}%</span>
+                  </div>
+                  <div className={styles.planItem}>
+                    <span>Post Handover</span>
+                    <span>{property.paymentPlan.postHandover}%</span>
+                  </div>
+                </div>
+              )}
+              <button onClick={() => alert('Interest Registered')}>
                 Register Interest
               </button>
             </div>
           </div>
         </div>
 
-        {/* Overview Section */}
-        <div className={styles.overviewSection}>
-          <h2 className={`h2 ${styles.textPrimary} mb-4`}>OVERVIEW</h2>
-          <div className="row g-4">
-            <div className="col-lg-8">
-              <div className={styles.overviewText}>
-                <p>
-                  {property.description}
-                </p>
-                {property.description && property.description.length > 300 && (
-                  <button 
-                    onClick={() => setShowAllOverview(!showAllOverview)}
-                    className={`btn ${styles.textWarning} px-0`}
-                  >
-                    {showAllOverview ? 'Show Less' : 'Show More'}
-                  </button>
-                )}
-              </div>
+        {/* Floor Plans */}
+        {property.floorPlans?.length > 0 && (
+          <div className={styles.floorPlans}>
+            <h2>Floor Plans</h2>
+            <div className={styles.floorPlanTabs}>
+              {property.floorPlans.map((plan, idx) => (
+                <button
+                  key={idx}
+                  className={activeFloorPlan === idx ? styles.activeTab : ''}
+                  onClick={() => setActiveFloorPlan(idx)}
+                >
+                  {plan.type}
+                </button>
+              ))}
             </div>
-            
-            {/* Payment Plan */}
-            <div className="col-lg-4">
-              <div className={styles.paymentPlanCard}>
-                <h3 className="h4 mb-4">PAYMENT PLAN</h3>
-                <div className="d-flex flex-column">
-                  <div className={styles.paymentPlanItem}>
-                    <span>ON BOOKING</span>
-                    <span className="fw-bold">10%</span>
-                  </div>
-                  <div className={styles.paymentPlanItem}>
-                    <span>DURING CONSTRUCTION</span>
-                    <span className="fw-bold">59%</span>
-                  </div>
-                  <div className={styles.paymentPlanItem}>
-                    <span>ON HANDOVER</span>
-                    <span className="fw-bold">1%</span>
-                  </div>
-                  <div className={styles.paymentPlanItem}>
-                    <span>POST HANDOVER</span>
-                    <span className="fw-bold">30%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {activeFloorPlan !== null && (
+              <img 
+                src={property.floorPlans[activeFloorPlan].planImage} 
+                alt={`${property.floorPlans[activeFloorPlan].type} Floor Plan`}
+              />
+            )}
           </div>
-        </div>
+        )}
+      </section>
 
-        {/* Amenities Section */}
-        <div className={styles.amenitiesSection}>
-          <h2 className="h2 mb-4">AMENITIES & SERVICES</h2>
-          <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
-            {property.amenities?.map((amenity, index) => (
-              <div key={index} className="col">
-                <div className={styles.amenityItem}>
-                  <img src="/api/placeholder/24/24" alt={amenity} className={styles.icon} />
-                  <span>{amenity}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Floor Plans Section */}
-        <div className={styles.floorPlanSection}>
-          <h2 className={`h2 ${styles.textPrimary} mb-4`}>FLOOR PLAN</h2>
-          <p className="text-muted mb-4">
-            {property.buildingName} brings to you a wide range of floor plans offering studios, 1, 2, 3 and 4-bedroom apartments and penthouses that are no less than a haven of luxury.
-          </p>
-          <div className="d-flex flex-column gap-3">
-            {['Studios', '1 Bedroom', '2 Bedroom', '3 Bedroom', '4 Bedroom'].map((plan) => (
-              <button
-                key={plan}
-                className={`${styles.floorPlanButton} ${activeFloorPlan === plan ? styles.active : ''}`}
-                onClick={() => setActiveFloorPlan(plan)}
-              >
-                <span>{plan}</span>
-                <ChevronRight size={20} />
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Fullscreen Image Gallery Modal */}
-      <div className={`${styles.fullscreenOverlay} ${fullscreenActive ? styles.active : ''}`}>
-        <button 
-          className={styles.closeButton}
-          onClick={toggleFullscreen}
-          aria-label="Close fullscreen"
-        >
-          <X />
-        </button>
-        <img 
-          src={propertyImages[currentImageIndex] || property.image} 
-          alt={`${property.buildingName} - Fullscreen View`}
-          className={styles.fullscreenImage}
-        />
-        <div className={styles.galleryNavigation}>
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleImageNavigation('prev');
-            }}
-            className={styles.navButton}
-            aria-label="Previous image"
-          >
-            <ChevronLeft />
+      {/* Fullscreen Gallery */}
+      {fullscreenActive && (
+        <div className={styles.fullscreen}>
+          <button className={styles.closeFullscreen} onClick={toggleFullscreen}>
+            <X />
           </button>
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              handleImageNavigation('next');
-            }}
-            className={styles.navButton}
-            aria-label="Next image"
-          >
-            <ChevronRight />
-          </button>
+          <img 
+            src={propertyImages[currentImageIndex]} 
+            alt={`Fullscreen View ${currentImageIndex + 1}`}
+          />
+          <div className={styles.fullscreenNav}>
+            <button onClick={() => handleImageNavigation('prev')}><ChevronLeft /></button>
+            <button onClick={() => handleImageNavigation('next')}><ChevronRight /></button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
