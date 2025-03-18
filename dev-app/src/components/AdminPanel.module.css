@@ -1,11 +1,12 @@
-/* AdminPanel.module.css */
 .adminPanel {
   max-width: 1400px;
   margin: 0 auto;
+  margin-top: 90px;
   padding: 20px;
   font-family: 'Arial', sans-serif;
   background-color: #f5f6fa;
   min-height: 100vh;
+  position: relative; /* For modal positioning */
 }
 
 .heading {
@@ -18,7 +19,6 @@
   letter-spacing: 1px;
 }
 
-/* Tab Container */
 .tabContainer {
   display: flex;
   justify-content: center;
@@ -66,7 +66,6 @@
   background-color: #2980b9;
 }
 
-/* Loading State */
 .loading {
   text-align: center;
   font-size: 1.2rem;
@@ -81,7 +80,6 @@
   100% { opacity: 1; }
 }
 
-/* Tab Content */
 .tabContent {
   background-color: #ffffff;
   padding: 20px;
@@ -89,7 +87,6 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Section Heading */
 .sectionHeading {
   font-size: 1.8rem;
   color: #34495e;
@@ -97,7 +94,6 @@
   font-weight: 600;
 }
 
-/* Edit Header */
 .editHeader {
   display: flex;
   justify-content: space-between;
@@ -107,7 +103,6 @@
   gap: 10px;
 }
 
-/* Cancel Button */
 .cancelButton {
   padding: 10px 20px;
   font-size: 1rem;
@@ -123,7 +118,6 @@
   background-color: #c0392b;
 }
 
-/* Properties Table */
 .propertiesTable {
   width: 100%;
   border-collapse: collapse;
@@ -157,16 +151,15 @@
   padding: 15px;
   font-size: 0.95rem;
   color: #2c3e50;
+  word-wrap: break-word;
 }
 
-/* Actions Container */
 .actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-/* Button Styles */
 .approveButton {
   padding: 8px 15px;
   font-size: 0.9rem;
@@ -212,7 +205,6 @@
   background-color: #c0392b;
 }
 
-/* Status Buttons */
 .statusButtons {
   display: flex;
   gap: 5px;
@@ -243,7 +235,6 @@
   background-color: #2980b9;
 }
 
-/* No Properties Message */
 .noProperties {
   text-align: center;
   font-size: 1.1rem;
@@ -251,7 +242,70 @@
   padding: 20px;
 }
 
-/* Responsive Design */
+.messageCell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.messageCell:hover {
+  color: #3498db;
+}
+
+.messageModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.messageModalContent {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.messageModalContent h3 {
+  margin-top: 0;
+  color: #34495e;
+  font-size: 1.5rem;
+}
+
+.messageModalContent p {
+  margin: 15px 0;
+  color: #2c3e50;
+  font-size: 1rem;
+  white-space: pre-wrap; /* Allows line breaks in the message */
+}
+
+.closeButton {
+  padding: 8px 15px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background-color: #e74c3c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.closeButton:hover {
+  background-color: #c0392b;
+}
+
 @media (max-width: 1200px) {
   .adminPanel {
     padding: 15px;
@@ -352,6 +406,11 @@
     width: 100%;
     max-width: 200px;
   }
+
+  .messageModalContent {
+    width: 95%;
+    padding: 15px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -390,9 +449,20 @@
   .noProperties {
     font-size: 1rem;
   }
+
+  .messageModalContent {
+    padding: 10px;
+  }
+
+  .messageModalContent h3 {
+    font-size: 1.2rem;
+  }
+
+  .messageModalContent p {
+    font-size: 0.9rem;
+  }
 }
 
-/* Additional Utility Styles */
 :focus {
   outline: 2px solid #3498db;
   outline-offset: 2px;
@@ -407,7 +477,6 @@ button:disabled:hover {
   background-color: inherit;
 }
 
-/* Scrollbar Customization */
 .propertiesTable::-webkit-scrollbar {
   height: 8px;
 }
@@ -425,7 +494,6 @@ button:disabled:hover {
   background: #6c757d;
 }
 
-/* Animation for Tab Content */
 .tabContent {
   animation: fadeIn 0.5s ease-in;
 }
@@ -435,7 +503,6 @@ button:disabled:hover {
   to { opacity: 1; }
 }
 
-/* High Contrast Mode */
 @media (prefers-contrast: high) {
   .adminPanel {
     background-color: #ffffff;
@@ -460,11 +527,14 @@ button:disabled:hover {
   .tableRow {
     border-bottom: 1px solid #000000;
   }
+
+  .messageModal {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
 }
 
-/* Print Styles */
 @media print {
-  .tabContainer, .actions, .statusButtons, .cancelButton {
+  .tabContainer, .actions, .statusButtons, .cancelButton, .messageModal {
     display: none;
   }
 

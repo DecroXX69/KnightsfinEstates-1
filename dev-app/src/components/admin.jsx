@@ -5,20 +5,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from './AuthContext.jsx';
-import { Navigate } from 'react-router-dom'; // Added missing import
+import { Navigate } from 'react-router-dom';
 
 const AdminPanel = () => {
   const [activeTab, setActiveTab] = useState('create');
   const [pendingProperties, setPendingProperties] = useState([]);
   const [approvedProperties, setApprovedProperties] = useState([]);
   const [viewCountProperties, setViewCountProperties] = useState([]);
+  const [contactUsQueries, setContactUsQueries] = useState([]);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formKey, setFormKey] = useState(0);
+  const [selectedMessage, setSelectedMessage] = useState(null); // State for full message display
   const { isAuthenticated, token } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Check if user is authenticated, if not redirect to login
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -27,62 +28,68 @@ const AdminPanel = () => {
     }
   }, [token]);
 
-  // Check if user is authenticated, if not redirect to login
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, navigate]);
-  // Fetch properties when the component mounts
+
   useEffect(() => {
     fetchProperties();
   }, []);
 
-  // Centralized fetch properties function
   const fetchProperties = async () => {
     setLoading(true);
     try {
-      // Use the dedicated endpoint for pending properties
       const pendingResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/pending');
       const approvedResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/all');
+      const viewCountResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/view-count');
       
-      // Filter approved properties from all properties
+      try {
+        const contactUsResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/contactus');
+        if (contactUsResponse.data.data && Array.isArray(contactUsResponse.data.data)) {
+          const sortedQueries = contactUsResponse.data.data.sort((b, a) => 
+            new Date(a.createdAt) - new Date(b.createdAt)
+          );
+          setContactUsQueries(sortedQueries);
+        } else {
+          console.error('Contact us response is not an array:', contactUsResponse.data);
+          setContactUsQueries([]);
+        }
+      } catch (contactError) {
+        console.error('Error fetching contact us data:', contactError);
+        setContactUsQueries([]);
+      }
+  
       const approved = approvedResponse.data.filter(prop => prop.status === 'approved');
-      
+  
       setPendingProperties(pendingResponse.data);
       setApprovedProperties(approved);
-      
-      // Fetch properties with view counts
-      const viewCountResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/view-count');
       setViewCountProperties(viewCountResponse.data);
     } catch (error) {
-      console.error('Error fetching properties:', error);
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle approve property
   const handleApprove = async (id) => {
     try {
       await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/approve/${id}`, {}, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      // Refresh properties list
       fetchProperties();
     } catch (error) {
       console.error('Error approving property:', error);
     }
   };
 
-  // Handle delete property
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
         await axios.delete(`https://knightsfinestates-backend-1.onrender.com/api/${id}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        // Refresh properties list
         fetchProperties();
       } catch (error) {
         console.error('Error deleting property:', error);
@@ -90,17 +97,15 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle edit property - fetch the full property details
   const handleEdit = async (property) => {
     try {
       setLoading(true);
-      // Fetch the complete property details to ensure we have all fields
       const response = await axios.get(`https://knightsfinestates-backend-1.onrender.com/api/properties/${property._id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       setSelectedProperty(response.data);
       setActiveTab('create');
-      setFormKey(prevKey => prevKey + 1); // Force form re-render with new data
+      setFormKey(prevKey => prevKey + 1);
     } catch (error) {
       console.error('Error fetching property details for edit:', error);
     } finally {
@@ -108,7 +113,6 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle update property
   const handleUpdateProperty = async (updatedData) => {
     try {
       setLoading(true);
@@ -126,7 +130,6 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle sub-status update
   const handleSubStatusUpdate = async (propertyId, newSubStatus) => {
     try {
       await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
@@ -140,7 +143,6 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle trend update
   const handleTrendUpdate = async (propertyId, newTrend) => {
     try {
       await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/trend`, {
@@ -154,9 +156,16 @@ const AdminPanel = () => {
     }
   };
 
-  // Handle cancel edit
   const handleCancelEdit = () => {
     setSelectedProperty(null);
+  };
+
+  const handleMessageClick = (message) => {
+    setSelectedMessage(message);
+  };
+
+  const closeMessageModal = () => {
+    setSelectedMessage(null);
   };
 
   if (!isAuthenticated) {
@@ -204,6 +213,15 @@ const AdminPanel = () => {
         >
           View Count
         </button>
+        <button 
+          className={activeTab === 'contact-us' ? styles.activeTab : styles.tab}
+          onClick={() => {
+            setActiveTab('contact-us');
+            setSelectedProperty(null);
+          }}
+        >
+          Contact Us Queries
+        </button>
       </div>
 
       {loading && <div className={styles.loading}>Loading...</div>}
@@ -222,7 +240,7 @@ const AdminPanel = () => {
                 </button>
               </div>
               <PropertyForm 
-                key={formKey} // Force re-render when property changes
+                key={formKey}
                 initialValues={selectedProperty}
                 isEditing={true}
                 onSuccess={(formData) => {
@@ -235,7 +253,6 @@ const AdminPanel = () => {
               <h2 className={styles.sectionHeading}>Create New Property</h2>
               <PropertyForm 
                 onSuccess={() => {
-                  // Refresh properties list after creating
                   fetchProperties();
                 }}
               />
@@ -411,6 +428,78 @@ const AdminPanel = () => {
               </tbody>
             </table>
           )}
+        </div>
+      )}
+
+      {activeTab === 'contact-us' && (
+        <div className={styles.tabContent}>
+          <h2 className={styles.sectionHeading}>Contact Us Queries</h2>
+          
+          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+            <p><strong>Debug Info:</strong> {contactUsQueries.length} queries loaded</p>
+            <button 
+              className={styles.editButton}
+              onClick={() => {
+                console.log('Contact queries:', contactUsQueries);
+                fetchProperties();
+              }}
+            >
+              Refresh Data
+            </button>
+          </div>
+          
+          {contactUsQueries.length === 0 ? (
+            <p className={styles.noProperties}>No contact queries found.</p>
+          ) : (
+            <table className={styles.propertiesTable}>
+              <thead>
+                <tr className={styles.tableHeader}>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Property Type</th>
+                  <th>Profession</th>
+                  <th>Message</th>
+                </tr>
+              </thead>
+              <tbody>
+                {contactUsQueries.map(query => (
+                  <tr key={query._id} className={styles.tableRow}>
+                    <td>{new Date(query.createdAt).toLocaleDateString()}</td>
+                    <td>{new Date(query.createdAt).toLocaleTimeString()}</td>
+                    <td>{query.fullname}</td>
+                    <td>{query.email}</td>
+                    <td>{query.phone}</td>
+                    <td>{query.chooseProperty || 'Not specified'}</td>
+                    <td>{query.profession || 'Not specified'}</td>
+                    <td 
+                      className={styles.messageCell}
+                      onClick={() => handleMessageClick(query.message)}
+                    >
+                      {query.message}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
+      {selectedMessage && (
+        <div className={styles.messageModal}>
+          <div className={styles.messageModalContent}>
+            <h3>Full Message</h3>
+            <p>{selectedMessage}</p>
+            <button 
+              className={styles.closeButton}
+              onClick={closeMessageModal}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
     </div>
