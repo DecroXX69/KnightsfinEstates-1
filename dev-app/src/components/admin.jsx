@@ -325,9 +325,9 @@ const AdminPanel = () => {
               Refresh Data
             </button>
           </div>
-          {pendinginitiatives.length === 0 ? (
-            <p className={styles.noProperties}>No pending properties found.</p>
-          ) : (
+          {pendingProperties.length === 0 ? (
+  <p className={styles.noProperties}>No pending properties found.</p>
+) : (
             <>
               <table className={styles.propertiesTable}>
                 <thead>
