@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from './AuthContext.jsx';
 import styles from './Login.module.css';
+import axios from 'axios'; // Import axios at the top level
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { setIsAuthenticated, setUserData } = useContext(AuthContext);
+  const { setIsAuthenticated, setUserData, setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,17 +22,23 @@ const Login = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         setError(errorData.error || 'Login failed');
         return;
       }
-
+  
       const data = await response.json();
+      // Store token in localStorage for persistence
       localStorage.setItem('token', data.token);
+      
+      // Set the token to axios default headers immediately
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      
       setIsAuthenticated(true);
       setUserData(data.user);
+      setToken(data.token);
       navigate('/admin');
     } catch (err) {
       console.error('Login error:', err);
