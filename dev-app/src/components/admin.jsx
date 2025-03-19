@@ -21,6 +21,8 @@ const AdminPanel = () => {
   const navigate = useNavigate();
   const [approvedPage, setApprovedPage] = useState(1);
   const [contactPage, setContactPage] = useState(1);
+  const [pendingPage, setPendingPage] = useState(1);
+  const [viewCountPage, setViewCountPage] = useState(1);
   const itemsPerPage = 30;
 
   useEffect(() => {
@@ -198,6 +200,16 @@ const AdminPanel = () => {
     XLSX.writeFile(workbook, `contact_queries_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
+  const pendingTotalPages = Math.ceil(pendingProperties.length / itemsPerPage);
+  const pendingStartIndex = (pendingPage - 1) * itemsPerPage;
+  const pendingEndIndex = pendingStartIndex + itemsPerPage;
+  const paginatedPendingProperties = pendingProperties.slice(pendingStartIndex, pendingEndIndex);
+
+  const viewCountTotalPages = Math.ceil(viewCountProperties.length / itemsPerPage);
+  const viewCountStartIndex = (viewCountPage - 1) * itemsPerPage;
+  const viewCountEndIndex = viewCountStartIndex + itemsPerPage;
+  const paginatedViewCountProperties = viewCountProperties.slice(viewCountStartIndex, viewCountEndIndex);
+
   const approvedTotalPages = Math.ceil(approvedProperties.length / itemsPerPage);
   const approvedStartIndex = (approvedPage - 1) * itemsPerPage;
   const approvedEndIndex = approvedStartIndex + itemsPerPage;
@@ -304,52 +316,82 @@ const AdminPanel = () => {
       {activeTab === 'pending' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Pending Properties</h2>
-          {pendingProperties.length === 0 ? (
+          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+            <p><strong>Debug Info:</strong> {pendingProperties.length} properties loaded</p>
+            <button 
+              className={styles.editButton}
+              onClick={() => fetchProperties()}
+            >
+              Refresh Data
+            </button>
+          </div>
+          {pendinginitiatives.length === 0 ? (
             <p className={styles.noProperties}>No pending properties found.</p>
           ) : (
-            <table className={styles.propertiesTable}>
-              <thead>
-                <tr className={styles.tableHeader}>
-                  <th>ID</th>
-                  <th>Developer</th>
-                  <th>Building</th>
-                  <th>Location</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingProperties.map(property => (
-                  <tr key={property._id} className={styles.tableRow}>
-                    <td>{property._id}</td>
-                    <td>{property.developer}</td>
-                    <td>{property.buildingName}</td>
-                    <td>{property.location}</td>
-                    <td>${property.price}</td>
-                    <td className={styles.actions}>
-                      <button 
-                        className={styles.approveButton}
-                        onClick={() => handleApprove(property._id)}
-                      >
-                        Approve
-                      </button>
-                      <button 
-                        className={styles.editButton}
-                        onClick={() => handleEdit(property)}
-                      >
-                        Edit
-                      </button>
-                      <button 
-                        className={styles.deleteButton}
-                        onClick={() => handleDelete(property._id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+            <>
+              <table className={styles.propertiesTable}>
+                <thead>
+                  <tr className={styles.tableHeader}>
+                    <th>ID</th>
+                    <th>Developer</th>
+                    <th>Building</th>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedPendingProperties.map(property => (
+                    <tr key={property._id} className={styles.tableRow}>
+                      <td>{property._id}</td>
+                      <td>{property.developer}</td>
+                      <td>{property.buildingName}</td>
+                      <td>{property.location}</td>
+                      <td>${property.price}</td>
+                      <td className={styles.actions}>
+                        <button 
+                          className={styles.approveButton}
+                          onClick={() => handleApprove(property._id)}
+                        >
+                          Approve
+                        </button>
+                        <button 
+                          className={styles.editButton}
+                          onClick={() => handleEdit(property)}
+                        >
+                          Edit
+                        </button>
+                        <button 
+                          className={styles.deleteButton}
+                          onClick={() => handleDelete(property._id)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className={styles.pagination}>
+                <button
+                  disabled={pendingPage === 1}
+                  onClick={() => setPendingPage(prev => prev - 1)}
+                  className={styles.paginationButton}
+                >
+                  Previous
+                </button>
+                <span className={styles.pageInfo}>
+                  Page {pendingPage} of {pendingTotalPages}
+                </span>
+                <button
+                  disabled={pendingPage === pendingTotalPages}
+                  onClick={() => setPendingPage(prev => prev + 1)}
+                  className={styles.paginationButton}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
@@ -357,6 +399,15 @@ const AdminPanel = () => {
       {activeTab === 'approved' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Approved Properties</h2>
+          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+            <p><strong>Debug Info:</strong> {approvedProperties.length} properties loaded</p>
+            <button 
+              className={styles.editButton}
+              onClick={() => fetchProperties()}
+            >
+              Refresh Data
+            </button>
+          </div>
           {approvedProperties.length === 0 ? (
             <p className={styles.noProperties}>No approved properties found.</p>
           ) : (
@@ -465,29 +516,59 @@ const AdminPanel = () => {
       {activeTab === 'view-count' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Property View Counts</h2>
+          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+            <p><strong>Debug Info:</strong> {viewCountProperties.length} properties loaded</p>
+            <button 
+              className={styles.editButton}
+              onClick={() => fetchProperties()}
+            >
+              Refresh Data
+            </button>
+          </div>
           {viewCountProperties.length === 0 ? (
             <p className={styles.noProperties}>No view count data available.</p>
           ) : (
-            <table className={styles.propertiesTable}>
-              <thead>
-                <tr className={styles.tableHeader}>
-                  <th>ID</th>
-                  <th>Building Name</th>
-                  <th>Location</th>
-                  <th>View Count</th>
-                </tr>
-              </thead>
-              <tbody>
-                {viewCountProperties.map(property => (
-                  <tr key={property._id} className={styles.tableRow}>
-                    <td>{property._id}</td>
-                    <td>{property.buildingName}</td>
-                    <td>{property.location}</td>
-                    <td>{property.viewCount || 0}</td>
+            <>
+              <table className={styles.propertiesTable}>
+                <thead>
+                  <tr className={styles.tableHeader}>
+                    <th>ID</th>
+                    <th>Building Name</th>
+                    <th>Location</th>
+                    <th>View Count</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedViewCountProperties.map(property => (
+                    <tr key={property._id} className={styles.tableRow}>
+                      <td>{property._id}</td>
+                      <td>{property.buildingName}</td>
+                      <td>{property.location}</td>
+                      <td>{property.viewCount || 0}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className={styles.pagination}>
+                <button
+                  disabled={viewCountPage === 1}
+                  onClick={() => setViewCountPage(prev => prev - 1)}
+                  className={styles.paginationButton}
+                >
+                  Previous
+                </button>
+                <span className={styles.pageInfo}>
+                  Page {viewCountPage} of {viewCountTotalPages}
+                </span>
+                <button
+                  disabled={viewCountPage === viewCountTotalPages}
+                  onClick={() => setViewCountPage(prev => prev + 1)}
+                  className={styles.paginationButton}
+                >
+                  Next
+                </button>
+              </div>
+            </>
           )}
         </div>
       )}
@@ -495,16 +576,12 @@ const AdminPanel = () => {
       {activeTab === 'contact-us' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Contact Us Queries</h2>
-          
           <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
             <p><strong>Debug Info:</strong> {contactUsQueries.length} queries loaded</p>
             <div className={styles.buttonGroup}>
               <button 
                 className={styles.editButton}
-                onClick={() => {
-                  console.log('Contact queries:', contactUsQueries);
-                  fetchProperties();
-                }}
+                onClick={() => fetchProperties()}
               >
                 Refresh Data
               </button>
@@ -516,7 +593,6 @@ const AdminPanel = () => {
               </button>
             </div>
           </div>
-          
           {contactUsQueries.length === 0 ? (
             <p className={styles.noProperties}>No contact queries found.</p>
           ) : (
