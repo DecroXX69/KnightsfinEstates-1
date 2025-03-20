@@ -168,20 +168,21 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      // Call logout endpoint to clear cookies
-      await axios.post('https://knightsfinestates-backend-1.onrender.com/api/auth/logout', {}, { withCredentials: true });
+      const response = await axios.post(
+        'https://knightsfinestates-backend-1.onrender.com/api/auth/logout',
+        {},
+        { withCredentials: true }
+      );
+      console.log('Logout response:', response.data);
+      console.log('Cookies after logout:', document.cookie); // Note: httpOnly cookies won't appear here
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('Logout error:', error.response?.data || error.message);
     } finally {
-      // Clear all timers and local state
       clearAllTimers();
       setIsAuthenticated(false);
       setUserData(null);
-      
-      // Redirect to login and prevent back navigation
-      window.location.href = '/login';
-      // Optionally clear local storage or cookies if used
-      localStorage.clear(); // If you store anything there
+      localStorage.clear();
+      window.location.replace('/login');
     }
   };
 
