@@ -33,7 +33,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login');
+      navigate('/login', { replace: true }); // Replace history to prevent back navigation
     } else {
       fetchProperties();
     }

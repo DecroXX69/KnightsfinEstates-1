@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styles from './PropertyForm.module.css';
 import AuthContext from './AuthContext.jsx';
-
+import axios from 'axios';
 const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const { isAuthenticated, token } = useContext(AuthContext);
 
@@ -18,7 +18,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     baths: '',
     propertyType: '',
     description: '',
-    coordinates: { lat: 25.276987, lng: 55.296249 },
+    coordinates: { lat: 18.5590, lng: 73.7868 },
     locality: '',
     amenities: '',
     floorPlan: null,
@@ -181,16 +181,16 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+  
     try {
       setIsLoading(true);
       setErrors({});
-
+  
       let mainImageSecureUrl = formData.imagePreviewUrl || '';
       if (formData.image instanceof File) {
         mainImageSecureUrl = await cloudinaryUpload(formData.image);
       }
-
+  
       const additionalImageUrls = [];
       for (const image of formData.images) {
         if (image instanceof File) {
@@ -199,12 +199,12 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           additionalImageUrls.push(image);
         }
       }
-
+  
       let floorPlanUrl = formData.floorPlan;
       if (formData.floorPlan instanceof File) {
         floorPlanUrl = await cloudinaryUpload(formData.floorPlan);
       }
-
+  
       const dataToSend = {
         status: formData.status,
         developer: formData.developer,
@@ -244,26 +244,24 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         images: additionalImageUrls,
         updatedAt: new Date(),
       };
-
+  
       if (isEditing && onSuccess) {
         onSuccess(dataToSend);
         return;
       }
-
-      const response = await fetch('https://knightsfinestates-backend-1.onrender.com/api/properties', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create property');
+  
+      const response = await axios.post(
+        'https://knightsfinestates-backend-1.onrender.com/api/properties',
+        dataToSend,
+        { withCredentials: true }
+      );
+  
+      console.log('Backend Response:', response); // Debug log
+  
+      if (response.status !== 201) {
+        throw new Error(response.data.error || 'Failed to create property');
       }
-
+  
       alert('Property created successfully!');
       setFormData({
         status: 'pending',
@@ -278,7 +276,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         baths: '',
         propertyType: '',
         description: '',
-        coordinates: { lat: 25.276987, lng: 55.296249 },
+        coordinates: { lat: 18.5590, lng: 73.7868 },
         locality: '',
         amenities: '',
         floorPlan: null,

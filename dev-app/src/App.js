@@ -7,7 +7,7 @@ import './App.css';
 import FloatingChat from './services/FloatingChat.jsx';
 import Navbar from './components/Navbar.jsx';
 import AdminPanel from './components/admin.jsx';
-import AuthContext, { AuthProvider } from './components/AuthContext.jsx'; // Import both the default and named export
+import AuthContext, { AuthProvider } from './components/AuthContext.jsx';
 import Login from './components/login.jsx';
 
 // Lazy-loaded components
@@ -46,38 +46,45 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <Navbar />
-        <div className="App">
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/propertylisting" element={<PropertyListingPage />} />
-              <Route path="/aboutus" element={<AboutUs />} />
-              <Route path="/mortgage" element={<Mortgage />} />
-              <Route path="/contactuspage" element={<ContactUsPage />} />
-              <Route path="/offplan/:id" element={<PropertyPage />} />
-              <Route path="/property/:id" element={<PropertyPage />} />
-              <Route path="/sale/:id" element={<SaleDescription />} />
-              <Route path="/login" element={<Login />} />
-              {/* <Route path="/form" element={<Navigate to="/admin" />} /> */}
+    <Router>
+      <ScrollToTop />
+      <Navbar />
+      <div className="App">
+        <Suspense fallback={<Loading />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/propertylisting" element={<PropertyListingPage />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/mortgage" element={<Mortgage />} />
+            <Route path="/contactuspage" element={<ContactUsPage />} />
+            <Route path="/offplan/:id" element={<PropertyPage />} />
+            <Route path="/property/:id" element={<PropertyPage />} />
+            <Route path="/sale/:id" element={<SaleDescription />} />
 
-              <Route
-                path="/admin"
-                element={
-                  <PrivateRoute>
-                    <AdminPanel />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
-          </Suspense>
-        </div>
-        <FloatingChat />
-      </Router>
-      </AuthProvider>
+            {/* Wrap admin-related routes in AuthProvider */}
+            <Route
+              path="/*"
+              element={
+                <AuthProvider>
+                  <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route
+                      path="/admin"
+                      element={
+                        <PrivateRoute>
+                          <AdminPanel />
+                        </PrivateRoute>
+                      }
+                    />
+                  </Routes>
+                </AuthProvider>
+              }
+            />
+          </Routes>
+        </Suspense>
+      </div>
+      <FloatingChat />
+    </Router>
   );
 }
 
