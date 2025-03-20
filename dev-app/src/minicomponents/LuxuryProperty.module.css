@@ -10,7 +10,7 @@
   max-width: 1400px;
   margin: 0 auto;
   min-height: 600px;
-  border-radius: 12px;
+  /* border-radius: 12px; */
   overflow: hidden;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
@@ -23,7 +23,7 @@
 
 .mainPropertyImage {
   width: 100%;
-  height: 100%;
+  height: 600px; /* Fixed height for consistency */
   object-fit: cover;
   object-position: center;
   filter: brightness(0.9);
@@ -71,14 +71,10 @@
   letter-spacing: 2px;
 }
 
-.propertyInfo {
-  margin-bottom: 2rem;
-}
-
 .propertyName {
   font-family: 'Playfair Display', serif;
   font-size: 2.2rem;
-  margin: 0;
+  margin: 0 0 0.5rem;
   font-weight: 400;
   color: #ffffff;
 }
@@ -86,9 +82,31 @@
 .developerName {
   font-family: 'Poppins', sans-serif;
   font-size: 0.9rem;
-  margin: 0.25rem 0 0 0;
+  margin: 0 0 1.5rem;
   color: #cccccc;
   letter-spacing: 1px;
+}
+
+.propertyDetails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  color: #e0e0e0;
+}
+
+.propertyDetails span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+.status {
+  background: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+  font-weight: 500;
 }
 
 .priceSection {
@@ -105,40 +123,6 @@
   margin: 0;
   font-weight: 600;
   letter-spacing: 1px;
-}
-
-.gallerySection {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.galleryImageContainer {
-  aspect-ratio: 16/9;
-  overflow: hidden;
-  position: relative;
-  transition: all 0.4s ease;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.galleryImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-  transition: transform 0.4s ease-in-out;
-}
-
-.galleryImageContainer:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
-}
-
-.galleryImageContainer:hover .galleryImage {
-  transform: scale(1.1);
 }
 
 .learnMoreSection {
@@ -167,17 +151,75 @@
   box-shadow: 0 10px 20px rgba(255, 167, 38, 0.3);
 }
 
+.slideNavButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.slideNavButton:hover {
+  background: rgba(255, 167, 38, 0.8);
+}
+
+.slideNavPrev {
+  left: 1rem;
+}
+
+.slideNavNext {
+  right: 1rem;
+}
+
+.slideDots {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slideDot {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.slideDotActive {
+  background: #ffa726;
+}
+
+.loading,
+.error,
+.noProperties {
+  text-align: center;
+  padding: 4rem;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+}
+
 @media (max-width: 992px) {
   .luxuryContent {
     flex-direction: column;
     border-radius: 0;
   }
-  
   .luxuryImageSection,
   .luxuryDetailsSection {
     flex: 0 0 100%;
   }
-  
+  .mainPropertyImage {
+    height: 400px; /* Adjusted for mobile */
+  }
   .luxuryDetailsSection {
     padding: 2.5rem;
   }
