@@ -17,7 +17,13 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(false);
   const [formKey, setFormKey] = useState(0);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const { isAuthenticated, token } = useContext(AuthContext);
+  const { 
+    isAuthenticated, 
+    logout, 
+    sessionExpiring, 
+    timeRemaining, 
+    extendSession 
+  } = useContext(AuthContext);
   const navigate = useNavigate();
   const [approvedPage, setApprovedPage] = useState(1);
   const [contactPage, setContactPage] = useState(1);
@@ -26,53 +32,37 @@ const AdminPanel = () => {
   const itemsPerPage = 30;
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [token]);
-
-  useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login');
+    } else {
+      fetchProperties();
     }
   }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    fetchProperties();
-  }, []);
 
   const fetchProperties = async () => {
     setLoading(true);
     try {
-      const pendingResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/pending');
-      const approvedResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/all');
-      const viewCountResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/view-count');
-      
-      try {
-        const contactUsResponse = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/contactus');
-        if (contactUsResponse.data.data && Array.isArray(contactUsResponse.data.data)) {
-          const sortedQueries = contactUsResponse.data.data.sort((b, a) => 
-            new Date(a.createdAt) - new Date(b.createdAt)
-          );
-          setContactUsQueries(sortedQueries);
-        } else {
-          console.error('Contact us response is not an array:', contactUsResponse.data);
-          setContactUsQueries([]);
-        }
-      } catch (contactError) {
-        console.error('Error fetching contact us data:', contactError);
-        setContactUsQueries([]);
-      }
-  
+      const [pendingResponse, approvedResponse, viewCountResponse, contactUsResponse] = await Promise.all([
+        axios.get('https://knightsfinestates-backend-1.onrender.com/api/pending', { withCredentials: true }),
+        axios.get('https://knightsfinestates-backend-1.onrender.com/api/all', { withCredentials: true }),
+        axios.get('https://knightsfinestates-backend-1.onrender.com/api/view-count', { withCredentials: true }),
+        axios.get('https://knightsfinestates-backend-1.onrender.com/api/contactus', { withCredentials: true })
+      ]);
+
       const approved = approvedResponse.data.filter(prop => prop.status === 'approved');
-  
+      const sortedQueries = contactUsResponse.data.data?.sort((b, a) => 
+        new Date(a.createdAt) - new Date(b.createdAt)
+      ) || [];
+
       setPendingProperties(pendingResponse.data);
       setApprovedProperties(approved);
       setViewCountProperties(viewCountResponse.data);
+      setContactUsQueries(sortedQueries);
     } catch (error) {
       console.error('Error fetching data:', error);
+      if (error.response?.status === 401) {
+        logout();
+      }
     } finally {
       setLoading(false);
     }
@@ -80,9 +70,7 @@ const AdminPanel = () => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/approve/${id}`, {}, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/approve/${id}`, {}, { withCredentials: true });
       fetchProperties();
     } catch (error) {
       console.error('Error approving property:', error);
@@ -92,9 +80,7 @@ const AdminPanel = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
-        await axios.delete(`https://knightsfinestates-backend-1.onrender.com/api/${id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await axios.delete(`https://knightsfinestates-backend-1.onrender.com/api/${id}`, { withCredentials: true });
         fetchProperties();
       } catch (error) {
         console.error('Error deleting property:', error);
@@ -105,9 +91,7 @@ const AdminPanel = () => {
   const handleEdit = async (property) => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://knightsfinestates-backend-1.onrender.com/api/properties/${property._id}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const response = await axios.get(`https://knightsfinestates-backend-1.onrender.com/api/properties/${property._id}`, { withCredentials: true });
       setSelectedProperty(response.data);
       setActiveTab('create');
       setFormKey(prevKey => prevKey + 1);
@@ -121,9 +105,7 @@ const AdminPanel = () => {
   const handleUpdateProperty = async (updatedData) => {
     try {
       setLoading(true);
-      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/${selectedProperty._id}`, updatedData, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await axios.put(`https://knightsfinestates-backend-1.onrender.com/api/${selectedProperty._id}`, updatedData, { withCredentials: true });
       setSelectedProperty(null);
       fetchProperties();
       alert('Property updated successfully!');
@@ -137,11 +119,10 @@ const AdminPanel = () => {
 
   const handleSubStatusUpdate = async (propertyId, newSubStatus) => {
     try {
-      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, {
-        subStatus: newSubStatus
-      }, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/sub-status`, 
+        { subStatus: newSubStatus }, 
+        { withCredentials: true }
+      );
       fetchProperties();
     } catch (error) {
       console.error('Error updating sub-status:', error);
@@ -150,11 +131,10 @@ const AdminPanel = () => {
 
   const handleTrendUpdate = async (propertyId, newTrend) => {
     try {
-      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/trend`, {
-        Trend: newTrend
-      }, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      await axios.patch(`https://knightsfinestates-backend-1.onrender.com/api/${propertyId}/trend`, 
+        { Trend: newTrend }, 
+        { withCredentials: true }
+      );
       fetchProperties();
     } catch (error) {
       console.error('Error updating trend:', error);
@@ -189,36 +169,20 @@ const AdminPanel = () => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Contact Queries');
     
-    const colWidths = Object.keys(exportData[0]).map((key, i) => ({
-      wch: Math.max(
-        key.length,
-        ...exportData.map(row => String(row[key]).length)
-      )
+    const colWidths = Object.keys(exportData[0]).map((key) => ({
+      wch: Math.max(key.length, ...exportData.map(row => String(row[key]).length))
     }));
     worksheet['!cols'] = colWidths;
 
     XLSX.writeFile(workbook, `contact_queries_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
-  const pendingTotalPages = Math.ceil(pendingProperties.length / itemsPerPage);
-  const pendingStartIndex = (pendingPage - 1) * itemsPerPage;
-  const pendingEndIndex = pendingStartIndex + itemsPerPage;
-  const paginatedPendingProperties = pendingProperties.slice(pendingStartIndex, pendingEndIndex);
+  const paginate = (data, page) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    return data.slice(startIndex, startIndex + itemsPerPage);
+  };
 
-  const viewCountTotalPages = Math.ceil(viewCountProperties.length / itemsPerPage);
-  const viewCountStartIndex = (viewCountPage - 1) * itemsPerPage;
-  const viewCountEndIndex = viewCountStartIndex + itemsPerPage;
-  const paginatedViewCountProperties = viewCountProperties.slice(viewCountStartIndex, viewCountEndIndex);
-
-  const approvedTotalPages = Math.ceil(approvedProperties.length / itemsPerPage);
-  const approvedStartIndex = (approvedPage - 1) * itemsPerPage;
-  const approvedEndIndex = approvedStartIndex + itemsPerPage;
-  const paginatedApprovedProperties = approvedProperties.slice(approvedStartIndex, approvedEndIndex);
-
-  const contactTotalPages = Math.ceil(contactUsQueries.length / itemsPerPage);
-  const contactStartIndex = (contactPage - 1) * itemsPerPage;
-  const contactEndIndex = contactStartIndex + itemsPerPage;
-  const paginatedContactQueries = contactUsQueries.slice(contactStartIndex, contactEndIndex);
+  const getTotalPages = (data) => Math.ceil(data.length / itemsPerPage);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
@@ -226,8 +190,11 @@ const AdminPanel = () => {
 
   return (
     <div className={styles.adminPanel}>
-      <h1 className={styles.heading}>Admin Panel</h1>
-      
+      <div className={styles.header}>
+        <h1 className={styles.heading}>Admin Panel</h1>
+        <button className={styles.logoutButton} onClick={logout}>Logout</button>
+      </div>
+
       <div className={styles.tabContainer}>
         <button 
           className={activeTab === 'create' ? styles.activeTab : styles.tab}
@@ -276,7 +243,11 @@ const AdminPanel = () => {
         </button>
       </div>
 
-      {loading && <div className={styles.loading}>Loading...</div>}
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <span className={styles.spinner}></span>
+        </div>
+      )}
 
       {activeTab === 'create' && (
         <div className={styles.tabContent}>
@@ -316,7 +287,7 @@ const AdminPanel = () => {
       {activeTab === 'pending' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Pending Properties</h2>
-          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+          <div className={styles.debugInfo}>
             <p><strong>Debug Info:</strong> {pendingProperties.length} properties loaded</p>
             <button 
               className={styles.editButton}
@@ -326,8 +297,8 @@ const AdminPanel = () => {
             </button>
           </div>
           {pendingProperties.length === 0 ? (
-  <p className={styles.noProperties}>No pending properties found.</p>
-) : (
+            <p className={styles.noProperties}>No pending properties found.</p>
+          ) : (
             <>
               <table className={styles.propertiesTable}>
                 <thead>
@@ -341,7 +312,7 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedPendingProperties.map(property => (
+                  {paginate(pendingProperties, pendingPage).map(property => (
                     <tr key={property._id} className={styles.tableRow}>
                       <td>{property._id}</td>
                       <td>{property.developer}</td>
@@ -381,10 +352,10 @@ const AdminPanel = () => {
                   Previous
                 </button>
                 <span className={styles.pageInfo}>
-                  Page {pendingPage} of {pendingTotalPages}
+                  Page {pendingPage} of {getTotalPages(pendingProperties)}
                 </span>
                 <button
-                  disabled={pendingPage === pendingTotalPages}
+                  disabled={pendingPage === getTotalPages(pendingProperties)}
                   onClick={() => setPendingPage(prev => prev + 1)}
                   className={styles.paginationButton}
                 >
@@ -399,7 +370,7 @@ const AdminPanel = () => {
       {activeTab === 'approved' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Approved Properties</h2>
-          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+          <div className={styles.debugInfo}>
             <p><strong>Debug Info:</strong> {approvedProperties.length} properties loaded</p>
             <button 
               className={styles.editButton}
@@ -426,7 +397,7 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedApprovedProperties.map(property => (
+                  {paginate(approvedProperties, approvedPage).map(property => (
                     <tr key={property._id} className={styles.tableRow}>
                       <td>{property._id}</td>
                       <td>{property.developer}</td>
@@ -498,10 +469,10 @@ const AdminPanel = () => {
                   Previous
                 </button>
                 <span className={styles.pageInfo}>
-                  Page {approvedPage} of {approvedTotalPages}
+                  Page {approvedPage} of {getTotalPages(approvedProperties)}
                 </span>
                 <button
-                  disabled={approvedPage === approvedTotalPages}
+                  disabled={approvedPage === getTotalPages(approvedProperties)}
                   onClick={() => setApprovedPage(prev => prev + 1)}
                   className={styles.paginationButton}
                 >
@@ -516,7 +487,7 @@ const AdminPanel = () => {
       {activeTab === 'view-count' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Property View Counts</h2>
-          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+          <div className={styles.debugInfo}>
             <p><strong>Debug Info:</strong> {viewCountProperties.length} properties loaded</p>
             <button 
               className={styles.editButton}
@@ -539,7 +510,7 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedViewCountProperties.map(property => (
+                  {paginate(viewCountProperties, viewCountPage).map(property => (
                     <tr key={property._id} className={styles.tableRow}>
                       <td>{property._id}</td>
                       <td>{property.buildingName}</td>
@@ -558,10 +529,10 @@ const AdminPanel = () => {
                   Previous
                 </button>
                 <span className={styles.pageInfo}>
-                  Page {viewCountPage} of {viewCountTotalPages}
+                  Page {viewCountPage} of {getTotalPages(viewCountProperties)}
                 </span>
                 <button
-                  disabled={viewCountPage === viewCountTotalPages}
+                  disabled={viewCountPage === getTotalPages(viewCountProperties)}
                   onClick={() => setViewCountPage(prev => prev + 1)}
                   className={styles.paginationButton}
                 >
@@ -576,7 +547,7 @@ const AdminPanel = () => {
       {activeTab === 'contact-us' && (
         <div className={styles.tabContent}>
           <h2 className={styles.sectionHeading}>Contact Us Queries</h2>
-          <div style={{ backgroundColor: '#f8f9fa', padding: '10px', marginBottom: '15px', borderRadius: '5px' }}>
+          <div className={styles.debugInfo}>
             <p><strong>Debug Info:</strong> {contactUsQueries.length} queries loaded</p>
             <div className={styles.buttonGroup}>
               <button 
@@ -611,7 +582,7 @@ const AdminPanel = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedContactQueries.map(query => (
+                  {paginate(contactUsQueries, contactPage).map(query => (
                     <tr key={query._id} className={styles.tableRow}>
                       <td>{new Date(query.createdAt).toLocaleDateString()}</td>
                       <td>{new Date(query.createdAt).toLocaleTimeString()}</td>
@@ -624,7 +595,7 @@ const AdminPanel = () => {
                         className={styles.messageCell}
                         onClick={() => handleMessageClick(query.message)}
                       >
-                        {query.message}
+                        {query.message.substring(0, 50) + (query.message.length > 50 ? '...' : '')}
                       </td>
                     </tr>
                   ))}
@@ -639,10 +610,10 @@ const AdminPanel = () => {
                   Previous
                 </button>
                 <span className={styles.pageInfo}>
-                  Page {contactPage} of {contactTotalPages}
+                  Page {contactPage} of {getTotalPages(contactUsQueries)}
                 </span>
                 <button
-                  disabled={contactPage === contactTotalPages}
+                  disabled={contactPage === getTotalPages(contactUsQueries)}
                   onClick={() => setContactPage(prev => prev + 1)}
                   className={styles.paginationButton}
                 >
@@ -651,6 +622,26 @@ const AdminPanel = () => {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {sessionExpiring && (
+        <div className={styles.sessionTimeout}>
+          <div className={styles.timeoutContent}>
+            <h3>Your session is about to expire</h3>
+            <p>
+              You will be logged out in {Math.floor(timeRemaining / 60)}:
+              {(timeRemaining % 60).toString().padStart(2, '0')}
+            </p>
+            <div className={styles.timeoutActions}>
+              <button onClick={extendSession} className={styles.stayButton}>
+                Stay Logged In
+              </button>
+              <button onClick={logout} className={styles.logoutButton}>
+                Logout Now
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

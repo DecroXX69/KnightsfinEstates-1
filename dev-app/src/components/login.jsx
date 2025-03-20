@@ -1,48 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
 import AuthContext from './AuthContext.jsx';
 import styles from './Login.module.css';
-import axios from 'axios'; // Import axios at the top level
-
+import axios from 'axios';
+axios.defaults.withCredentials = true; // Add this globally in your frontend
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
-  const { setIsAuthenticated, setUserData, setToken } = useContext(AuthContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { setIsAuthenticated, setUserData } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+    
     try {
-      const response = await fetch('https://knightsfinestates-backend-1.onrender.com/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.error || 'Login failed');
-        return;
+      const response = await axios.post(
+        'https://knightsfinestates-backend-1.onrender.com/api/login',
+        { email, password, rememberMe },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        setIsAuthenticated(true);
+        setUserData({
+          ...response.data.user,
+          sessionDuration: rememberMe ? '30 days' : '7 days'
+        });
+        navigate('/admin');
+      } else {
+        setError(response.data.error || 'Login failed');
       }
-  
-      const data = await response.json();
-      // Store token in localStorage for persistence
-      localStorage.setItem('token', data.token);
-      
-      // Set the token to axios default headers immediately
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-      
-      setIsAuthenticated(true);
-      setUserData(data.user);
-      setToken(data.token);
-      navigate('/admin');
     } catch (err) {
       console.error('Login error:', err);
-      setError('Login failed. Please try again later.');
+      setError(err.response?.data?.error || 'Login failed. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -63,6 +60,8 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isSubmitting}
+              placeholder="Enter your email"
             />
           </div>
           <div className={styles.formGroup}>
@@ -76,10 +75,36 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isSubmitting}
+              placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className={styles.loginButton}>
-            Login
+          <div className={styles.rememberMeContainer}>
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              disabled={isSubmitting}
+            />
+            <label htmlFor="rememberMe" className={styles.rememberMeLabel}>
+              Remember me 
+            </label>
+          </div>
+          <button 
+            type="submit" 
+            className={`${styles.loginButton} ${isSubmitting ? styles.disabledButton : ''}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <span className={styles.loadingSpinner}>
+                <span className={styles.spinnerDot}></span>
+                <span className={styles.spinnerDot}></span>
+                <span className={styles.spinnerDot}></span>
+              </span>
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
       </div>

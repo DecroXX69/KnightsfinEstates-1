@@ -1,14 +1,19 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 const AuthContext = createContext();
-
+axios.defaults.withCredentials = true; // Add this globally in your frontend
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionExpiring, setSessionExpiring] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(null);
+  
+  // References for timers
+  const refreshTimerRef = useRef(null);
+  const expirationTimerRef = useRef(null);
+  const warningTimerRef = useRef(null);
 
   // Set up axios interceptor for automatic token refresh
   useEffect(() => {
@@ -17,16 +22,35 @@ export const AuthProvider = ({ children }) => {
       async (error) => {
         const originalRequest = error.config;
         
-        // If error is 401 and we haven't tried to refresh yet
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // If error is 401 and specifically token expired and we haven't tried to refresh yet
+        if (
+          error.response?.status === 401 && 
+          error.response?.data?.code === 'TOKEN_EXPIRED' && 
+          !originalRequest._retry
+        ) {
           originalRequest._retry = true;
           
-          // Here you would call your refresh token endpoint if available
-          // For now, we'll just redirect to login
-          if (window.location.pathname !== '/login') {
+          try {
+            // Call the refresh token endpoint
+            const refreshResponse = await axios.post('https://knightsfinestates-backend-1.onrender.com/api/auth/refresh');
+            
+            if (refreshResponse.data.success) {
+              // Setup the session timers again with the new expiration
+              setupSessionTimers(refreshResponse.data.expiresIn);
+              
+              // Retry the original request
+              return axios(originalRequest);
+            }
+          } catch (refreshError) {
+            // If refresh failed, redirect to login
             logout();
-            window.location.href = '/login';
+            return Promise.reject(refreshError);
           }
+        }
+        
+        // If error is 401 but not token expired or refresh failed
+        if (error.response?.status === 401 && window.location.pathname !== '/login') {
+          logout();
         }
         
         return Promise.reject(error);
@@ -38,46 +62,127 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
-  // Check for token on app start and on token change
+  // Initial authentication check
   useEffect(() => {
-    const checkAuth = () => {
-      const storedToken = localStorage.getItem('token');
+    const checkAuth = async () => {
+      setIsLoading(true);
       
-      if (storedToken) {
-        try {
-          const decoded = jwtDecode(storedToken);
+      try {
+        // Check user authentication status by trying to access a protected endpoint
+        const response = await axios.get('https://knightsfinestates-backend-1.onrender.com/api/auth/verify');
+        
+        if (response.data.success) {
+          setIsAuthenticated(true);
+          setUserData(response.data.user);
           
-          if (decoded.exp * 1000 > Date.now()) {
-            // Valid token
-            setIsAuthenticated(true);
-            setUserData(decoded);
-            setToken(storedToken);
-            
-            // Set axios default header with the token
-            axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          } else {
-            // Expired token
-            logout();
-          }
-        } catch (error) {
-          console.error('Error decoding token:', error);
-          logout();
+          // Setup session timers
+          setupSessionTimers(response.data.expiresIn);
         }
+      } catch (error) {
+        // Handle case where user is not authenticated
+        console.log('Not authenticated');
+        setIsAuthenticated(false);
+        setUserData(null);
+      } finally {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
     
     checkAuth();
-  }, [token]);
+    
+    // Cleanup function to clear all timers when component unmounts
+    return () => {
+      clearAllTimers();
+    };
+  }, []);
 
-  // Logout function that can be used throughout the app
-  const logout = () => {
-    localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
-    setToken(null);
-    setUserData(null);
-    setIsAuthenticated(false);
+  // Setup session timers based on token expiration
+  const setupSessionTimers = (expiresInSeconds) => {
+    // Clear any existing timers
+    clearAllTimers();
+    
+    const expiresInMs = expiresInSeconds * 1000;
+    const warningTime = 5 * 60 * 1000; // 5 minutes before expiration
+    
+    // Set timer to refresh token 1 minute before expiration
+    refreshTimerRef.current = setTimeout(() => {
+      refreshToken();
+    }, expiresInMs - (60 * 1000));
+    
+    // Set timer to show warning before session expires
+    warningTimerRef.current = setTimeout(() => {
+      setSessionExpiring(true);
+      
+      // Start countdown timer
+      const intervalId = setInterval(() => {
+        const remaining = Math.round((expiresInMs - 
+          (Date.now() - (new Date().getTime() - warningTime))) / 1000);
+        
+        setTimeRemaining(remaining > 0 ? remaining : 0);
+        
+        if (remaining <= 0) {
+          clearInterval(intervalId);
+        }
+      }, 1000);
+    }, expiresInMs - warningTime);
+    
+    // Set timer for actual expiration (as a fallback)
+    expirationTimerRef.current = setTimeout(() => {
+      logout();
+    }, expiresInMs);
+  };
+
+  // Clear all session timers
+  const clearAllTimers = () => {
+    if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+    if (expirationTimerRef.current) clearTimeout(expirationTimerRef.current);
+    if (warningTimerRef.current) clearTimeout(warningTimerRef.current);
+    setSessionExpiring(false);
+    setTimeRemaining(null);
+  };
+
+  // Function to refresh the access token
+  const refreshToken = async () => {
+    try {
+      const response = await axios.post('https://knightsfinestates-backend-1.onrender.com/api/auth/refresh');
+      
+      if (response.data.success) {
+        // Setup timers again with new expiration
+        setupSessionTimers(response.data.expiresIn);
+        setSessionExpiring(false);
+      } else {
+        // If refresh fails for some reason, log out
+        logout();
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      logout();
+    }
+  };
+
+  // Extend session in response to user activity
+  const extendSession = () => {
+    refreshToken();
+  };
+
+  // Logout function
+  const logout = async () => {
+    try {
+      // Call logout endpoint to clear cookies
+      await axios.post('/api/auth/logout');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      // Clear local state
+      clearAllTimers();
+      setIsAuthenticated(false);
+      setUserData(null);
+      
+      // Redirect to login
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
   };
 
   return (
@@ -86,12 +191,34 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated, 
       userData, 
       setUserData,
-      token,
-      setToken,
       logout,
-      isLoading
+      isLoading,
+      sessionExpiring,
+      timeRemaining,
+      extendSession,
+      refreshToken
     }}>
-      {children}
+      {/* Session timeout notification component */}
+      {sessionExpiring && (
+        <div className="session-timeout-warning">
+          <div className="timeout-content">
+            <h3>Your session is about to expire</h3>
+            <p>You will be logged out in {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}</p>
+            <div className="timeout-actions">
+              <button onClick={extendSession}>Stay logged in</button>
+              <button onClick={logout}>Logout now</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isLoading ? (
+        <div className="auth-loading">
+          <div className="spinner"></div>
+          <p>Checking authentication...</p>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
