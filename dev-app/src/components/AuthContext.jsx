@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
+import styles from './Authcontext.module.css';
 const AuthContext = createContext();
 axios.defaults.withCredentials = true; // Add this globally in your frontend
 export const AuthProvider = ({ children }) => {
@@ -169,7 +169,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       // Call logout endpoint to clear cookies
-      await axios.post('/api/auth/logout');
+      await axios.post('https://knightsfinestates-backend-1.onrender.com/api/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
@@ -198,23 +198,44 @@ export const AuthProvider = ({ children }) => {
       extendSession,
       refreshToken
     }}>
-      {/* Session timeout notification component */}
       {sessionExpiring && (
-        <div className="session-timeout-warning">
-          <div className="timeout-content">
-            <h3>Your session is about to expire</h3>
-            <p>You will be logged out in {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}</p>
-            <div className="timeout-actions">
-              <button onClick={extendSession}>Stay logged in</button>
-              <button onClick={logout}>Logout now</button>
+        <div className={styles.sessionTimeoutOverlay}>
+          <div className={styles.timeoutModal}>
+            <h3 className={styles.timeoutTitle}>Session About to Expire</h3>
+            <p className={styles.timeoutMessage}>
+              Your session will expire in{' '}
+              <span className={styles.timeDisplay}>
+                {Math.floor(timeRemaining / 60)}:
+                {(timeRemaining % 60).toString().padStart(2, '0')}
+              </span>
+            </p>
+            <p className={styles.timeoutInfo}>
+              Would you like to stay logged in?
+            </p>
+            <div className={styles.timeoutActions}>
+              <button 
+                onClick={extendSession} 
+                className={`${styles.button} ${styles.stayButton}`}
+              >
+                Stay Logged In
+              </button>
+              <button 
+                onClick={logout} 
+                className={`${styles.button} ${styles.logoutButton}`}
+              >
+                Logout Now
+              </button>
             </div>
           </div>
         </div>
       )}
+      
       {isLoading ? (
-        <div className="auth-loading">
-          <div className="spinner"></div>
-          <p>Checking authentication...</p>
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingContainer}>
+            <div className={styles.spinner}></div>
+            <p className={styles.loadingText}>Verifying Authentication...</p>
+          </div>
         </div>
       ) : (
         children
