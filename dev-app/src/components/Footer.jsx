@@ -69,12 +69,12 @@ const ModernFooter = () => {
           <div className={styles.contactInfoContainer}>
   <div className={styles.contactCard}>
     <div className={styles.contactIcon}>
-      <a href="tel:+918177083523" aria-label="Call Us">
+      <a href="tel:+917558273523" aria-label="Call Us">
         <FaPhoneAlt />
       </a>
     </div>
     <h4>Call Us</h4>
-    <a href="tel:+918177083523" aria-label="Call +918177083523">+918177083523</a>
+    <a href="tel:+917558273523" aria-label="Call +917558273523">+917558273523</a>
     <p>Mon-Fri: 9:00 AM - 6:00 PM</p>
   </div>
 
