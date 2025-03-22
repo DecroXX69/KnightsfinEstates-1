@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styles from './PropertyForm.module.css';
 import AuthContext from './AuthContext.jsx';
 import axios from 'axios';
+
 const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const { isAuthenticated, token } = useContext(AuthContext);
 
@@ -21,7 +22,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     coordinates: { lat: 18.5590, lng: 73.7868 },
     locality: '',
     amenities: '',
-    floorPlan: null,
+    floorPlans: [],
     brochureURL: '',
     LegalDocURL: '',
     paymentPlan: { onBooking: '', duringConstruction: '', onHandover: '', postHandover: '' },
@@ -35,7 +36,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   });
 
   const [previewImages, setPreviewImages] = useState([]);
-  const [floorPlanPreview, setFloorPlanPreview] = useState(null);
+  const [floorPlanPreviews, setFloorPlanPreviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -48,6 +49,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         ? initialValues.metaKeywords.join(', ')
         : initialValues.metaKeywords || '';
       const imagesArray = Array.isArray(initialValues.images) ? initialValues.images : [];
+      const floorPlansArray = Array.isArray(initialValues.floorPlans) ? initialValues.floorPlans : initialValues.floorPlan ? [initialValues.floorPlan] : [];
 
       setFormData({
         ...initialValues,
@@ -66,13 +68,14 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           lng: initialValues.coordinates?.lng || 55.296249,
         },
         images: imagesArray,
+        floorPlans: floorPlansArray,
       });
 
       setPreviewImages([
         ...(initialValues.image ? [initialValues.image] : []),
         ...imagesArray,
       ]);
-      setFloorPlanPreview(initialValues.floorPlan || null);
+      setFloorPlanPreviews(floorPlansArray);
     }
   }, [initialValues]);
 
@@ -106,14 +109,16 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   };
 
   const handleFloorPlanUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFormData({ ...formData, floorPlan: file });
-        setFloorPlanPreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files);
+    if (files.length) {
+      const currentFloorPlans = Array.isArray(formData.floorPlans) ? formData.floorPlans : [];
+      setFormData({ ...formData, floorPlans: [...currentFloorPlans, ...files] });
+
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => setFloorPlanPreviews((prev) => [...prev, e.target.result]);
+        reader.readAsDataURL(file);
+      });
     }
   };
 
@@ -200,9 +205,13 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         }
       }
   
-      let floorPlanUrl = formData.floorPlan;
-      if (formData.floorPlan instanceof File) {
-        floorPlanUrl = await cloudinaryUpload(formData.floorPlan);
+      const floorPlanUrls = [];
+      for (const floorPlan of formData.floorPlans) {
+        if (floorPlan instanceof File) {
+          floorPlanUrls.push(await cloudinaryUpload(floorPlan));
+        } else if (typeof floorPlan === 'string') {
+          floorPlanUrls.push(floorPlan);
+        }
       }
   
       const dataToSend = {
@@ -224,7 +233,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         },
         locality: formData.locality,
         amenities: formData.amenities ? formData.amenities.split(',').map((item) => item.trim()) : [],
-        floorPlan: floorPlanUrl,
+        floorPlans: floorPlanUrls,
         brochureURL: formData.brochureURL,
         LegalDocURL: formData.LegalDocURL,
         paymentPlan: {
@@ -256,7 +265,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         { withCredentials: true }
       );
   
-      console.log('Backend Response:', response); // Debug log
+      console.log('Backend Response:', response);
   
       if (response.status !== 201) {
         throw new Error(response.data.error || 'Failed to create property');
@@ -279,7 +288,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         coordinates: { lat: 18.5590, lng: 73.7868 },
         locality: '',
         amenities: '',
-        floorPlan: null,
+        floorPlans: [],
         brochureURL: '',
         LegalDocURL: '',
         paymentPlan: { onBooking: '', duringConstruction: '', onHandover: '', postHandover: '' },
@@ -292,7 +301,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         images: [],
       });
       setPreviewImages([]);
-      setFloorPlanPreview(null);
+      setFloorPlanPreviews([]);
       if (onSuccess) onSuccess();
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -307,14 +316,14 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     setPreviewImages(previewImages.filter((_, i) => i !== index));
   };
 
+  const handleRemoveFloorPlan = (index) => {
+    setFormData({ ...formData, floorPlans: formData.floorPlans.filter((_, i) => i !== index) });
+    setFloorPlanPreviews(floorPlanPreviews.filter((_, i) => i !== index));
+  };
+
   const handleRemoveMainImage = () => {
     setFormData({ ...formData, image: null, imagePreviewUrl: null });
     setErrors({ ...errors, image: 'Main Image is required' });
-  };
-
-  const handleRemoveFloorPlan = () => {
-    setFormData({ ...formData, floorPlan: null });
-    setFloorPlanPreview(null);
   };
 
   return (
@@ -499,31 +508,36 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="floorPlan">
-            Floor Plan Image:
+          <label className={styles.label} htmlFor="floorPlans">
+            Floor Plan Images:
           </label>
-          {floorPlanPreview && (
-            <div className={`${styles.imagePreviewItem} ${styles.shadowSm}`}>
-              <img
-                src={floorPlanPreview}
-                alt="Floor plan"
-                className={styles.roundedSm}
-                onError={(e) => (e.target.style.display = 'none')}
-              />
-              <button
-                type="button"
-                className={`${styles.removeImageBtn} ${styles.shadowSm}`}
-                onClick={handleRemoveFloorPlan}
-              >
-                ✕
-              </button>
+          {floorPlanPreviews.length > 0 && (
+            <div className={`${styles.imagesGrid} ${styles.shadowSm}`}>
+              {floorPlanPreviews.map((imgUrl, index) => (
+                <div key={index} className={`${styles.imagePreviewItem} ${styles.shadowSm}`}>
+                  <img
+                    src={imgUrl}
+                    alt={`Floor plan ${index + 1}`}
+                    className={styles.roundedSm}
+                    onError={(e) => (e.target.style.display = 'none')}
+                  />
+                  <button
+                    type="button"
+                    className={`${styles.removeImageBtn} ${styles.shadowSm}`}
+                    onClick={() => handleRemoveFloorPlan(index)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
           )}
           <input
             className={`${styles.input} ${styles.shadowSm}`}
             type="file"
-            id="floorPlan"
+            id="floorPlans"
             accept="image/*"
+            multiple
             onChange={handleFloorPlanUpload}
           />
         </div>
