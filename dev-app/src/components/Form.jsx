@@ -22,7 +22,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
     coordinates: { lat: 18.5590, lng: 73.7868 },
     locality: '',
     amenities: '',
-    floorPlans: [],
+    floorPlan: [], // Changed to match backend schema (singular)
     brochureURL: '',
     LegalDocURL: '',
     paymentPlan: { onBooking: '', duringConstruction: '', onHandover: '', postHandover: '' },
@@ -49,7 +49,11 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         ? initialValues.metaKeywords.join(', ')
         : initialValues.metaKeywords || '';
       const imagesArray = Array.isArray(initialValues.images) ? initialValues.images : [];
-      const floorPlansArray = Array.isArray(initialValues.floorPlans) ? initialValues.floorPlans : initialValues.floorPlan ? [initialValues.floorPlan] : [];
+      const floorPlanArray = Array.isArray(initialValues.floorPlan) // Changed to singular
+        ? initialValues.floorPlan
+        : initialValues.floorPlan
+        ? [initialValues.floorPlan]
+        : [];
 
       setFormData({
         ...initialValues,
@@ -68,14 +72,14 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           lng: initialValues.coordinates?.lng || 55.296249,
         },
         images: imagesArray,
-        floorPlans: floorPlansArray,
+        floorPlan: floorPlanArray, // Changed to singular
       });
 
       setPreviewImages([
         ...(initialValues.image ? [initialValues.image] : []),
         ...imagesArray,
       ]);
-      setFloorPlanPreviews(floorPlansArray);
+      setFloorPlanPreviews(floorPlanArray);
     }
   }, [initialValues]);
 
@@ -92,7 +96,8 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
       if (!response.ok) throw new Error(result.error?.message || 'Upload failed');
       return result.secure_url;
     } catch (error) {
-      throw new Error(`Image upload failed: ${error.message}`);
+      console.error(`Image upload failed: ${error.message}`);
+      return null;
     }
   };
 
@@ -109,10 +114,10 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   };
 
   const handleFloorPlanUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files).filter(file => file instanceof File);
     if (files.length) {
-      const currentFloorPlans = Array.isArray(formData.floorPlans) ? formData.floorPlans : [];
-      setFormData({ ...formData, floorPlans: [...currentFloorPlans, ...files] });
+      const currentFloorPlans = Array.isArray(formData.floorPlan) ? formData.floorPlan : [];
+      setFormData({ ...formData, floorPlan: [...currentFloorPlans, ...files] }); // Changed to singular
 
       files.forEach((file) => {
         const reader = new FileReader();
@@ -123,7 +128,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   };
 
   const handleAdditionalImagesUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files).filter(file => file instanceof File);
     if (files.length) {
       const currentImages = Array.isArray(formData.images) ? formData.images : [];
       setFormData({ ...formData, images: [...currentImages, ...files] });
@@ -186,34 +191,36 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-  
+
     try {
       setIsLoading(true);
       setErrors({});
-  
+
       let mainImageSecureUrl = formData.imagePreviewUrl || '';
       if (formData.image instanceof File) {
         mainImageSecureUrl = await cloudinaryUpload(formData.image);
       }
-  
+
       const additionalImageUrls = [];
       for (const image of formData.images) {
         if (image instanceof File) {
-          additionalImageUrls.push(await cloudinaryUpload(image));
+          const url = await cloudinaryUpload(image);
+          if (url) additionalImageUrls.push(url);
         } else if (typeof image === 'string') {
           additionalImageUrls.push(image);
         }
       }
-  
+
       const floorPlanUrls = [];
-      for (const floorPlan of formData.floorPlans) {
+      for (const floorPlan of formData.floorPlan) { // Changed to singular
         if (floorPlan instanceof File) {
-          floorPlanUrls.push(await cloudinaryUpload(floorPlan));
+          const url = await cloudinaryUpload(floorPlan);
+          if (url) floorPlanUrls.push(url);
         } else if (typeof floorPlan === 'string') {
           floorPlanUrls.push(floorPlan);
         }
       }
-  
+
       const dataToSend = {
         status: formData.status,
         developer: formData.developer,
@@ -233,7 +240,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         },
         locality: formData.locality,
         amenities: formData.amenities ? formData.amenities.split(',').map((item) => item.trim()) : [],
-        floorPlans: floorPlanUrls,
+        floorPlan: floorPlanUrls, // Changed to singular to match schema
         brochureURL: formData.brochureURL,
         LegalDocURL: formData.LegalDocURL,
         paymentPlan: {
@@ -253,24 +260,17 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         images: additionalImageUrls,
         updatedAt: new Date(),
       };
-  
-      if (isEditing && onSuccess) {
-        onSuccess(dataToSend);
-        return;
-      }
-  
+
       const response = await axios.post(
         'https://knightsfinestates-backend-1.onrender.com/api/properties',
         dataToSend,
         { withCredentials: true }
       );
-  
-      console.log('Backend Response:', response);
-  
+
       if (response.status !== 201) {
         throw new Error(response.data.error || 'Failed to create property');
       }
-  
+
       alert('Property created successfully!');
       setFormData({
         status: 'pending',
@@ -288,7 +288,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         coordinates: { lat: 18.5590, lng: 73.7868 },
         locality: '',
         amenities: '',
-        floorPlans: [],
+        floorPlan: [], // Changed to singular
         brochureURL: '',
         LegalDocURL: '',
         paymentPlan: { onBooking: '', duringConstruction: '', onHandover: '', postHandover: '' },
@@ -317,7 +317,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
   };
 
   const handleRemoveFloorPlan = (index) => {
-    setFormData({ ...formData, floorPlans: formData.floorPlans.filter((_, i) => i !== index) });
+    setFormData({ ...formData, floorPlan: formData.floorPlan.filter((_, i) => i !== index) }); // Changed to singular
     setFloorPlanPreviews(floorPlanPreviews.filter((_, i) => i !== index));
   };
 
@@ -508,7 +508,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
         </div>
 
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="floorPlans">
+          <label className={styles.label} htmlFor="floorPlan">
             Floor Plan Images:
           </label>
           {floorPlanPreviews.length > 0 && (
@@ -535,7 +535,7 @@ const PropertyForm = ({ initialValues, isEditing = false, onSuccess }) => {
           <input
             className={`${styles.input} ${styles.shadowSm}`}
             type="file"
-            id="floorPlans"
+            id="floorPlan" // Changed to singular
             accept="image/*"
             multiple
             onChange={handleFloorPlanUpload}
